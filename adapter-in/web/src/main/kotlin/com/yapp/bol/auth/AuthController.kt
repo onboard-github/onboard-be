@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/v1/auth")
 class AuthController(
     private val authService: AuthService,
-    private val onboardingService: OnboardingService,
 ) {
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest): LoginResponse {
@@ -21,7 +20,6 @@ class AuthController(
         return LoginResponse(
             accessToken = authToken.accessToken.value,
             refreshToken = authToken.refreshToken?.value,
-            onboarding = onboardingService.getRemainOnboarding(authToken.accessToken.userId)
         )
     }
 }
