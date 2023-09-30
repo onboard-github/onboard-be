@@ -12,6 +12,8 @@ import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.member.dto.AddGuestRequest
 import com.yapp.bol.group.member.dto.JoinGroupRequest
+import com.yapp.bol.group.member.nickname.NicknameValidationReason
+import com.yapp.bol.group.member.nickname.dto.ValidateMemberNameDto
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import io.mockk.every
 import io.mockk.mockk
@@ -28,7 +30,10 @@ class MemberControllerTest : ControllerTest() {
 
             every {
                 memberService.validateMemberNickname(any(), any())
-            } returns true
+            } returns ValidateMemberNameDto(
+                isAvailable = false,
+                reason = NicknameValidationReason.DUPLICATED_NICKNAME
+            )
 
             get("/v1/group/{groupId}/member/validateNickname", arrayOf(groupId.value)) {
                 queryParam("nickname", nickname)
@@ -47,7 +52,8 @@ class MemberControllerTest : ControllerTest() {
                         "nickname" type STRING means "닉네임"
                     ),
                     responseFields(
-                        "isAvailable" type BOOLEAN means "그룹 내에서 닉네임 사용 가능 여부"
+                        "isAvailable" type BOOLEAN means "그룹 내에서 닉네임 사용 가능 여부",
+                        "reason" type ENUM(NicknameValidationReason::class) means "닉네임 사용 불가능한 이유"
                     )
                 )
         }

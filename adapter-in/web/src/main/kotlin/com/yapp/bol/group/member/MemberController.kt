@@ -10,8 +10,8 @@ import com.yapp.bol.group.member.dto.AddGuestRequest
 import com.yapp.bol.group.member.dto.JoinGroupRequest
 import com.yapp.bol.group.member.dto.MemberResponse
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
-import com.yapp.bol.group.member.dto.ValidateMemberNameResponse
 import com.yapp.bol.group.member.dto.toResponse
+import com.yapp.bol.group.member.nickname.dto.ValidateMemberNameDto
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,8 +32,8 @@ class MemberController(
     fun validateMemberName(
         @PathVariable groupId: GroupId,
         @RequestParam nickname: String,
-    ): ValidateMemberNameResponse {
-        return ValidateMemberNameResponse(memberService.validateMemberNickname(groupId, nickname))
+    ): ValidateMemberNameDto {
+        return memberService.validateMemberNickname(groupId, nickname)
     }
 
     @GetMapping("/member")
