@@ -3,10 +3,11 @@ package com.yapp.bol.group.member
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
+import com.yapp.bol.group.member.nickname.dto.ValidateMemberNameDto
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 
 interface MemberService {
-    fun validateMemberNickname(groupId: GroupId, nickname: String): Boolean
+    fun validateMemberNickname(groupId: GroupId, nickname: String): ValidateMemberNameDto
 
     fun createHostMember(userId: UserId, groupId: GroupId, nickname: String): HostMember
 
