@@ -4,8 +4,7 @@ import com.yapp.bol.DuplicatedMemberNicknameException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
-import com.yapp.bol.group.member.nickname.NicknameValidationReason
-import com.yapp.bol.group.member.nickname.dto.ValidateMemberNameDto
+import com.yapp.bol.group.member.nickname.NicknameValidation
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
@@ -15,20 +14,11 @@ internal class MemberServiceImpl(
     private val memberQueryRepository: MemberQueryRepository,
     private val memberCommandRepository: MemberCommandRepository,
 ) : MemberService {
-    override fun validateMemberNickname(groupId: GroupId, nickname: String): ValidateMemberNameDto =
+    override fun validateMemberNickname(groupId: GroupId, nickname: String): NicknameValidation =
         when {
-            validateUniqueNickname(groupId, nickname).not() -> ValidateMemberNameDto(
-                isAvailable = false,
-                reason = NicknameValidationReason.DUPLICATED_NICKNAME
-            )
-            NicknameValidator.validate(nickname).not() -> ValidateMemberNameDto(
-                isAvailable = false,
-                reason = NicknameValidationReason.INVALID_NICKNAME
-            )
-            else -> ValidateMemberNameDto(
-                isAvailable = true,
-                reason = null
-            )
+            validateUniqueNickname(groupId, nickname).not() -> NicknameValidation.duplicated()
+            NicknameValidator.validate(nickname).not() -> NicknameValidation.invalid()
+            else -> NicknameValidation.available()
         }
 
     override fun createHostMember(userId: UserId, groupId: GroupId, nickname: String): HostMember {

@@ -12,8 +12,8 @@ import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.member.dto.AddGuestRequest
 import com.yapp.bol.group.member.dto.JoinGroupRequest
+import com.yapp.bol.group.member.nickname.NicknameValidation
 import com.yapp.bol.group.member.nickname.NicknameValidationReason
-import com.yapp.bol.group.member.nickname.dto.ValidateMemberNameDto
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import io.mockk.every
 import io.mockk.mockk
@@ -30,7 +30,7 @@ class MemberControllerTest : ControllerTest() {
 
             every {
                 memberService.validateMemberNickname(any(), any())
-            } returns ValidateMemberNameDto(
+            } returns NicknameValidation(
                 isAvailable = false,
                 reason = NicknameValidationReason.DUPLICATED_NICKNAME
             )
