@@ -42,7 +42,7 @@ class UserControllerTest : ControllerTest() {
                     DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
                     responseFields(
                         "onboarding" type ARRAY means "남은 온보딩 단계 ${OnboardingType.values().toList()}",
-                        "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID" isOptional true,
+                        "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID, 그룹 가입이 없을 경우 NULL" isOptional true,
                     )
                 )
         }
