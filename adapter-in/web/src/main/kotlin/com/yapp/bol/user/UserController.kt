@@ -30,9 +30,9 @@ class UserController(
     @GetMapping("/me/onboarding")
     fun checkOnboard(): CheckOnboardResponse {
         val userId = getSecurityUserIdOrThrow()
-        val onboardList = onboardingService.getRemainOnboarding(userId)
+        val guide = onboardingService.getRemainOnboarding(userId)
 
-        return CheckOnboardResponse(onboardList)
+        return guide.toResponse()
     }
 
     @PreAuthorize("isAuthenticated()")
