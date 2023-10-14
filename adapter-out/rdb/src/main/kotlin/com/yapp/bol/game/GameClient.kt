@@ -21,7 +21,7 @@ class GameClient(
 
         return games.map {
             GameWithMatchCount(it.toDomain(), matchCounts[it.id] ?: 0)
-        }.sortedByDescending { it.matchCount }
+        }
     }
 
     override fun findById(id: GameId): Game? {

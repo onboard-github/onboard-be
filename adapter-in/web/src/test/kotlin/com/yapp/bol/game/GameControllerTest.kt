@@ -21,7 +21,7 @@ class GameControllerTest : ControllerTest() {
                 GameWithMatchCount(Game(GameId(1), "게임 2", 2, 5, GameRankType.SCORE_HIGH, "ImgUrl"), 2),
                 GameWithMatchCount(Game(GameId(2), "게임 3", 1, 4, GameRankType.SCORE_HIGH, "ImgUrl"), 0),
             )
-            every { gameService.getGameList(groupId) } returns games
+            every { gameService.getGameList(groupId, sortType) } returns games
 
             get("/v1/group/{groupId}/game", arrayOf(groupId.value)) {}
                 .isStatus(200)
