@@ -9,7 +9,6 @@ import io.jsonwebtoken.Jwts
 import java.time.LocalDateTime
 import java.util.*
 
-
 object JwtUtils {
     val objectMapper = ObjectMapper() // inline function 때문에 public
     private val mapTypeReference = object : TypeReference<Map<String, String>>() {}
