@@ -1,5 +1,5 @@
 ### Reference
-- [Jira Ticket](https://yapp22-aos2.atlassian.net/browse/BOL-)
+- [Jira Ticket](https://onboardgame.atlassian.net/browse/ONB-)
 
 ### 참고 사항
 
