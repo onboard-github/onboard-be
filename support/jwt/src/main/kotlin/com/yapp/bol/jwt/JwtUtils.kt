@@ -7,7 +7,7 @@ import com.yapp.bol.jwt.key.JwtKey
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Base64
 
 object JwtUtils {
     val objectMapper = ObjectMapper() // inline function 때문에 public
