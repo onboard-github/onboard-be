@@ -1,9 +1,9 @@
 name: CI/CD-Sandbox
 
-on:
-  push:
-    branches:
-      - 'sandbox'
+#on:
+#  push:
+#    branches:
+#      - 'sandbox'
 
 jobs:
   build:
