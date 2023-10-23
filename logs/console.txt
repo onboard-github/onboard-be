@@ -1,0 +1,31 @@
+[INFO ][2023-10-20 22:12:52.322][main][c.y.b.WebApplicationKt] Starting WebApplicationKt using Java 17.0.1 with PID 33012 (D:\Application2\YAPP\22nd-Android-Team-2-BE\adapter-in\web\build\classes\kotlin\main started by HoYean Lee in D:\Application2\YAPP\22nd-Android-Team-2-BE)
+[INFO ][2023-10-20 22:12:52.324][main][c.y.b.WebApplicationKt] The following 1 profile is active: "local"
+[INFO ][2023-10-20 22:12:53.474][main][o.s.d.r.c.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[INFO ][2023-10-20 22:12:53.880][main][o.s.d.r.c.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 393 ms. Found 12 JPA repository interfaces.
+[INFO ][2023-10-20 22:12:54.815][main][o.s.b.w.e.t.TomcatWebServer] Tomcat initialized with port(s): 8080 (http)
+[INFO ][2023-10-20 22:12:54.838][main][o.a.c.h.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[INFO ][2023-10-20 22:12:54.838][main][o.a.c.c.StandardService] Starting service [Tomcat]
+[INFO ][2023-10-20 22:12:54.838][main][o.a.c.c.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.8]
+[INFO ][2023-10-20 22:12:54.961][main][o.a.c.c.C.[.[.[/]] Initializing Spring embedded WebApplicationContext
+[INFO ][2023-10-20 22:12:54.962][main][o.s.b.w.s.c.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 2577 ms
+[INFO ][2023-10-20 22:12:56.400][main][c.z.h.HikariDataSource] Hikari - Starting...
+[INFO ][2023-10-20 22:12:56.918][main][c.z.h.p.HikariPool] Hikari - Added connection com.mysql.cj.jdbc.ConnectionImpl@7010c9e4
+[INFO ][2023-10-20 22:12:56.921][main][c.z.h.HikariDataSource] Hikari - Start completed.
+[INFO ][2023-10-20 22:12:56.955][main][SQL dialect] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[INFO ][2023-10-20 22:12:59.056][main][o.s.o.j.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[WARN ][2023-10-20 22:13:00.886][main][c.a.a.p.i.BasicProfileConfigLoader] Your profile name includes a 'profile ' prefix. This is considered part of the profile name in the Java SDK, so you will need to include this prefix in your profile name when you reference this profile from your Java code.
+[WARN ][2023-10-20 22:13:01.010][main][c.a.a.p.i.BasicProfileConfigLoader] Your profile name includes a 'profile ' prefix. This is considered part of the profile name in the Java SDK, so you will need to include this prefix in your profile name when you reference this profile from your Java code.
+[WARN ][2023-10-20 22:13:01.198][main][c.a.a.p.i.BasicProfileConfigLoader] Your profile name includes a 'profile ' prefix. This is considered part of the profile name in the Java SDK, so you will need to include this prefix in your profile name when you reference this profile from your Java code.
+[WARN ][2023-10-20 22:13:01.495][main][o.s.b.a.s.s.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: e59e6df9-727d-4abb-84ed-9f3b900c6c0c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[INFO ][2023-10-20 22:13:01.720][main][o.s.s.w.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@39d8d89, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@645650b1, org.springframework.security.web.context.SecurityContextHolderFilter@2ca307d3, org.springframework.security.web.header.HeaderWriterFilter@57e51932, org.springframework.web.filter.CorsFilter@6caffb24, org.springframework.security.web.authentication.logout.LogoutFilter@7f070f66, com.yapp.bol.auth.security.TokenAuthenticationFilter@627222d8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11306ed7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@776dd64b, org.springframework.security.web.session.SessionManagementFilter@7b48451b, org.springframework.security.web.access.ExceptionTranslationFilter@1b232da1, org.springframework.security.web.access.intercept.AuthorizationFilter@10031e49]
+[INFO ][2023-10-20 22:13:02.021][main][o.a.c.h.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[INFO ][2023-10-20 22:13:02.042][main][o.s.b.w.e.t.TomcatWebServer] Tomcat started on port(s): 8080 (http) with context path ''
+[INFO ][2023-10-20 22:13:02.049][main][c.y.b.WebApplicationKt] Started WebApplicationKt in 11.058 seconds (process running for 12.565)
+[INFO ][2023-10-20 23:54:42.900][http-nio-8080-exec-2][o.a.c.c.C.[.[.[/]] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[INFO ][2023-10-20 23:54:42.900][http-nio-8080-exec-2][o.s.w.s.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[INFO ][2023-10-20 23:54:42.901][http-nio-8080-exec-2][o.s.w.s.DispatcherServlet] Completed initialization in 1 ms

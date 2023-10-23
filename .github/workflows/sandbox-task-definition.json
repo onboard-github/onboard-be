@@ -1,0 +1,46 @@
+{
+    "family": "sandbox-onboard-api-task-definition",
+    "containerDefinitions": [
+        {
+            "name": "sandbox-onboard-api-container",
+            "image": "825816041961.dkr.ecr.ap-northeast-2.amazonaws.com/sandbox-onboard",
+            "cpu": 512,
+            "memory": 819,
+            "memoryReservation": 819,
+            "portMappings": [
+                {
+                    "name": "sandbox-onboard-api-container-80-tcp",
+                    "containerPort": 8080,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/sandbox-onboard-api-task-definition",
+                    "awslogs-region": "ap-northeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            }
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::825816041961:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::825816041961:role/ecsTaskExecutionRole",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "512",
+    "memory": "819",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
