@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - 'main'
+            - 'feat/ONB-70'
 
 env:
     AWS_REGION: ap-northeast-2
