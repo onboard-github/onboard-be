@@ -15,7 +15,10 @@ env:
 
 jobs:
     test:
+        name: Test
         runs-on: ubuntu-latest
+        environment: sandbox
+
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3
@@ -41,7 +44,7 @@ jobs:
         name: Build
         runs-on: ubuntu-latest
         environment: sandbox
-
+        needs: test
         steps:
             -   name: Configure AWS credentials
                 uses: aws-actions/configure-aws-credentials@v1
@@ -75,7 +78,7 @@ jobs:
         name: Deploy
         runs-on: ubuntu-latest
         environment: sandbox
-
+        needs: build
         steps:
             -   name: Configure AWS credentials
                 uses: aws-actions/configure-aws-credentials@v1
