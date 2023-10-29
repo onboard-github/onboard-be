@@ -1,4 +1,4 @@
-name: Deploy-production
+name: Deploy-Production
 
 on:
     push:
@@ -41,6 +41,8 @@ jobs:
         name: Build
         runs-on: ubuntu-latest
         environment: production
+        outputs:
+            image: echo ${{ steps.build-image.outputs.image }}
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3
@@ -109,7 +111,7 @@ jobs:
                 with:
                     task-definition: task-definition.json
                     container-name: ${{ env.CONTAINER_NAME }}
-                    image: ${{ needs.build-image.outputs.image }}
+                    image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
             -   name: Deploy Amazon ECS task definition
                 uses: aws-actions/amazon-ecs-deploy-task-definition@v1
