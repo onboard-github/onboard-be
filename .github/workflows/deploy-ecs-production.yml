@@ -11,9 +11,7 @@ env:
     ECS_SERVICE: production-onboard-api-service
     ECS_CLUSTER: production-onboard
     ECS_TASK_DEFINITION: production-onboard-api-task-definition
-    # file, e.g. .aws/production-task-definition.json
-    CONTAINER_NAME: production-onboard-api-container           # set this to the name of the container in the
-    # containerDefinitions section of your task definition
+    CONTAINER_NAME: production-onboard-api-container
 
 jobs:
     deploy:
@@ -42,7 +40,7 @@ jobs:
                   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                   IMAGE_TAG: ${{ github.sha }}
               run: |
-                  # Build a docker container and
+                  # Build a docker image and
                   # push it to ECR so that it can
                   # be deployed to ECS.
                   docker build \
