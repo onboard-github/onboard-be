@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 internal interface GroupRepository : JpaRepository<GroupEntity, Long> {
-    @Query("""
+    @Query(
+        """
         SELECT g FROM GroupEntity g
         WHERE (g.name LIKE :name OR g.organization LIKE :organization)
         ORDER BY 
@@ -15,7 +16,8 @@ internal interface GroupRepository : JpaRepository<GroupEntity, Long> {
                  WHEN g.organization = :exactOrganization THEN 2
                  ELSE 3 END,
             g.createdDate DESC
-    """)
+    """
+    )
     fun findByNameOrOrganizationWithPriority(
         @Param("name") name: String,
         @Param("organization") organization: String,
