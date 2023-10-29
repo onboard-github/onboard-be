@@ -35,7 +35,7 @@ class OnboardingServiceImpl(
             onboardingList.add(OnboardingType.JOIN_GROUP)
             null
         } else {
-            groupList[0].id
+            groupList.first().id
         }
 
         return OnboardingGuide(onboardingList, mainGroupId)
