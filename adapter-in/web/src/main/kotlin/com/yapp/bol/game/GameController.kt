@@ -6,6 +6,7 @@ import com.yapp.bol.group.GroupId
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,8 +18,9 @@ class GameController(
     @GetMapping("/{groupId}/game")
     fun groupId(
         @PathVariable("groupId") groupId: GroupId,
+        @RequestParam("sort", defaultValue = "MATCH_COUNT") sortType: GameListSortType,
     ): GameListResponse {
-        val games = gameService.getGameList(groupId)
+        val games = gameService.getGameList(groupId, sortType)
 
         return GameListResponse(
             games.map { it.toResponse() }

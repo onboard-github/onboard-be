@@ -2,6 +2,7 @@ package com.yapp.bol.game
 
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.ControllerTest
+import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
@@ -21,14 +22,20 @@ class GameControllerTest : ControllerTest() {
                 GameWithMatchCount(Game(GameId(1), "게임 2", 2, 5, GameRankType.SCORE_HIGH, "ImgUrl"), 2),
                 GameWithMatchCount(Game(GameId(2), "게임 3", 1, 4, GameRankType.SCORE_HIGH, "ImgUrl"), 0),
             )
-            every { gameService.getGameList(groupId) } returns games
+            val sortType = GameListSortType.FIXED
+            every { gameService.getGameList(groupId, sortType) } returns games
 
-            get("/v1/group/{groupId}/game", arrayOf(groupId.value)) {}
+            get("/v1/group/{groupId}/game", arrayOf(groupId.value)) {
+                queryParam("sort", sortType.name)
+            }
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(identifier = "game/{method-name}", tag = OpenApiTag.GAME),
                     pathParameters(
                         "groupId" type NUMBER means "게임 목록을 조회하고자 하는 groupId, 현재는 아무값이나 넣어도 검증 없이 동일하게 내려감"
+                    ),
+                    queryParameters(
+                        "sort" type ENUM(GameListSortType::class) means "게임 순서 정렬 기준, 기본값 MATCH_COUNT" isOptional true,
                     ),
                     responseFields(
                         "list" type ARRAY means "게임 목록",
