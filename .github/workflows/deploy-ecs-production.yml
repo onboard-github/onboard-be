@@ -3,7 +3,7 @@ name: Deploy-Production
 on:
     push:
         branches:
-            - 'production'
+            - 'main'
 
 env:
     AWS_REGION: ap-northeast-2
