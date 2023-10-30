@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service
 internal class GameServiceImpl(
     private val gameQueryRepository: GameQueryRepository,
 ) : GameService {
-    override fun getGameList(groupId: GroupId): List<GameWithMatchCount> {
-        return gameQueryRepository.getGameListByGroupId(groupId)
+    override fun getGameList(groupId: GroupId, sortType: GameListSortType): List<GameWithMatchCount> {
+        val list = gameQueryRepository.getGameListByGroupId(groupId)
+        if (sortType == GameListSortType.FIXED) return list
+
+        return list.sortedByDescending { it.matchCount }
     }
 
     override fun validateMemberSize(gameId: GameId, memberCount: Int): Boolean {
