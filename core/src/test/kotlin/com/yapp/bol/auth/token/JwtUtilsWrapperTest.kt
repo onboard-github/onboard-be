@@ -1,6 +1,8 @@
 package com.yapp.bol.auth.token
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.jwt.JwtUtils
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.security.SignatureException
 import io.kotest.assertions.throwables.shouldNotThrow
@@ -10,8 +12,10 @@ import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
 import java.util.Base64
 
-class JwtUtilsTest : FunSpec() {
-    private val sut = JwtUtils(ByteArray(64) { 0 })
+class JwtUtilsWrapperTest : FunSpec() {
+    private val objectMapper = ObjectMapper()
+    private val jwtUtils = JwtUtils(objectMapper)
+    private val sut = JwtUtilsWrapper(ByteArray(64) { 0 }, jwtUtils)
 
     init {
         val userId = UserId(1L)
