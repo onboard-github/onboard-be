@@ -7,9 +7,7 @@ import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
 import com.yapp.bol.group.Group
-import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
-import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
 import com.yapp.bol.user.dto.PutUserInfoRequest
@@ -26,12 +24,9 @@ class UserControllerTest : ControllerTest() {
     init {
         test("온보딩 진행 정도 가져오기") {
             val userId = UserId(124)
-            every { onboardingService.getRemainOnboarding(userId) } returns OnboardingGuide(
-                listOf(
-                    OnboardingType.TERMS,
-                    OnboardingType.NICKNAME,
-                ),
-                GroupId(1),
+            every { onboardingService.getRemainOnboarding(userId) } returns listOf(
+                OnboardingType.TERMS,
+                OnboardingType.NICKNAME,
             )
 
             get("/v1/user/me/onboarding") {
@@ -42,7 +37,6 @@ class UserControllerTest : ControllerTest() {
                     DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
                     responseFields(
                         "onboarding" type ARRAY means "남은 온보딩 단계 ${OnboardingType.values().toList()}",
-                        "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID, 가입한 그룹이 없을 경우 NULL" isOptional true,
                     )
                 )
         }

@@ -4,5 +4,4 @@ enum class OnboardingType {
     TERMS,
     UPDATE_TERMS,
     NICKNAME,
-    JOIN_GROUP,
 }
