@@ -2,7 +2,7 @@
 <included>
     <property
             name="LOG_PATTERN"
-            value="[%-5level][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%logger{1}] %msg%n"
+            value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread][%logger{1}] %msg%n"
     />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
