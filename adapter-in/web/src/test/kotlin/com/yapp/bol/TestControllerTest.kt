@@ -17,7 +17,7 @@ class TestControllerTest : ControllerTest() {
         test("Get Test") {
             every { environment.activeProfiles } returns arrayOf("phase")
 
-            get("/v1/test") {}
+            get("/api/v1/test") {}
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(identifier = "test", tag = OpenApiTag.TEST),
