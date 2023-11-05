@@ -12,7 +12,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.web.util.ContentCachingResponseWrapper
 
-@WebFilter(urlPatterns = ["/api/*"])
+@WebFilter(urlPatterns = ["/api/*", "/v1/*"])
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ApiLoggingFilter : Filter {
     private val logger = logger()
@@ -24,7 +24,9 @@ class ApiLoggingFilter : Filter {
         try {
             chain.doFilter(servletRequest, response)
         } finally {
-            logger.info("${generateRequestLog(request)}\n${generateResponseLog(response)}")
+            if (request.requestURL.startsWith("/v1/file").not()) {
+                logger.info("${generateRequestLog(request)}\n${generateResponseLog(response)}")
+            }
         }
     }
 
