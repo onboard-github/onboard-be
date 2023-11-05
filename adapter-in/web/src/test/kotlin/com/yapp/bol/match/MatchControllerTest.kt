@@ -59,7 +59,7 @@ class MatchControllerTest : ControllerTest() {
                 matchService.createMatch(any())
             } returns MATCH
 
-            post("/v1/match", request) {
+            post("/api/v1/match", request) {
                 authorizationHeader(UserId(1))
             }
                 .isStatus(200)

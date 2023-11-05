@@ -33,7 +33,7 @@ class GroupControllerTest : ControllerTest() {
         test("그룹 기본 이미지 가져오기") {
             every { fileService.getDefaultGroupImageUrl() } returns "http://localhost:8080/default-image"
 
-            get("/v1/group/default-image") {}
+            get("/api/v1/group/default-image") {}
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(
@@ -60,7 +60,7 @@ class GroupControllerTest : ControllerTest() {
                 groupService.createGroup(any())
             } returns GroupMemberList(group = GROUP, members = MEMBER_LIST)
 
-            post("/v1/group", request) {
+            post("/api/v1/group", request) {
                 authorizationHeader(UserId(1))
             }
                 .isStatus(200)
@@ -97,7 +97,7 @@ class GroupControllerTest : ControllerTest() {
                 hasNext = false,
             )
 
-            get("/v1/group") {
+            get("/api/v1/group") {
                 queryParam("keyword", name)
                 queryParam("pageNumber", pageNumber.toString())
                 queryParam("pageSize", pageSize.toString())
@@ -150,7 +150,7 @@ class GroupControllerTest : ControllerTest() {
                 )
             )
 
-            get("/v1/group/{groupId}/game/{gameId}", arrayOf(groupId.value, gameId.value)) {}
+            get("/api/v1/group/{groupId}/game/{gameId}", arrayOf(groupId.value, gameId.value)) {}
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(
@@ -185,7 +185,7 @@ class GroupControllerTest : ControllerTest() {
                 groupService.checkAccessToken(groupId, accessCode)
             } returns true
 
-            post("/v1/group/{groupId}/accessCode", CheckAccessCodeRequest(accessCode), arrayOf(groupId.value)) {
+            post("/api/v1/group/{groupId}/accessCode", CheckAccessCodeRequest(accessCode), arrayOf(groupId.value)) {
             }
                 .isStatus(200)
                 .makeDocument(
@@ -217,7 +217,7 @@ class GroupControllerTest : ControllerTest() {
             )
             every { groupService.isRegisterGroup(userId, groupId) } returns true
 
-            get("/v1/group/{groupId}", arrayOf(groupId.value)) {
+            get("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)

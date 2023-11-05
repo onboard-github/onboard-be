@@ -14,7 +14,7 @@ class AuthControllerTest : ControllerTest() {
     override val controller = AuthController(authService)
 
     init {
-        test("POST /v1/auth/login") {
+        test("POST /api/v1/auth/login") {
             val request = LoginRequest(LoginType.KAKAO_ACCESS_TOKEN, "Token")
             val userId = UserId(123L)
             val authToken = AuthToken(
@@ -23,7 +23,7 @@ class AuthControllerTest : ControllerTest() {
             )
             every { authService.login(any(), any()) } returns authToken
 
-            post("/v1/auth/login", request) {}
+            post("/api/v1/auth/login", request) {}
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(identifier = "test", tag = OpenApiTag.AUTH),

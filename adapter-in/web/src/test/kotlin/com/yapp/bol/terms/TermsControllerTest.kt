@@ -19,7 +19,7 @@ class TermsControllerTest : ControllerTest() {
             val userId = UserId(234L)
             every { termsService.getNeedTermsAgreeList(userId) } returns listOf(TermsCode.SERVICE_V1, TermsCode.PRIVACY_V1)
 
-            get("/v1/terms") {
+            get("/api/v1/terms") {
                 authorizationHeader(userId)
             }
                 .isStatus(200)
@@ -44,7 +44,7 @@ class TermsControllerTest : ControllerTest() {
             val request = AgreeTermsRequest(agree = listOf(TermsCode.SERVICE_V1, TermsCode.PRIVACY_V1), disagree = null)
             every { termsService.agreeTerms(userId, any()) } returns Unit
 
-            post("/v1/terms", request) {
+            post("/api/v1/terms", request) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)

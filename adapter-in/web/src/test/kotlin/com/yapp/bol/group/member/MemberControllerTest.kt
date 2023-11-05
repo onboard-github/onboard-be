@@ -35,7 +35,7 @@ class MemberControllerTest : ControllerTest() {
                 reason = NicknameValidationReason.DUPLICATED_NICKNAME
             )
 
-            get("/v1/group/{groupId}/member/validateNickname", arrayOf(groupId.value)) {
+            get("/api/v1/group/{groupId}/member/validateNickname", arrayOf(groupId.value)) {
                 queryParam("nickname", nickname)
             }
                 .isStatus(200)
@@ -78,7 +78,7 @@ class MemberControllerTest : ControllerTest() {
                 hasNext = true,
             )
 
-            get("/v1/group/{groupId}/member", arrayOf(groupId.value)) {
+            get("/api/v1/group/{groupId}/member", arrayOf(groupId.value)) {
                 authorizationHeader(userId)
                 queryParam("size", size.toString())
                 queryParam("nickname", nickname)
@@ -119,7 +119,7 @@ class MemberControllerTest : ControllerTest() {
 
             every { groupService.joinGroup(any()) } returns Unit
 
-            post("/v1/group/{groupId}/host", request, arrayOf(groupId.value)) {
+            post("/api/v1/group/{groupId}/host", request, arrayOf(groupId.value)) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)
@@ -144,7 +144,7 @@ class MemberControllerTest : ControllerTest() {
 
             every { groupService.addGuest(any()) } returns Unit
 
-            post("/v1/group/{groupId}/guest", request, arrayOf(groupId.value)) {
+            post("/api/v1/group/{groupId}/guest", request, arrayOf(groupId.value)) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)

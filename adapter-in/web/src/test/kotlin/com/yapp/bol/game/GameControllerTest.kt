@@ -25,7 +25,7 @@ class GameControllerTest : ControllerTest() {
             val sortType = GameListSortType.FIXED
             every { gameService.getGameList(groupId, sortType) } returns games
 
-            get("/v1/group/{groupId}/game", arrayOf(groupId.value)) {
+            get("/api/v1/group/{groupId}/game", arrayOf(groupId.value)) {
                 queryParam("sort", sortType.name)
             }
                 .isStatus(200)

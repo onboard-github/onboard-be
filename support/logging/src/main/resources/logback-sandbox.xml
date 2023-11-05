@@ -6,6 +6,10 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <logger name="com.yapp.bol.config.filter.ApiLoggingFilter" level="INFO" additivity="false">
+        <appender-ref ref="API_CLOUD_WATCH"/>
+    </logger>
+
     <logger name="org.hibernate" level="ERROR"/>
     <logger name="org.springframework.web" level="INFO"/>
 </configuration>
