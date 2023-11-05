@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/terms")
+@RequestMapping("/v1/terms", "/api/v1/terms")
 class TermsController(
     @Value("\${bol.server.host}") private val host: String,
     private val termsService: TermsService,
