@@ -16,8 +16,8 @@
         </layout>
     </appender>
 
-    <root level="WARN">
-        <appender-ref ref="CONSOLE_CLOUD_WATCH"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
     </root>
 
     <logger name="org.hibernate" level="ERROR"/>
