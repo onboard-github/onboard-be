@@ -29,7 +29,7 @@ class FileControllerTest : ControllerTest() {
 
             every { fileService.uploadFile(any()) } returns FileInfo("URL", "image/jpeg")
 
-            multipart("/api/v1/file", listOf(mockFile), listOf(mockPart)) {
+            multipart("/v1/file", listOf(mockFile), listOf(mockPart)) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)
