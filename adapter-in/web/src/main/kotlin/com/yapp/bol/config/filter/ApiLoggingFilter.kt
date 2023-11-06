@@ -24,13 +24,12 @@ class ApiLoggingFilter : Filter {
         try {
             chain.doFilter(servletRequest, response)
         } finally {
-            if (request.requestURL.startsWith("/v1/file").not()) {
-                logger.info("${generateRequestLog(request)}\n${generateResponseLog(response)}")
-            }
+            val isFileApi = request.requestURL.contains("/v1/file")
+            logger.info("${generateRequestLog(request, isFileApi)}\n${generateResponseLog(response, isFileApi)}")
         }
     }
 
-    private fun generateRequestLog(request: HttpServletRequest): String {
+    private fun generateRequestLog(request: HttpServletRequest, isFileApi: Boolean): String {
         val log = StringBuilder("[Req]\n${request.method} ${request.requestURI}")
 
         if (request.queryString.isNullOrBlank().not()) {
@@ -41,21 +40,28 @@ class ApiLoggingFilter : Filter {
             log.append("\n$it=${request.getHeader(it)}")
         }
 
-        request.reader.lines().forEach {
-            log.append("\n$it")
+        if (isFileApi.not()) {
+            request.reader.lines().forEach {
+                log.append("\n$it")
+            }
         }
 
         return log.toString()
     }
 
-    private fun generateResponseLog(response: ContentCachingResponseWrapper): String {
+    private fun generateResponseLog(response: ContentCachingResponseWrapper, isFileApi: Boolean): String {
+        val log = StringBuilder("[Res]\n${response.status}")
+        if (isFileApi) {
+            return log.toString()
+        }
 
         val responseCacheWrapperObject = getResponseWrapper(response)
 
         val responseStr = String(responseCacheWrapperObject.contentAsByteArray)
         responseCacheWrapperObject.copyBodyToResponse()
 
-        return "[Res]\n${response.status}\n$responseStr"
+        log.append(responseStr)
+        return log.toString()
     }
 
     private fun getResponseWrapper(response: HttpServletResponse): ContentCachingResponseWrapper =
