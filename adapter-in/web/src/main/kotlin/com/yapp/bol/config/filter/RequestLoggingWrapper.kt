@@ -14,19 +14,17 @@ import java.nio.charset.StandardCharsets
 
 class RequestLoggingWrapper(request: HttpServletRequest) : HttpServletRequestWrapper(request) {
 
-    private val encoding: Charset
-    private val rawData: ByteArray
-
-    init {
+    private val encoding: Charset by lazy {
         var characterEncoding = request.characterEncoding
         if (characterEncoding.isBlank()) {
             characterEncoding = StandardCharsets.UTF_8.name()
         }
-        encoding = Charset.forName(characterEncoding)
-
+        Charset.forName(characterEncoding)
+    }
+    private val rawData: ByteArray by lazy {
         try {
             val inputStream: InputStream = request.inputStream
-            rawData = inputStream.readAllBytes()
+            inputStream.readAllBytes()
         } catch (e: IOException) {
             throw e
         }
