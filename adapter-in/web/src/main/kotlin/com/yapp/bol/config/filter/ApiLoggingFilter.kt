@@ -25,7 +25,11 @@ class ApiLoggingFilter : Filter {
             chain.doFilter(request, response)
         } finally {
             val isFileApi = request.requestURL.contains("/v1/file")
-            logger.info("${generateRequestLog(request, isFileApi)}\n${generateResponseLog(response, isFileApi)}")
+            if (isFileApi.not()) {
+                logger.info("${generateRequestLog(request, isFileApi)}\n${generateResponseLog(response, isFileApi)}")
+            }
+
+            response.copyBodyToResponse()
         }
     }
 
@@ -58,7 +62,6 @@ class ApiLoggingFilter : Filter {
         val responseCacheWrapperObject = getResponseWrapper(response)
 
         val responseStr = String(responseCacheWrapperObject.contentAsByteArray)
-        responseCacheWrapperObject.copyBodyToResponse()
 
         log.append("\n$responseStr")
         return log.toString()
