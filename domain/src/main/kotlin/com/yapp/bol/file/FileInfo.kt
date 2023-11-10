@@ -1,6 +1,7 @@
 package com.yapp.bol.file
 
 data class FileInfo(
-    val name: String,
+    val uuid: String,
+    val url: String,
     val contentType: String,
 )

@@ -14,8 +14,8 @@ class FileServiceImpl(
         return fileCommandRepository.saveFile(request)
     }
 
-    override fun downloadFile(userId: UserId?, fileName: String): RawFileData {
-        val fileData = fileQueryRepository.getFile(fileName) ?: throw NotFoundFileException
+    override fun downloadFile(userId: UserId?, uuid: String): RawFileData {
+        val fileData = fileQueryRepository.getFile(uuid) ?: throw NotFoundFileException
 
         if (fileData.canAccess(userId).not()) throw NotFoundFileException
 

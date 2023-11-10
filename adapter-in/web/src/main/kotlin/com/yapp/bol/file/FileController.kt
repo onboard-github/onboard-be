@@ -39,7 +39,7 @@ class FileController(
         )
         val result = fileService.uploadFile(request)
 
-        return FileResponse(result.name)
+        return FileResponse(result.url)
     }
 
     @GetMapping("/{name}")

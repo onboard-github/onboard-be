@@ -32,11 +32,11 @@ class FileClient(
         val entity = FileEntity(key, file.userId.value, file.purpose)
         fileRepository.save(entity)
 
-        return FileInfo(FileNameConverter.convertFileUrl(key), file.contentType)
+        return FileInfo(key, FileNameConverter.convertFileUrl(key), file.contentType)
     }
 
-    override fun getFile(name: String): RawFileData {
-        val s3Object = s3Client.getObject(bucketName, name)
+    override fun getFile(uuid: String): RawFileData {
+        val s3Object = s3Client.getObject(bucketName, uuid)
 
         val accessLevelValue =
             s3Object.objectMetadata.getUserMetaDataOf(METADATA_PURPOSE) ?: throw IllegalFileStateException
