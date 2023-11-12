@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 // TODO: Delete 테스트 코드 전용 클래스
 @RestController
-@RequestMapping("/v1/test")
+@RequestMapping("/v1/test", "/api/v1/test")
 class TestController(private val environment: Environment) {
     @GetMapping
     fun testGet(): TestResponse {

@@ -18,7 +18,7 @@ class SettingControllerTest : ControllerTest() {
         test("설정에서 이용 약관 가져오기") {
             every { termsService.getWholeTerms() } returns listOf(TermsCode.SERVICE_V1, TermsCode.PRIVACY_V1)
 
-            get("/v1/setting/terms") {}
+            get("/api/v1/setting/terms") {}
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(
