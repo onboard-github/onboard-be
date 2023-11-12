@@ -25,7 +25,7 @@ data class GroupDetailResponse(
                 name = group.name,
                 description = group.description,
                 organization = group.organization,
-                profileImageUrl = group.profileImageUrl,
+                profileImageUrl = group.profileImage.getUrl(),
                 accessCode = group.accessCode,
                 memberCount = group.memberCount,
                 owner = owner.toResponse(),

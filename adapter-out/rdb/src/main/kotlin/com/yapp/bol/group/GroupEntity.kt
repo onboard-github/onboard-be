@@ -36,7 +36,7 @@ internal class GroupEntity(
     val organization: String? = organization
 
     @ManyToOne
-    @JoinColumn(name = "profileImageUrl")
+    @JoinColumn(name = "profile_image_id")
     val profileImage: FileEntity = profileImage
 
     @Column(name = "access_code")
