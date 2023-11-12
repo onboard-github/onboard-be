@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/group")
+@RequestMapping("/v1/group", "/api/v1/group")
 class GroupController(
     private val groupService: GroupService,
     private val fileService: FileService,

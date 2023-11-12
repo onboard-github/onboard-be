@@ -2,7 +2,7 @@
 <included>
     <property
             name="LOG_PATTERN"
-            value="[%-5level][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%logger{1}] %msg%n"
+            value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread][%logger{1}] %msg%n"
     />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,6 +10,32 @@
             <Pattern>${LOG_PATTERN}</Pattern>
         </layout>
     </appender>
+
+    <appender name="API_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}\n%msg</Pattern>
+        </layout>
+    </appender>
+
+    <springProperty name="PROFILE" source="spring.profiles.active"/>
+    <springProperty name="AWS_ACCESS_KEY" source="cloud.aws.credentials.accessKey"/>
+    <springProperty name="AWS_SECRET_KEY" source="cloud.aws.credentials.secretKey"/>
+
+    <appender name="API_CLOUD_WATCH" class="ca.pjer.logback.AwsLogsAppender">
+        <logGroupName>${PROFILE}-api-server</logGroupName>
+        <logStreamUuidPrefix>api-</logStreamUuidPrefix>
+        <logRegion>ap-northeast-2</logRegion>
+        <maxBatchLogEvents>50</maxBatchLogEvents>
+        <maxFlushTimeMillis>30000</maxFlushTimeMillis>
+        <maxBlockTimeMillis>5000</maxBlockTimeMillis>
+        <retentionTimeDays>0</retentionTimeDays>
+        <accessKeyId>${AWS_ACCESS_KEY}</accessKeyId>
+        <secretAccessKey>${AWS_SECRET_KEY}</secretAccessKey>
+        <layout>
+            <pattern>%msg\n</pattern>
+        </layout>
+    </appender>
+
 
     <appender name="CONSOLE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>log/console.txt</file>

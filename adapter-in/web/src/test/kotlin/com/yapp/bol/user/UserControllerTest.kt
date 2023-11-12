@@ -34,7 +34,7 @@ class UserControllerTest : ControllerTest() {
                 GroupId(1),
             )
 
-            get("/v1/user/me/onboarding") {
+            get("/api/v1/user/me/onboarding") {
                 authorizationHeader(userId)
             }
                 .isStatus(200)
@@ -54,7 +54,7 @@ class UserControllerTest : ControllerTest() {
             )
             every { userService.getUser(user.id) } returns user
 
-            get("/v1/user/me") {
+            get("/api/v1/user/me") {
                 authorizationHeader(user.id)
             }
                 .isStatus(200)
@@ -81,7 +81,7 @@ class UserControllerTest : ControllerTest() {
                 )
             )
 
-            get("/v1/user/me/group") {
+            get("/api/v1/user/me/group") {
                 authorizationHeader(user.id)
             }
                 .isStatus(200)
@@ -106,7 +106,7 @@ class UserControllerTest : ControllerTest() {
 
             every { userService.putUser(any()) } returns Unit
 
-            put("/v1/user/me", user) {
+            put("/api/v1/user/me", user) {
                 authorizationHeader(userId)
             }
                 .isStatus(200)
