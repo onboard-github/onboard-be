@@ -1,7 +1,11 @@
 package com.yapp.bol.file
 
-data class FileInfo(
-    val uuid: String,
-    val url: String,
-    val contentType: String,
-)
+@JvmInline
+value class FileId(val value: Long)
+
+interface FileInfo {
+    val id: FileId
+    val uuid: String
+
+    fun getUrl(): String
+}

@@ -27,7 +27,7 @@ class FileControllerTest : ControllerTest() {
             val mockFile = MockMultipartFile("file", "file-name", contentType, inputStream)
             val mockPart = MockPart("purpose", purpose.toString().toByteArray())
 
-            every { fileService.uploadFile(any()) } returns FileInfo("URL", "image/jpeg")
+            every { fileService.uploadFile(any()) } returns MockFileInfo(FileId(1), "image/jpeg")
 
             multipart("/v1/file", listOf(mockFile), listOf(mockPart)) {
                 authorizationHeader(userId)
@@ -52,5 +52,9 @@ class FileControllerTest : ControllerTest() {
                     )
                 )
         }
+    }
+
+    class MockFileInfo(override val id: FileId, override val uuid: String) : FileInfo, GenerativeFileUrl {
+        override fun getUrl(): String = uuid
     }
 }

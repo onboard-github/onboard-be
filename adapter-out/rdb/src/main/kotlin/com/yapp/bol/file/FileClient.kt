@@ -30,9 +30,8 @@ class FileClient(
         s3Client.putObject(bucketName, key, file.content, metadata)
 
         val entity = FileEntity(key, file.userId.value, file.purpose)
-        fileRepository.save(entity)
 
-        return FileInfo(key, FileNameConverter.convertFileUrl(key), file.contentType)
+        return FileInfoFactory.convert(fileRepository.save(entity))
     }
 
     override fun getFile(uuid: String): RawFileData {
