@@ -32,6 +32,20 @@ class FileEntity : AuditingEntity() {
     lateinit var purpose: FilePurpose
         protected set
 
+    fun toFileInfo(): FileInfo {
+        return when (purpose) {
+            FilePurpose.GAME_IMAGE,
+            FilePurpose.GROUP_DEFAULT_IMAGE,
+            FilePurpose.GROUP_IMAGE ->
+                createS3PublicFileInfo(this)
+
+            FilePurpose.MATCH_IMAGE -> createS3PublicFileInfo(this) // TODO : 추후 알맞은 것으로 변경
+        }
+    }
+
+    private fun createS3PublicFileInfo(entity: FileEntity): S3PublicFileInfo =
+        S3PublicFileInfo(FileId(entity.id), entity.name)
+
     companion object {
 
         fun of(id: FileId): FileEntity = FileEntity().apply { this.id = id.value }

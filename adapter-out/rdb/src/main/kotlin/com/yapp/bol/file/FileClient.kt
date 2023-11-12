@@ -31,7 +31,7 @@ class FileClient(
 
         val entity = FileEntity.of(key, file.userId.value, file.purpose)
 
-        return FileInfoFactory.convert(fileRepository.save(entity))
+        return fileRepository.save(entity).toFileInfo()
     }
 
     override fun getFile(uuid: String): RawFileData {

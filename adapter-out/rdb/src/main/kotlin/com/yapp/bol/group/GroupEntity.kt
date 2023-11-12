@@ -1,11 +1,14 @@
 package com.yapp.bol.group
 
 import com.yapp.bol.AuditingEntity
+import com.yapp.bol.file.FileEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -15,7 +18,7 @@ internal class GroupEntity(
     name: String,
     description: String,
     organization: String?,
-    profileImageUrl: String,
+    profileImage: FileEntity,
     accessCode: String,
 ) : AuditingEntity() {
     @Id
@@ -32,8 +35,9 @@ internal class GroupEntity(
     @Column(name = "organization")
     val organization: String? = organization
 
-    @Column(name = "profileImageUrl")
-    val profileImageUrl: String = profileImageUrl
+    @ManyToOne
+    @JoinColumn(name = "profileImageUrl")
+    val profileImage: FileEntity = profileImage
 
     @Column(name = "access_code")
     val accessCode: String = accessCode
@@ -47,7 +51,7 @@ internal fun Group.toEntity(): GroupEntity = GroupEntity(
     name = name,
     description = description,
     organization = organization,
-    profileImageUrl = profileImageUrl,
+    profileImage = FileEntity.of(profileImage.id),
     accessCode = accessCode,
 )
 
@@ -56,6 +60,6 @@ internal fun GroupEntity.toDomain(): Group = Group(
     name = name,
     description = description,
     organization = organization,
-    profileImageUrl = profileImageUrl,
+    profileImage = profileImage.toFileInfo(),
     accessCode = accessCode,
 )
