@@ -29,7 +29,7 @@ class FileClient(
 
         s3Client.putObject(bucketName, key, file.content, metadata)
 
-        val entity = FileEntity(key, file.userId.value, file.purpose)
+        val entity = FileEntity.of(key, file.userId.value, file.purpose)
 
         return FileInfoFactory.convert(fileRepository.save(entity))
     }
