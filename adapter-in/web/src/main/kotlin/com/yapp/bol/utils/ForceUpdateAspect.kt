@@ -55,7 +55,7 @@ class ForceUpdateAspect {
         companion object {
             fun of(version: String): Version {
                 val split = version.split(".")
-                return Version(split[0].toInt(), split[1].toInt(), split[2].toInt())
+                return Version(split[0].toInt(), split[1].toInt(), split.getOrElse(2) { "0" }.toInt())
             }
         }
     }
