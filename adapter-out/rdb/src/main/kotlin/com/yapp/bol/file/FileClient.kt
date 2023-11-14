@@ -51,6 +51,10 @@ class FileClient(
         )
     }
 
+    override fun getFileInfo(uuid: String): FileInfo? {
+        return fileRepository.findByName(uuid)?.toFileInfo()
+    }
+
     override fun getFiles(filePurpose: FilePurpose): List<String> {
         return fileRepository.findAllByPurpose(filePurpose).map { FileNameConverter.convertFileUrl(it.name) }
     }

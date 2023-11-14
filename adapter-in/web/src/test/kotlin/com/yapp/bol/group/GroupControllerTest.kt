@@ -9,6 +9,8 @@ import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OBJECT
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.file.FileControllerTest
+import com.yapp.bol.file.FileId
 import com.yapp.bol.file.FileService
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.dto.CheckAccessCodeRequest
@@ -52,7 +54,8 @@ class GroupControllerTest : ControllerTest() {
                 name = "뽀글뽀글",
                 description = "보겜동입니다",
                 organization = "카카오",
-                profileImageUrl = "https://profile.com",
+                profileImageUrl = null,
+                profileImageUuid = "abcdefg",
                 nickname = "홀든",
             )
 
@@ -70,7 +73,8 @@ class GroupControllerTest : ControllerTest() {
                         "name" type STRING means "그룹 이름",
                         "description" type STRING means "그룹 설명",
                         "organization" type STRING means "그룹 소속",
-                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL" isOptional true,
+                        "profileImageUuid" type STRING means "그룹 프로필 이미지 Uuid (구버전 지원을 위해 Optional이지만, 실제론 필수값" isOptional true,
+                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL, profileImageUuid 사용 바람 (구버전 지원을 위해 남겨둔 상태)" deprecated true isOptional true,
                         "nickname" type STRING means "그룹장 닉네임" isOptional true,
                     ),
                     responseFields(
@@ -255,7 +259,7 @@ class GroupControllerTest : ControllerTest() {
             name = "뽀글뽀글",
             description = "보겜동입니다",
             organization = "카카오",
-            profileImageUrl = "https://profile.com",
+            profileImage = FileControllerTest.MockFileInfo(FileId(0), "abcedfg"),
             accessCode = "1A2B3C",
         )
 
