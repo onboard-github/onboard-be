@@ -11,6 +11,7 @@ import com.yapp.bol.user.dto.JoinedGroupResponse
 import com.yapp.bol.user.dto.MyInfoResponse
 import com.yapp.bol.user.dto.PutUserInfoRequest
 import com.yapp.bol.user.dto.toResponse
+import com.yapp.bol.utils.ApiMinVersion
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -26,6 +27,7 @@ class UserController(
     private val onboardingService: OnboardingService
 ) {
 
+    @ApiMinVersion("1.11.0")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/onboarding")
     fun checkOnboard(): CheckOnboardResponse {
