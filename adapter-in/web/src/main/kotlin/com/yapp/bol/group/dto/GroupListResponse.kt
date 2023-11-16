@@ -17,6 +17,6 @@ fun GroupWithMemberCount.toListResponse(): GroupListResponse =
         name = this.name,
         description = this.description,
         organization = this.organization,
-        profileImageUrl = this.profileImageUrl,
+        profileImageUrl = this.profileImage.getUrl(),
         memberCount = this.memberCount,
     )

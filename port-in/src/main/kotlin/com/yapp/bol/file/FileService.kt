@@ -5,7 +5,7 @@ import com.yapp.bol.file.dto.RawFileData
 
 interface FileService {
     fun uploadFile(request: RawFileData): FileInfo
-    fun downloadFile(userId: UserId?, fileName: String): RawFileData
+    fun downloadFile(userId: UserId?, uuid: String): RawFileData
 
     /**
      * @return Default Image URL

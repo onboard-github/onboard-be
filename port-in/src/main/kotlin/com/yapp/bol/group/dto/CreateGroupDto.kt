@@ -7,6 +7,7 @@ data class CreateGroupDto(
     val description: String,
     val organization: String?,
     val profileImageUrl: String?,
+    val profileImageUuid: String?,
     val ownerId: UserId,
     val nickname: String?,
 )
