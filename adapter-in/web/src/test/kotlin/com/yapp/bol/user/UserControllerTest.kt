@@ -6,6 +6,7 @@ import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
@@ -77,7 +78,7 @@ class UserControllerTest : ControllerTest() {
                     name = "그룹명",
                     description = "그룹 설명",
                     organization = "그룹 소속",
-                    profileImageUrl = "Image Url",
+                    profileImage = MockFileInfo(),
                 )
             )
 
