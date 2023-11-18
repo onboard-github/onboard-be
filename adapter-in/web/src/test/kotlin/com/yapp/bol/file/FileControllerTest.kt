@@ -27,7 +27,7 @@ class FileControllerTest : ControllerTest() {
             val mockFile = MockMultipartFile("file", "file-name", contentType, inputStream)
             val mockPart = MockPart("purpose", purpose.toString().toByteArray())
 
-            every { fileService.uploadFile(any()) } returns MockFileInfo(FileId(1), "image/jpeg")
+            every { fileService.uploadFile(any()) } returns MockFileInfo()
 
             multipart("/v1/file", listOf(mockFile), listOf(mockPart)) {
                 authorizationHeader(userId)
@@ -48,13 +48,10 @@ class FileControllerTest : ControllerTest() {
                         partWithName("purpose").description("올리는 파일의 목적").optional(),
                     ),
                     responseFields(
+                        "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "다운로드 할 수 있는 URL",
                     )
                 )
         }
-    }
-
-    class MockFileInfo(override val id: FileId, override val uuid: String) : FileInfo, GenerativeFileUrl {
-        override fun getUrl(): String = uuid
     }
 }

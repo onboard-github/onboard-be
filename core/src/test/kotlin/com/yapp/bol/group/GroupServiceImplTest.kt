@@ -4,6 +4,8 @@ import com.yapp.bol.AccessCodeNotMatchException
 import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.file.FileQueryRepository
+import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.GuestMember
@@ -23,13 +25,15 @@ class GroupServiceImplTest : FunSpec() {
     private val memberService: MemberService = mockk()
     private val memberQueryRepository: MemberQueryRepository = mockk()
     private val memberCommandRepository: MemberCommandRepository = mockk()
+    private val fileQueryRepository: FileQueryRepository = mockk()
 
     private val sut = GroupServiceImpl(
         groupQueryRepository,
         groupCommandRepository,
         memberService,
         memberQueryRepository,
-        memberCommandRepository
+        memberCommandRepository,
+        fileQueryRepository,
     )
 
     init {
@@ -46,7 +50,7 @@ class GroupServiceImplTest : FunSpec() {
                 name = "name",
                 description = "description",
                 organization = "organization",
-                profileImageUrl = "profileImageUrl",
+                profileImage = MockFileInfo(),
                 accessCode = request.accessCode
             )
 

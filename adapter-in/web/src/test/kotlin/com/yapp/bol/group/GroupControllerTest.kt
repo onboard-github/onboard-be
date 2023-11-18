@@ -9,9 +9,8 @@ import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OBJECT
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
-import com.yapp.bol.file.FileControllerTest
-import com.yapp.bol.file.FileId
 import com.yapp.bol.file.FileService
+import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.dto.CheckAccessCodeRequest
 import com.yapp.bol.group.dto.CreateGroupRequest
@@ -44,6 +43,7 @@ class GroupControllerTest : ControllerTest() {
                         tag = OpenApiTag.GROUP
                     ),
                     responseFields(
+                        "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "기본이미지 URL",
                     )
                 )
@@ -259,7 +259,7 @@ class GroupControllerTest : ControllerTest() {
             name = "뽀글뽀글",
             description = "보겜동입니다",
             organization = "카카오",
-            profileImage = FileControllerTest.MockFileInfo(FileId(0), "abcedfg"),
+            profileImage = MockFileInfo(),
             accessCode = "1A2B3C",
         )
 
