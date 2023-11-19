@@ -32,7 +32,7 @@ class GroupControllerTest : ControllerTest() {
 
     init {
         test("그룹 기본 이미지 가져오기") {
-            every { fileService.getDefaultGroupImageUrl() } returns "http://localhost:8080/default-image"
+            every { fileService.getDefaultGroupImage()} returns MockFileInfo()
 
             get("/api/v1/group/default-image") {}
                 .isStatus(200)
