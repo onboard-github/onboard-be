@@ -22,7 +22,7 @@ class FileServiceImpl(
         return fileData
     }
 
-    override fun getDefaultGroupImageUrl(): String {
+    override fun getDefaultGroupImage(): FileInfo {
         return fileQueryRepository.getFiles(FilePurpose.GROUP_DEFAULT_IMAGE).random()
     }
 

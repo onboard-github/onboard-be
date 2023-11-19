@@ -10,5 +10,5 @@ interface FileQueryRepository {
     /**
      * @return url 목록
      */
-    fun getFiles(filePurpose: FilePurpose): List<String>
+    fun getFiles(filePurpose: FilePurpose): List<FileInfo>
 }
