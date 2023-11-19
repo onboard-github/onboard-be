@@ -55,8 +55,8 @@ class FileClient(
         return fileRepository.findByName(uuid)?.toFileInfo()
     }
 
-    override fun getFiles(filePurpose: FilePurpose): List<String> {
-        return fileRepository.findAllByPurpose(filePurpose).map { FileNameConverter.convertFileUrl(it.name) }
+    override fun getFiles(filePurpose: FilePurpose): List<FileInfo> {
+        return fileRepository.findAllByPurpose(filePurpose).map { it.toFileInfo() }
     }
 
     companion object {

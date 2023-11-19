@@ -10,5 +10,5 @@ interface FileService {
     /**
      * @return Default Image URL
      */
-    fun getDefaultGroupImageUrl(): String
+    fun getDefaultGroupImage(): FileInfo
 }
