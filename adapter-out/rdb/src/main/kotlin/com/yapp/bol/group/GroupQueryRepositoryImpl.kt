@@ -33,8 +33,9 @@ internal class GroupQueryRepositoryImpl(
             return toCursor(groups)
         }
 
-        val groups: Slice<GroupEntity> =
-            groupRepository.findByNameLikeOrOrganizationLike("%$name%", "%$name%", pageable)
+        val groups: Slice<GroupEntity> = groupRepository.findByNameOrOrganizationWithPriority(
+            "%$name%", "%$name%", name, name, pageable
+        )
 
         return toCursor(groups)
     }
