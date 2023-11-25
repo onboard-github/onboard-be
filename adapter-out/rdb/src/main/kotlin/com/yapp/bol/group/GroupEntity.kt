@@ -7,9 +7,13 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "group_table")
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE group_table SET deleted=true WHERE group_id = ?")
 internal class GroupEntity(
     id: GroupId = GroupId(0),
     name: String,
