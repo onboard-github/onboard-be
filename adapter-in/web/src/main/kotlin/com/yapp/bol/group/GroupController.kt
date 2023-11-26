@@ -33,7 +33,10 @@ class GroupController(
     private val fileService: FileService,
 ) {
     @GetMapping("/default-image")
-    fun getDefaultImage(): FileResponse = FileResponse(url = fileService.getDefaultGroupImageUrl())
+    fun getDefaultImage(): FileResponse {
+        val image = fileService.getDefaultGroupImage()
+        return FileResponse(uuid = image.uuid, url = image.getUrl())
+    }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping

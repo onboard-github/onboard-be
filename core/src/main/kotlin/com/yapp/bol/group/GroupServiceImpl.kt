@@ -3,9 +3,13 @@ package com.yapp.bol.group
 import com.yapp.bol.AccessCodeNotMatchException
 import com.yapp.bol.AlreadyExistMemberException
 import com.yapp.bol.InvalidRequestException
+import com.yapp.bol.NotFoundFileException
 import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.file.FileInfo
+import com.yapp.bol.file.FilePurpose
+import com.yapp.bol.file.FileQueryRepository
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
@@ -17,6 +21,7 @@ import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
+import java.lang.IllegalArgumentException
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,16 +31,18 @@ internal class GroupServiceImpl(
     private val memberService: MemberService,
     private val memberQueryRepository: MemberQueryRepository,
     private val memberCommandRepository: MemberCommandRepository,
+    private val fileQueryRepository: FileQueryRepository,
 ) : GroupService {
 
     override fun createGroup(
         createGroupDto: CreateGroupDto
     ): GroupMemberList {
+
         val group = Group(
             name = createGroupDto.name,
             description = createGroupDto.description,
             organization = createGroupDto.organization,
-            profileImageUrl = createGroupDto.profileImageUrl ?: Group.DEFAULT_PROFILE_IMAGE_URL,
+            profileImage = getProfileImage(createGroupDto.ownerId, createGroupDto.profileImageUrl, createGroupDto.profileImageUuid)
         )
 
         val owner = OwnerMember(
@@ -44,6 +51,23 @@ internal class GroupServiceImpl(
         )
 
         return groupCommandRepository.createGroup(group, owner)
+    }
+
+    private fun getProfileImage(userId: UserId, url: String?, uuid: String?): FileInfo {
+        if (url == null && uuid == null) throw IllegalArgumentException()
+        val finalUuid = uuid ?: extractFileUuidFromUrl(url!!)
+
+        val fileData = fileQueryRepository.getFile(finalUuid)
+            ?: throw NotFoundFileException
+
+        if (fileData.userId != userId || (fileData.purpose == FilePurpose.GROUP_IMAGE || fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE).not())
+            throw NotFoundFileException
+
+        return fileQueryRepository.getFileInfo(finalUuid) ?: throw NotFoundFileException
+    }
+
+    private fun extractFileUuidFromUrl(url: String): String {
+        return url.substring(url.lastIndexOf('/'))
     }
 
     override fun joinGroup(request: JoinGroupDto) {

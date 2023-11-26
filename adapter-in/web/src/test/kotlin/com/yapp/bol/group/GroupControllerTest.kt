@@ -10,6 +10,7 @@ import com.yapp.bol.base.OBJECT
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
 import com.yapp.bol.file.FileService
+import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.dto.CheckAccessCodeRequest
 import com.yapp.bol.group.dto.CreateGroupRequest
@@ -31,7 +32,7 @@ class GroupControllerTest : ControllerTest() {
 
     init {
         test("그룹 기본 이미지 가져오기") {
-            every { fileService.getDefaultGroupImageUrl() } returns "http://localhost:8080/default-image"
+            every { fileService.getDefaultGroupImage() } returns MockFileInfo()
 
             get("/api/v1/group/default-image") {}
                 .isStatus(200)
@@ -42,6 +43,7 @@ class GroupControllerTest : ControllerTest() {
                         tag = OpenApiTag.GROUP
                     ),
                     responseFields(
+                        "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "기본이미지 URL",
                     )
                 )
@@ -52,7 +54,8 @@ class GroupControllerTest : ControllerTest() {
                 name = "뽀글뽀글",
                 description = "보겜동입니다",
                 organization = "카카오",
-                profileImageUrl = "https://profile.com",
+                profileImageUrl = null,
+                profileImageUuid = "abcdefg",
                 nickname = "홀든",
             )
 
@@ -70,7 +73,8 @@ class GroupControllerTest : ControllerTest() {
                         "name" type STRING means "그룹 이름",
                         "description" type STRING means "그룹 설명",
                         "organization" type STRING means "그룹 소속",
-                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL" isOptional true,
+                        "profileImageUuid" type STRING means "그룹 프로필 이미지 Uuid (구버전 지원을 위해 Optional이지만, 실제론 필수값" isOptional true,
+                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL, profileImageUuid 사용 바람 (구버전 지원을 위해 남겨둔 상태)" deprecated true isOptional true,
                         "nickname" type STRING means "그룹장 닉네임" isOptional true,
                     ),
                     responseFields(
@@ -255,7 +259,7 @@ class GroupControllerTest : ControllerTest() {
             name = "뽀글뽀글",
             description = "보겜동입니다",
             organization = "카카오",
-            profileImageUrl = "https://profile.com",
+            profileImage = MockFileInfo(),
             accessCode = "1A2B3C",
         )
 
