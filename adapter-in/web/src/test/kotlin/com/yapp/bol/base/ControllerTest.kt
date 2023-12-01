@@ -127,6 +127,19 @@ abstract class ControllerTest : FunSpec() {
     ): ResultActions =
         mockMvc.perform(delete(url, *pathParams).apply(buildRequest))
 
+    protected fun delete(
+        url: String,
+        request: Any,
+        pathParams: Array<Any> = emptyArray(),
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+    ): ResultActions =
+        mockMvc.perform(
+            delete(url, *pathParams).apply {
+                contentType(MediaType.APPLICATION_JSON)
+                content(objectMapper.writeValueAsString(request))
+                buildRequest()
+            }
+        )
     protected fun patch(
         url: String,
         pathParams: Array<Any> = emptyArray(),

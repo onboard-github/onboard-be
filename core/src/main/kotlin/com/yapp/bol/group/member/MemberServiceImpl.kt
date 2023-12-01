@@ -1,6 +1,8 @@
 package com.yapp.bol.group.member
 
+import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.DuplicatedMemberNicknameException
+import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
@@ -46,4 +48,13 @@ internal class MemberServiceImpl(
 
     private fun validateUniqueNickname(groupId: GroupId, nickname: String): Boolean =
         memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) == null
+
+    override fun deleteMyMember(groupId: GroupId, userId: UserId) {
+        val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId)
+            ?: throw NotFoundMemberException
+
+        if (member.isOwner()) throw CannotDeleteOwnerException
+
+        memberCommandRepository.deleteMember(member.id)
+    }
 }

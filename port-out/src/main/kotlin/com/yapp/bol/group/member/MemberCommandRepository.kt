@@ -6,4 +6,6 @@ import com.yapp.bol.group.GroupId
 interface MemberCommandRepository {
     fun createMember(groupId: GroupId, member: Member): Member
     fun updateGuestToHost(groupId: GroupId, memberId: MemberId, userId: UserId)
+
+    fun deleteMember(memberId: MemberId)
 }

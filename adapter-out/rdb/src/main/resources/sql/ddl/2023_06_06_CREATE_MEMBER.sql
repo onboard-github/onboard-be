@@ -11,5 +11,5 @@ create table member
     updated_at datetime not null default current_timestamp on update current_timestamp,
     primary key pk_member (member_id),
     key        idx_groupid (group_id),
-    unique unq_userid_groupid (users_id, group_id)
+    key        key_userid_groupid (users_id, group_id)
 );
