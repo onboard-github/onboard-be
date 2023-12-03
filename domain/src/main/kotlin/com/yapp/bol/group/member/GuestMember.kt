@@ -9,4 +9,12 @@ class GuestMember(
     nickname = nickname,
     userId = null,
     level = level,
-)
+) {
+    override fun changeNickname(nickname: String): Member {
+        return GuestMember(
+            id = id,
+            nickname = nickname,
+            level = level,
+        )
+    }
+}

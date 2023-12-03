@@ -8,8 +8,8 @@ abstract class ParticipantMember internal constructor(
     nickname: String,
     level: Int,
 ) : Member(
-    id,
-    userId,
-    nickname,
+    id = id,
+    userId = userId,
+    nickname = nickname,
     level = level,
 )

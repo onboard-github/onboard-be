@@ -11,12 +11,14 @@ import com.yapp.bol.group.member.dto.JoinGroupRequest
 import com.yapp.bol.group.member.dto.MemberResponse
 import com.yapp.bol.group.member.dto.NicknameValidationResponse
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
+import com.yapp.bol.group.member.dto.UpdateMemberInfoRequest
 import com.yapp.bol.group.member.dto.toResponse
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -97,5 +99,17 @@ class MemberController(
         )
 
         return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/member/{memberId}")
+    fun updateMemberInfo(
+        @PathVariable groupId: GroupId,
+        @PathVariable memberId: MemberId,
+        @RequestBody request: UpdateMemberInfoRequest,
+    ): MemberResponse {
+        val result = memberService.updateMemberInfo(groupId, memberId, request.nickname)
+
+        return result.toResponse()
     }
 }
