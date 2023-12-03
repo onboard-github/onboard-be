@@ -16,4 +16,6 @@ interface MemberService {
     fun getMembers(request: PaginationCursorMemberRequest): SimplePaginationCursorResponse<Member, String>
 
     fun findMembersByGroupId(groupId: GroupId): List<Member>
+
+    fun updateMemberInfo(groupId: GroupId, memberId: MemberId, nickname: String): Member
 }

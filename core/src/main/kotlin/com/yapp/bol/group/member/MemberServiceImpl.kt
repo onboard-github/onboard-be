@@ -44,6 +44,16 @@ internal class MemberServiceImpl(
     override fun findMembersByGroupId(groupId: GroupId): List<Member> =
         memberQueryRepository.findByGroupId(groupId)
 
+    override fun updateMemberInfo(
+        groupId: GroupId,
+        memberId: MemberId,
+        nickname: String
+    ): Member {
+        if (validateUniqueNickname(groupId, nickname).not()) throw DuplicatedMemberNicknameException
+
+        return memberCommandRepository.updateMemberInfo(groupId, memberId, nickname)
+    }
+
     private fun validateUniqueNickname(groupId: GroupId, nickname: String): Boolean =
         memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) == null
 }
