@@ -179,7 +179,7 @@ class MemberControllerTest : ControllerTest() {
                 level = 0,
             )
 
-            put(
+            patch(
                 url = "/api/v1/group/{groupId}/member/{memberId}",
                 pathParams = arrayOf(groupId.value, memberId.value),
                 request = request
