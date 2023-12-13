@@ -21,7 +21,6 @@ import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
-import java.lang.IllegalArgumentException
 import org.springframework.stereotype.Service
 
 @Service
@@ -42,7 +41,11 @@ internal class GroupServiceImpl(
             name = createGroupDto.name,
             description = createGroupDto.description,
             organization = createGroupDto.organization,
-            profileImage = getProfileImage(createGroupDto.ownerId, createGroupDto.profileImageUrl, createGroupDto.profileImageUuid)
+            profileImage = getProfileImage(
+                createGroupDto.ownerId,
+                createGroupDto.profileImageUrl,
+                createGroupDto.profileImageUuid
+            )
         )
 
         val owner = OwnerMember(
@@ -60,14 +63,14 @@ internal class GroupServiceImpl(
         val fileData = fileQueryRepository.getFile(finalUuid)
             ?: throw NotFoundFileException
 
-        if (fileData.userId != userId || (fileData.purpose == FilePurpose.GROUP_IMAGE || fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE).not())
+        if ((fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE || (fileData.userId == userId && fileData.purpose == FilePurpose.GROUP_IMAGE)).not())
             throw NotFoundFileException
 
         return fileQueryRepository.getFileInfo(finalUuid) ?: throw NotFoundFileException
     }
 
     private fun extractFileUuidFromUrl(url: String): String {
-        return url.substring(url.lastIndexOf('/'))
+        return url.substring(url.lastIndexOf('/') + 1)
     }
 
     override fun joinGroup(request: JoinGroupDto) {
