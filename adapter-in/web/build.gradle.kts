@@ -38,7 +38,8 @@ tasks {
     openapi3 {
         setServers(
             listOf(
-                toServer("http://3.39.205.168:8080"),
+                toServer("http://sandbox-api.onboardgame.co.kr"),
+                toServer("http://api.onboardgame.co.kr"),
             )
         )
         title = "온보드 API"

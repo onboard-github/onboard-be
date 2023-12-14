@@ -21,4 +21,8 @@ internal class MemberCommandRepositoryImpl(
         member.toHost(userId.value)
         memberRepository.save(member)
     }
+
+    override fun deleteMember(memberId: MemberId) {
+        memberRepository.deleteById(memberId.value)
+    }
 }
