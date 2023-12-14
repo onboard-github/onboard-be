@@ -15,7 +15,8 @@ internal interface MemberRepository : JpaRepository<MemberEntity, Long>, CustomM
     @Query(
         "FROM MemberEntity m " +
             "LEFT JOIN FETCH m.gameMembers gm " +
-            "WHERE m.groupId = :groupId "
+            "WHERE m.groupId = :groupId " +
+            "AND m.deleted = false "
     )
     fun findWithGameMember(groupId: Long): List<MemberEntity>
 

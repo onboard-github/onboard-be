@@ -15,9 +15,13 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "member")
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE member SET deleted=true, nickname=null WHERE member_id = ?")
 class MemberEntity(
     id: Long = 0,
     userId: Long? = null,

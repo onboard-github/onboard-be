@@ -6,4 +6,6 @@ interface UserService {
     fun getUser(userId: UserId): User?
 
     fun putUser(user: User)
+
+    fun deleteUser(userId: UserId)
 }

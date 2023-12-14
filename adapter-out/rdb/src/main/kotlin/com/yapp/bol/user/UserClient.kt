@@ -24,6 +24,10 @@ internal class UserClient(
 
         userRepository.save(entity)
     }
+
+    override fun deleteUser(userId: UserId) {
+        userRepository.deleteById(userId.value)
+    }
 }
 
 private fun UserEntity.toDomain(): User = User(
