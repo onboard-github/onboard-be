@@ -48,6 +48,7 @@ class UserController(
         return user.toResponse()
     }
 
+    @Deprecated("추후 v2로 변경")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/group")
     fun getJoinedGroups(): JoinedGroupResponse {

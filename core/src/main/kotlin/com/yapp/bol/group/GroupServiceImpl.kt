@@ -11,11 +11,13 @@ import com.yapp.bol.file.FileInfo
 import com.yapp.bol.file.FilePurpose
 import com.yapp.bol.file.FileQueryRepository
 import com.yapp.bol.game.GameId
+import com.yapp.bol.game.member.GameMemberQueryRepository
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
 import com.yapp.bol.group.dto.JoinGroupDto
+import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.MemberCommandRepository
 import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
@@ -30,11 +32,12 @@ internal class GroupServiceImpl(
     private val memberService: MemberService,
     private val memberQueryRepository: MemberQueryRepository,
     private val memberCommandRepository: MemberCommandRepository,
+    private val gameMemberQueryRepository: GameMemberQueryRepository,
     private val fileQueryRepository: FileQueryRepository,
 ) : GroupService {
 
     override fun createGroup(
-        createGroupDto: CreateGroupDto
+        createGroupDto: CreateGroupDto,
     ): GroupMemberList {
 
         val group = Group(
@@ -101,7 +104,7 @@ internal class GroupServiceImpl(
     override fun searchGroup(
         keyword: String?,
         pageNumber: Int,
-        pageSize: Int
+        pageSize: Int,
     ): PaginationOffsetResponse<GroupWithMemberCount> {
         val groups = groupQueryRepository.search(
             keyword = keyword,
@@ -153,5 +156,35 @@ internal class GroupServiceImpl(
         val registerGroups = groupQueryRepository.getGroupsByUserId(userId)
 
         return registerGroups.any { it.id == groupId }
+    }
+
+    override fun getJoinedGroups(userId: UserId): List<JoinedGroupDto> {
+        val groups = getGroupsByUserId(userId)
+
+        val memberIds = groups.mapNotNull {
+            memberQueryRepository.findByGroupIdAndUserId(it.id, userId)?.id
+        }
+
+        val matchCountMap = gameMemberQueryRepository.getMatchCounts(memberIds)
+
+        val joinedGroups = groups.mapNotNull {
+            val member = memberQueryRepository.findByGroupIdAndUserId(it.id, userId)
+
+            if (member == null) {
+                null
+            }
+
+            val matchCount = matchCountMap[member?.id] ?: 0L
+
+            JoinedGroupDto(
+                groupId = it.id,
+                groupName = it.name,
+                nickname = member!!.nickname,
+                organization = it.organization,
+                matchCount = matchCount
+            )
+        }
+
+        return joinedGroups
     }
 }
