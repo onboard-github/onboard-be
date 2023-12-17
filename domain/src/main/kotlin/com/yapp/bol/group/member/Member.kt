@@ -31,7 +31,23 @@ abstract class Member internal constructor(
     private fun isGuest(): Boolean = userId == null || this is GuestMember
     private fun isHost(): Boolean = this is HostMember
 
-    abstract fun changeNickname(nickname: String): Member
+    fun changeNickname(nickname: String): Member {
+        when {
+            isOwner() -> return OwnerMember(
+                id = id,
+                userId = this.userId!!,
+                nickname = nickname,
+                level = level,
+            )
+            isHost() -> return HostMember(
+                id = id,
+                userId = this.userId!!,
+                nickname = nickname,
+                level = level,
+            )
+            else -> throw InvalidMemberRoleException
+        }
+    }
 
     companion object {
         const val MAX_NICKNAME_LENGTH = 10

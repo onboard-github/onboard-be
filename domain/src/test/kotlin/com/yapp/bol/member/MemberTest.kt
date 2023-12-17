@@ -1,5 +1,6 @@
 package com.yapp.bol.member
 
+import com.yapp.bol.InvalidMemberRoleException
 import com.yapp.bol.InvalidNicknameException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.member.GuestMember
@@ -52,12 +53,16 @@ class MemberTest : FunSpec() {
             val host = HostMember(userId = UserId(0), nickname = "holden")
             val guest = GuestMember(nickname = "holden")
 
-            val newMembers = listOf(owner, host, guest).map {
+            val newMembers = listOf(owner, host).map {
                 it.changeNickname("holden2")
             }
 
             newMembers.forEach {
                 it.nickname shouldBe "holden2"
+            }
+
+            shouldThrow<InvalidMemberRoleException> {
+                guest.changeNickname("holden2")
             }
         }
     }
