@@ -130,7 +130,7 @@ class UserControllerTest : ControllerTest() {
                 .makeDocument(
                     DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
                     responseFields(
-                        "count" type NUMBER means "플레이한 게임 수",
+                        "matchCount" type NUMBER means "플레이한 게임 수",
                     )
                 )
         }

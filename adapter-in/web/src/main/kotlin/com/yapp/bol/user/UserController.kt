@@ -7,6 +7,7 @@ import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.user.dto.CheckOnboardResponse
+import com.yapp.bol.user.dto.GetUserMatchCountResponse
 import com.yapp.bol.user.dto.JoinedGroupResponse
 import com.yapp.bol.user.dto.MyInfoResponse
 import com.yapp.bol.user.dto.PutUserInfoRequest
@@ -73,9 +74,11 @@ class UserController(
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/match/count")
-    fun getMatchCount(): Long {
+    fun getMatchCount(): GetUserMatchCountResponse {
         val userId = getSecurityUserIdOrThrow()
 
-        return userService.getMatchCountByUserId(userId)
+        val result = userService.getMatchCountByUserId(userId)
+
+        return GetUserMatchCountResponse(result)
     }
 }
