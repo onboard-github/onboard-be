@@ -39,7 +39,11 @@ class UserControllerTestV2 : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        tag = OpenApiTag.USER,
+                        description = "내가 가입한 그룹 목록 가져오기 v2"
+                    ),
                     responseFields(
                         "contents" type ARRAY means "그룹 목록",
                         "contents[].groupId" type NUMBER means "그룹 아이디",
