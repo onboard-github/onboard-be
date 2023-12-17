@@ -1,5 +1,5 @@
 package com.yapp.bol.user.dto
 
-data class GetUserMatchCountResponse(
+data class GetMatchCountResponse(
     val matchCount: Long,
 )

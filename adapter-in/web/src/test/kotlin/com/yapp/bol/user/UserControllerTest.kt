@@ -10,6 +10,10 @@ import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
+import com.yapp.bol.group.member.HostMember
+import com.yapp.bol.group.member.Member
+import com.yapp.bol.group.member.MemberId
+import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
@@ -19,6 +23,7 @@ import io.mockk.mockk
 
 class UserControllerTest : ControllerTest() {
     private val userService: UserService = mockk()
+    private val memberService: MemberService = mockk()
     private val groupService: GroupService = mockk()
     private val onboardingService: OnboardingService = mockk()
     override val controller: Any
@@ -44,7 +49,7 @@ class UserControllerTest : ControllerTest() {
                         identifier = "user/{method-name}",
                         tag = OpenApiTag.USER,
                         description = "온보딩 진행 정도 가져오기"
-                        ),
+                    ),
                     responseFields(
                         "onboarding" type ARRAY means "남은 온보딩 단계 ${OnboardingType.values().toList()}",
                         "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID, 가입한 그룹이 없을 경우 NULL" isOptional true,
@@ -135,7 +140,39 @@ class UserControllerTest : ControllerTest() {
                 )
         }
 
-        test("내가 플레이한 게임 수 가져오기 (없으면 0)") {
+
+        test("그룹 내에서 내가 플레이한 횟수 가져오기 (없으면 0)") {
+            val userId = UserId(123L)
+            val groupId = GroupId(1)
+
+            val member = HostMember(
+                id = MemberId(1),
+                userId = userId,
+                nickname = "닉네임",
+            )
+
+            every { userService.getMemberMatchCount(any(), any()) } returns 1L
+
+            get("/api/v1/user/me/group/{groupId}/match/count", arrayOf(groupId.value)) {
+                authorizationHeader(userId)
+            }
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(
+                        identifier = "member/{method-name}",
+                        tag = OpenApiTag.MEMBER,
+                        description = "그룹 내에서 내가 플레이한 횟수 가져오기 (없으면 0)"
+                    ),
+                    pathParameters(
+                        "groupId" type NUMBER means "그룹 ID",
+                    ),
+                    responseFields(
+                        "matchCount" type NUMBER means "플레이 횟수",
+                    )
+                )
+        }
+
+        test("내가 플레이한 횟수 가져오기 (없으면 0)") {
             val userId = UserId(123L)
             every { userService.getUserMatchCount(userId) } returns 10L
 
@@ -146,7 +183,7 @@ class UserControllerTest : ControllerTest() {
                 .makeDocument(
                     DocumentInfo(
                         identifier = "user/{method-name}",
-                        description = "내가 플레이한 게임 수 가져오기 (없으면 0)",
+                        description = "내가 플레이한 횟수 가져오기 (없으면 0)",
                         tag = OpenApiTag.USER
                     ),
                     responseFields(

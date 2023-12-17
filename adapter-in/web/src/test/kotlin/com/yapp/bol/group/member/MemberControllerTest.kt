@@ -24,7 +24,7 @@ class MemberControllerTest : ControllerTest() {
     private val groupService: GroupService = mockk()
     private val memberService: MemberService = mockk()
     private val gameMemberService: GameMemberService = mockk()
-    override val controller = MemberController(groupService, memberService, gameMemberService)
+    override val controller = MemberController(groupService, memberService)
 
     init {
         test("멤버 닉네임 검사") {
@@ -160,26 +160,6 @@ class MemberControllerTest : ControllerTest() {
                         "nickname" type STRING means "그룹 전용 닉네임, null 일 경우 유저 기본 닉네임을 사용" isOptional false,
                     ),
                     responseFields()
-                )
-        }
-
-        test("그룹 내 멤버의 플레이 횟수 가져오기 (없으면 0)") {
-            val groupId = GroupId(1)
-            val memberId = MemberId(1)
-
-            every { gameMemberService.getMatchCountByMemberId(any()) } returns 1L
-
-            get("/api/v1/group/{groupId}/member/{memberId}/match/count", arrayOf(groupId.value, memberId.value)) {}
-                .isStatus(200)
-                .makeDocument(
-                    DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
-                    pathParameters(
-                        "groupId" type NUMBER means "그룹 ID",
-                        "memberId" type NUMBER means "멤버 ID",
-                    ),
-                    responseFields(
-                        "matchCount" type NUMBER means "플레이 횟수",
-                    )
                 )
         }
 

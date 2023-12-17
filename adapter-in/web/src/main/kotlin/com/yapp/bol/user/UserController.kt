@@ -8,7 +8,7 @@ import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.user.dto.CheckOnboardResponse
-import com.yapp.bol.user.dto.GetUserMatchCountResponse
+import com.yapp.bol.user.dto.GetMatchCountResponse
 import com.yapp.bol.user.dto.JoinedGroupResponse
 import com.yapp.bol.user.dto.MyInfoResponse
 import com.yapp.bol.user.dto.PutUserInfoRequest
@@ -77,19 +77,19 @@ class UserController(
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/match/count")
-    fun getMatchCount(): GetUserMatchCountResponse {
+    fun getMatchCount(): GetMatchCountResponse {
         val userId = getSecurityUserIdOrThrow()
 
         val result = userService.getUserMatchCount(userId)
 
-        return GetUserMatchCountResponse(result)
+        return GetMatchCountResponse(result)
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/group/{groupId}/match/count")
     fun getMatchCountByGroupId(
         @PathVariable groupId: GroupId,
-    ): GetUserMatchCountResponse {
+    ): GetMatchCountResponse {
         val userId = getSecurityUserIdOrThrow()
 
         val result = userService.getMemberMatchCount(
@@ -97,6 +97,6 @@ class UserController(
             userId = userId,
         )
 
-        return GetUserMatchCountResponse(result)
+        return GetMatchCountResponse(result)
     }
 }
