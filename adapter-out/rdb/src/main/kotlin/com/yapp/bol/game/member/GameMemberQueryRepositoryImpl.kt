@@ -7,9 +7,13 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class GameMemberQueryRepositoryImpl(
-    private val gameMemberRepository: GameMemberRepository
+    private val gameMemberRepository: GameMemberRepository,
 ) : GameMemberQueryRepository {
     override fun findGameMember(memberId: MemberId, gameId: GameId, groupId: GroupId): GameMember? {
         return gameMemberRepository.findByMemberIdAndGameId(memberId = memberId.value, gameId = gameId.value)?.toDomain()
+    }
+
+    override fun getMatchCount(memberId: MemberId): Long {
+        return gameMemberRepository.getMatchCount(memberId = memberId) ?: 0
     }
 }

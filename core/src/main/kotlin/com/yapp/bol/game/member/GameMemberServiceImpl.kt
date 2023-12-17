@@ -99,4 +99,8 @@ class GameMemberServiceImpl(
             groupId = groupId
         )
     }
+
+    override fun getMatchCountByMemberId(memberId: MemberId): Long {
+        return gameMemberQueryRepository.getMatchCount(memberId = memberId)
+    }
 }
