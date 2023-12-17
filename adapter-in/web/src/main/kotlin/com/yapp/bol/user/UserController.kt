@@ -3,6 +3,7 @@ package com.yapp.bol.user
 import com.yapp.bol.EmptyResponse
 import com.yapp.bol.UnknownException
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
+import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
@@ -15,6 +16,7 @@ import com.yapp.bol.user.dto.toResponse
 import com.yapp.bol.utils.ApiMinVersion
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -78,7 +80,22 @@ class UserController(
     fun getMatchCount(): GetUserMatchCountResponse {
         val userId = getSecurityUserIdOrThrow()
 
-        val result = userService.getMatchCountByUserId(userId)
+        val result = userService.getUserMatchCount(userId)
+
+        return GetUserMatchCountResponse(result)
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me/group/{groupId}/match/count")
+    fun getMatchCountByGroupId(
+        @PathVariable groupId: GroupId,
+    ): GetUserMatchCountResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        val result = userService.getMemberMatchCount(
+            groupId = groupId,
+            userId = userId,
+        )
 
         return GetUserMatchCountResponse(result)
     }
