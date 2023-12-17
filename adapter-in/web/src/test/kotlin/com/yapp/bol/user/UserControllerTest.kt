@@ -11,7 +11,6 @@ import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.member.HostMember
-import com.yapp.bol.group.member.Member
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.onboarding.OnboardingGuide
@@ -139,7 +138,6 @@ class UserControllerTest : ControllerTest() {
                     )
                 )
         }
-
 
         test("그룹 내에서 내가 플레이한 횟수 가져오기 (없으면 0)") {
             val userId = UserId(123L)
