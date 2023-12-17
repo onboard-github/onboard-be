@@ -68,7 +68,7 @@ class UserControllerTest : ControllerTest() {
                 )
         }
 
-        test("내가 가입한 그룹 목록 가져오기") {
+        test("내가 가입한 그룹 목록 가져오기 v1 (추후 변경 예정)") {
             val user = User(
                 id = UserId(2220),
                 nickname = "닉네임",
