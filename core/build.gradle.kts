@@ -14,6 +14,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter:$springVersion")
 
+    testImplementation(project(":domain", "testArchive"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
 }
 

@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.sourceSets
+import org.gradle.kotlin.dsl.test
+import org.gradle.kotlin.dsl.testImplementation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
@@ -49,5 +52,24 @@ subprojects {
         test {
             useJUnitPlatform()
         }
+    }
+}
+
+configure(
+    subprojects.filter {
+        it.path in listOf(
+            ":domain"
+        )
+    }
+) {
+    configurations.register("testArchive") {
+        extendsFrom(configurations.testImplementation.get())
+    }
+    tasks.register<Jar>(name = "testJar") {
+        from(project.sourceSets.test.get().output)
+        archiveClassifier.set("test")
+    }
+    artifacts {
+        add("testArchive", tasks.getByName("testJar"))
     }
 }
