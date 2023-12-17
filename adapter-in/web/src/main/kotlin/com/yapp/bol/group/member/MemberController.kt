@@ -2,13 +2,11 @@ package com.yapp.bol.group.member
 
 import com.yapp.bol.EmptyResponse
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
-import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.dto.AddGuestRequest
-import com.yapp.bol.group.member.dto.GetMemberMatchCountResponse
 import com.yapp.bol.group.member.dto.JoinGroupRequest
 import com.yapp.bol.group.member.dto.MemberResponse
 import com.yapp.bol.group.member.dto.NicknameValidationResponse
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(
     private val groupService: GroupService,
     private val memberService: MemberService,
-    private val gameMemberService: GameMemberService
 ) {
     @GetMapping("/member/validateNickname")
     fun validateMemberName(
@@ -126,16 +123,5 @@ class MemberController(
         val result = memberService.updateMemberInfo(groupId, memberId, request.nickname)
 
         return result.toResponse()
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/member/{memberId}/match/count")
-    fun getMatchCount(
-        @PathVariable groupId: GroupId,
-        @PathVariable memberId: MemberId,
-    ): GetMemberMatchCountResponse {
-        val result = gameMemberService.getMatchCountByMemberId(memberId)
-
-        return GetMemberMatchCountResponse(result)
     }
 }

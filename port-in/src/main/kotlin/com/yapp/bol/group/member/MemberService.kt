@@ -20,4 +20,6 @@ interface MemberService {
     fun updateMemberInfo(groupId: GroupId, memberId: MemberId, nickname: String): Member
 
     fun deleteMyMember(groupId: GroupId, userId: UserId)
+
+    fun getMemberByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member?
 }

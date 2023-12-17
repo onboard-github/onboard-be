@@ -66,7 +66,7 @@ internal class MemberQueryRepositoryImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun findMembersIdsByUserId(userId: UserId): List<MemberId> {
+    override fun findMemberIdsByUserId(userId: UserId): List<MemberId> {
         return memberRepository.findAllByUserId(userId.value).map { MemberId(it.id) }
     }
 }

@@ -34,7 +34,7 @@ internal class UserClient(
     }
 
     override fun getMatchCount(userId: UserId): Long {
-        return memberQueryRepository.findMembersIdsByUserId(userId = userId).sumOf {
+        return memberQueryRepository.findMemberIdsByUserId(userId = userId).sumOf {
             gameMemberQueryRepository.getMatchCount(memberId = it)
         }
     }
