@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService,
     private val groupService: GroupService,
-    private val onboardingService: OnboardingService
+    private val onboardingService: OnboardingService,
 ) {
 
     @ApiMinVersion("1.11.0")
@@ -69,5 +69,13 @@ class UserController(
 
         userService.putUser(user)
         return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me/match/count")
+    fun getMatchCount(): Long {
+        val userId = getSecurityUserIdOrThrow()
+
+        return userService.getMatchCountByUserId(userId)
     }
 }

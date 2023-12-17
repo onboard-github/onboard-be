@@ -22,4 +22,8 @@ class UserServiceImpl(
 
         userCommandRepository.updateUser(user)
     }
+
+    override fun getMatchCountByUserId(userId: UserId): Long {
+        return userQueryRepository.getMatchCount(userId)
+    }
 }
