@@ -11,6 +11,6 @@ interface UserService {
     fun getUserMatchCount(userId: UserId): Long
 
     fun getMemberMatchCount(groupId: GroupId, userId: UserId): Long
-    
+
     fun deleteUser(userId: UserId)
 }

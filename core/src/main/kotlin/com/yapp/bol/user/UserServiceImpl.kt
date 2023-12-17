@@ -4,10 +4,10 @@ import com.yapp.bol.InvalidNicknameException
 import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.auth.AuthCommandRepository
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.token.TokenCommandRepository
 import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.MemberService
-import com.yapp.bol.auth.token.TokenCommandRepository
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
 
