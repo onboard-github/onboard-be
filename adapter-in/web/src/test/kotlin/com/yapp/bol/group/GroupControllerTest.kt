@@ -68,7 +68,11 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 생성하기"
+                    ),
                     requestFields(
                         "name" type STRING means "그룹 이름",
                         "description" type STRING means "그룹 설명",
@@ -108,7 +112,11 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 리스트 가져오기"
+                    ),
                     queryParameters(
                         "keyword" type STRING means "검색하고자 하는 텍스트, (이름/소속)을 검색합니다. (디폴트 All)" isOptional true,
                         "pageNumber" type NUMBER means "페이지 번호 (디폴트 0)" isOptional true,
@@ -193,7 +201,11 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 가입 중 참여 코드 확인"
+                    ),
                     pathParameters(
                         "groupId" type NUMBER means "그룹 ID"
                     ),

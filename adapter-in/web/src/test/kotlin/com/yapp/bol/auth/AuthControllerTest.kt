@@ -26,7 +26,11 @@ class AuthControllerTest : ControllerTest() {
             post("/api/v1/auth/login", request) {}
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "test", tag = OpenApiTag.AUTH),
+                    DocumentInfo(
+                        identifier = "test",
+                        tag = OpenApiTag.AUTH,
+                        description = "로그인",
+                    ),
                     requestFields(
                         "type" type ENUM(LoginType::class) means "로그인 방법",
                         "token" type STRING means "로그인에 사용되는 토큰",
