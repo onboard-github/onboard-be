@@ -12,13 +12,4 @@ class HostMember(
     userId = userId,
     nickname = nickname,
     level = level,
-) {
-    override fun changeNickname(nickname: String): Member {
-        return HostMember(
-            id = id,
-            userId = this.userId!!,
-            nickname = nickname,
-            level = level,
-        )
-    }
-}
+)

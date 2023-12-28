@@ -12,13 +12,4 @@ class OwnerMember(
     userId = userId,
     nickname = nickname,
     level = level
-) {
-    override fun changeNickname(nickname: String): Member {
-        return OwnerMember(
-            id = id,
-            userId = this.userId!!,
-            nickname = nickname,
-            level = level,
-        )
-    }
-}
+)
