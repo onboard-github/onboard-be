@@ -10,10 +10,10 @@ import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
+import com.yapp.bol.group.dto.GroupWithMemberId
 import com.yapp.bol.group.member.HostMember
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.group.member.MemberService
-import com.yapp.bol.group.dto.GroupWithMemberId
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
