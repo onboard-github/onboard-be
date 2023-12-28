@@ -6,6 +6,7 @@ import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
+import com.yapp.bol.group.dto.GroupWithMemberId
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.OwnerMember
@@ -28,7 +29,7 @@ interface GroupService {
 
     fun getLeaderBoard(groupId: GroupId, gameId: GameId): List<LeaderBoardMember>
 
-    fun getGroupsByUserId(userId: UserId): List<Group>
+    fun getGroupsByUserId(userId: UserId): List<GroupWithMemberId>
 
     fun checkAccessToken(groupId: GroupId, accessToken: String): Boolean
 
