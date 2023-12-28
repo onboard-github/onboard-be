@@ -10,6 +10,8 @@ import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
+import com.yapp.bol.group.dto.GroupWithMemberId
+import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
@@ -74,11 +76,14 @@ class UserControllerTest : ControllerTest() {
                 nickname = "닉네임",
             )
             every { groupService.getGroupsByUserId(user.id) } returns listOf(
-                Group(
-                    name = "그룹명",
-                    description = "그룹 설명",
-                    organization = "그룹 소속",
-                    profileImage = MockFileInfo(),
+                GroupWithMemberId(
+                    group = Group(
+                        name = "그룹명",
+                        description = "그룹 설명",
+                        organization = "그룹 소속",
+                        profileImage = MockFileInfo(),
+                    ),
+                    memberId = MemberId(1L),
                 )
             )
 
@@ -95,6 +100,7 @@ class UserControllerTest : ControllerTest() {
                         "contents[].description" type STRING means "그룹 소개",
                         "contents[].organization" type STRING means "그룹 소속" isOptional true,
                         "contents[].profileImageUrl" type STRING means "그룹 이미지 URL",
+                        "contents[].memberId" type NUMBER means "멤버 id",
                     )
                 )
         }

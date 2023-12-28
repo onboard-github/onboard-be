@@ -15,6 +15,7 @@ import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
+import com.yapp.bol.group.dto.GroupWithMemberId
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.MemberCommandRepository
 import com.yapp.bol.group.member.MemberQueryRepository
@@ -126,8 +127,14 @@ internal class GroupServiceImpl(
         return groupQueryRepository.getLeaderBoardList(groupId, gameId)
     }
 
-    override fun getGroupsByUserId(userId: UserId): List<Group> {
-        return groupQueryRepository.getGroupsByUserId(userId)
+    override fun getGroupsByUserId(userId: UserId): List<GroupWithMemberId> {
+        val groups = groupQueryRepository.getGroupsByUserId(userId)
+
+        return groups.map {
+            val member = memberQueryRepository.findByGroupIdAndUserId(it.id, userId)
+
+            GroupWithMemberId.of(it, member?.id!!)
+        }
     }
 
     override fun checkAccessToken(groupId: GroupId, accessToken: String): Boolean {
