@@ -3,6 +3,7 @@ package com.yapp.bol.group.member
 import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
@@ -24,5 +25,10 @@ internal class MemberCommandRepositoryImpl(
 
     override fun deleteMember(memberId: MemberId) {
         memberRepository.deleteById(memberId.value)
+    }
+
+    @Transactional
+    override fun deleteAllMember(groupId: GroupId) {
+        memberRepository.deleteAllByGroupId(groupId.value)
     }
 }

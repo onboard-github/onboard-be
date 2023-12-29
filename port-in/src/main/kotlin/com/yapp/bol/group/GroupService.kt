@@ -36,4 +36,6 @@ interface GroupService {
     fun getOwner(groupId: GroupId): OwnerMember
 
     fun isRegisterGroup(userId: UserId, groupId: GroupId): Boolean
+
+    fun deleteGroup(userId: UserId, groupId: GroupId)
 }

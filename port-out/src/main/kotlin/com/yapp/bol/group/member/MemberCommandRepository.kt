@@ -8,4 +8,6 @@ interface MemberCommandRepository {
     fun updateGuestToHost(groupId: GroupId, memberId: MemberId, userId: UserId)
 
     fun deleteMember(memberId: MemberId)
+
+    fun deleteAllMember(groupId: GroupId)
 }

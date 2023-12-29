@@ -1,6 +1,7 @@
 package com.yapp.bol.group.member
 
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 
 internal interface MemberRepository : JpaRepository<MemberEntity, Long>, CustomMemberRepository {
@@ -23,4 +24,8 @@ internal interface MemberRepository : JpaRepository<MemberEntity, Long>, CustomM
     fun findByGroupIdAndRole(groupId: Long, role: MemberRole): List<MemberEntity>
 
     fun countByGroupId(groupId: Long): Long
+
+    @Query("UPDATE MemberEntity m SET m.deleted=true, m.nickname=null WHERE m.groupId = :groupId")
+    @Modifying
+    fun deleteAllByGroupId(groupId: Long)
 }
