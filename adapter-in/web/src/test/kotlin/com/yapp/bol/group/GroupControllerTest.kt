@@ -286,7 +286,7 @@ class GroupControllerTest : ControllerTest() {
                 delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
                     authorizationHeader(userId)
                 }
-                    .isStatus(200)
+                    .isStatus(400)
                     .makeDocument(
                         DocumentInfo(
                             identifier = "group/{method-name}",
