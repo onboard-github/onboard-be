@@ -64,4 +64,8 @@ internal class MemberQueryRepositoryImpl(
     override fun getCount(groupId: GroupId): Int {
         return memberRepository.countByGroupId(groupId.value).toInt()
     }
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberRepository.findByUserId(userId.value).map { it.toDomain() }
+    }
 }

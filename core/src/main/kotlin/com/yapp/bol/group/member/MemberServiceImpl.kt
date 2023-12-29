@@ -57,4 +57,8 @@ internal class MemberServiceImpl(
 
         memberCommandRepository.deleteMember(member.id)
     }
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberQueryRepository.findByUserId(userId)
+    }
 }

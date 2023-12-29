@@ -18,4 +18,6 @@ interface MemberService {
     fun findMembersByGroupId(groupId: GroupId): List<Member>
 
     fun deleteMyMember(groupId: GroupId, userId: UserId)
+
+    fun findByUserId(userId: UserId): List<Member>
 }
