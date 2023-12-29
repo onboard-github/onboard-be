@@ -15,4 +15,8 @@ internal class AuthCommandRepositoryImpl(
 
         return AuthUser(UserId(user.id))
     }
+
+    override fun deleteUser(userId: UserId) {
+        authSocialRepository.deleteByUserId(userId.value)
+    }
 }
