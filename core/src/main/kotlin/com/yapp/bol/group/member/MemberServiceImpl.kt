@@ -72,4 +72,8 @@ internal class MemberServiceImpl(
 
     override fun getMemberByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member? =
         memberQueryRepository.findByGroupIdAndUserId(groupId, userId)
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberQueryRepository.findByUserId(userId)
+    }
 }

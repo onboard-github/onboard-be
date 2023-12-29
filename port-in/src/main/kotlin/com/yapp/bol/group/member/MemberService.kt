@@ -22,4 +22,6 @@ interface MemberService {
     fun deleteMyMember(groupId: GroupId, userId: UserId)
 
     fun getMemberByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member?
+
+    fun findByUserId(userId: UserId): List<Member>
 }

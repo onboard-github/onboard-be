@@ -14,4 +14,5 @@ interface MemberQueryRepository {
     fun getCount(groupId: GroupId): Int
     fun findMemberIdsByUserId(userId: UserId): List<MemberId>
     fun getCountExceptionGuest(groupId: GroupId): Int
+    fun findByUserId(userId: UserId): List<Member>
 }
