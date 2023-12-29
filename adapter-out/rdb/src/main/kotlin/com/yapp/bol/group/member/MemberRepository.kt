@@ -1,6 +1,5 @@
 package com.yapp.bol.group.member
 
-import com.yapp.bol.auth.UserId
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
