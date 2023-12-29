@@ -40,4 +40,6 @@ interface GroupService {
     fun isRegisterGroup(userId: UserId, groupId: GroupId): Boolean
 
     fun getJoinedGroups(userId: UserId): List<JoinedGroupDto>
+
+    fun deleteGroup(userId: UserId, groupId: GroupId)
 }
