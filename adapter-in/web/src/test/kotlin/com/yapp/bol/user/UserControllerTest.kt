@@ -1,5 +1,6 @@
 package com.yapp.bol.user
 
+import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.ControllerTest
@@ -119,18 +120,37 @@ class UserControllerTest : ControllerTest() {
                 )
         }
 
-        test("유저 탈퇴") {
-            val userId = UserId(123L)
+        context("유저 탈퇴") {
+            test("성공") {
+                val userId = UserId(123L)
 
-            every { userService.deleteUser(any()) } returns Unit
+                every { userService.deleteUser(any()) } returns Unit
 
-            delete("/api/v1/user/me") {
-                authorizationHeader(userId)
+                delete("/api/v1/user/me") {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    )
             }
-                .isStatus(200)
-                .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
-                )
+            test("NotDeleteUserByOwnerException") {
+                val userId = UserId(123L)
+
+                every { userService.deleteUser(any()) } throws NotDeleteUserByOwnerException
+
+                delete("/api/v1/user/me") {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                        responseFields(
+                            "code" type STRING means "에러 코드",
+                            "message" type STRING means "에러메시지",
+                        )
+                    )
+            }
         }
     }
 }
