@@ -142,7 +142,7 @@ class UserControllerTest : ControllerTest() {
                 delete("/api/v1/user/me") {
                     authorizationHeader(userId)
                 }
-                    .isStatus(200)
+                    .isStatus(400)
                     .makeDocument(
                         DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
                         responseFields(
