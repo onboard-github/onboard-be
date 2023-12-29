@@ -5,6 +5,7 @@ import com.yapp.bol.AlreadyExistMemberException
 import com.yapp.bol.InvalidRequestException
 import com.yapp.bol.NotFoundFileException
 import com.yapp.bol.NotFoundGroupException
+import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.file.FileInfo
@@ -170,12 +171,9 @@ internal class GroupServiceImpl(
 
         val joinedGroups = groups.mapNotNull { group ->
             val member = memberQueryRepository.findByGroupIdAndUserId(group.id, userId)
+                ?: throw NotFoundMemberException
 
-            if (member == null) {
-                null
-            }
-
-            val matchCount = matchCountMap[member?.id] ?: 0L
+            val matchCount = matchCountMap[member.id] ?: 0L
 
             GroupWithMemberDto(
                 id = group.id,
@@ -183,8 +181,9 @@ internal class GroupServiceImpl(
                 description = group.description,
                 organization = group.organization,
                 profileImageUrl = group.profileImage.getUrl(),
-                nickname = member!!.nickname,
-                matchCount = matchCount
+                memberId = member.id,
+                nickname = member.nickname,
+                matchCount = matchCount,
             )
         }
 
@@ -201,7 +200,8 @@ internal class GroupServiceImpl(
                 groupName = it.name,
                 nickname = it.nickname,
                 organization = it.organization,
-                matchCount = it.matchCount
+                memberId = it.memberId,
+                matchCount = it.matchCount,
             )
         }
     }

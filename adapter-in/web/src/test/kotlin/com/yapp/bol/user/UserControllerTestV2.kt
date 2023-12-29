@@ -9,6 +9,7 @@ import com.yapp.bol.base.STRING
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.JoinedGroupDto
+import com.yapp.bol.group.member.MemberId
 import io.mockk.every
 import io.mockk.mockk
 
@@ -31,6 +32,7 @@ class UserControllerTestV2 : ControllerTest() {
                     nickname = "닉네임",
                     organization = "소속",
                     matchCount = 10L,
+                    memberId = MemberId(1)
                 )
             )
 
@@ -47,6 +49,7 @@ class UserControllerTestV2 : ControllerTest() {
                         "contents[].nickname" type STRING means "멤버 이름",
                         "contents[].organization" type STRING means "그룹 소속",
                         "contents[].matchCount" type NUMBER means "그룹 내 플레이한 게임 수",
+                        "contents[].memberId" type NUMBER means "멤버 아이디"
                     )
                 )
         }

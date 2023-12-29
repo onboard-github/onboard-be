@@ -13,6 +13,7 @@ import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinedGroupDto
+import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
@@ -85,7 +86,8 @@ class UserControllerTest : ControllerTest() {
                     organization = "그룹 소속",
                     profileImageUrl = MockFileInfo().getUrl(),
                     nickname = "닉네임",
-                    matchCount = 10L
+                    matchCount = 10L,
+                    memberId = MemberId(1),
                 )
             )
 
@@ -102,8 +104,8 @@ class UserControllerTest : ControllerTest() {
                         "contents[].description" type STRING means "그룹 소개",
                         "contents[].organization" type STRING means "그룹 소속" isOptional true,
                         "contents[].profileImageUrl" type STRING means "그룹 이미지 URL",
+                        "contents[].memberId" type NUMBER means "멤버 ID",
                         "contents[].nickname" type STRING means "멤버 이름",
-                        "contents[].organization" type STRING means "그룹 소속",
                         "contents[].matchCount" type NUMBER means "그룹 내 플레이한 게임 수",
                     )
                 )
