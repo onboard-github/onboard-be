@@ -27,9 +27,9 @@ abstract class Member internal constructor(
         if (userId == null && isGuest().not()) throw InvalidMemberRoleException
     }
 
-    private fun isOwner(): Boolean = this is OwnerMember
-    private fun isGuest(): Boolean = userId == null || this is GuestMember
-    private fun isHost(): Boolean = this is HostMember
+    fun isOwner(): Boolean = this is OwnerMember
+    fun isGuest(): Boolean = userId == null || this is GuestMember
+    fun isHost(): Boolean = this is HostMember
 
     fun changeNickname(nickname: String): Member {
         when {
