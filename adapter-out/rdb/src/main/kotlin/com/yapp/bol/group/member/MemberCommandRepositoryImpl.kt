@@ -31,4 +31,8 @@ internal class MemberCommandRepositoryImpl(
 
         return memberRepository.save(member.changeNickname(nickname).toEntity(groupId.value)).toDomain()
     }
+
+    override fun deleteMember(memberId: MemberId) {
+        memberRepository.deleteById(memberId.value)
+    }
 }

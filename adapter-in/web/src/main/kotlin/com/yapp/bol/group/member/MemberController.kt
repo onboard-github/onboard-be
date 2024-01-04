@@ -15,6 +15,7 @@ import com.yapp.bol.group.member.dto.UpdateMemberInfoRequest
 import com.yapp.bol.group.member.dto.toResponse
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -59,6 +60,17 @@ class MemberController(
         )
 
         return result.mapContents { it.toResponse() }
+    }
+
+    @DeleteMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    fun deleteMe(
+        @PathVariable groupId: GroupId,
+    ): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        memberService.deleteMyMember(groupId, userId)
+        return EmptyResponse
     }
 
     @PreAuthorize("isAuthenticated()")

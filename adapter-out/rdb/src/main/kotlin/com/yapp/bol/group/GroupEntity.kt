@@ -10,9 +10,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "group_table")
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE group_table SET deleted=true WHERE group_id = ?")
 internal class GroupEntity(
     id: GroupId = GroupId(0),
     name: String,
@@ -45,15 +49,6 @@ internal class GroupEntity(
     @Column(name = "deleted")
     val deleted: Boolean = false
 }
-
-internal fun Group.toEntity(): GroupEntity = GroupEntity(
-    id = id,
-    name = name,
-    description = description,
-    organization = organization,
-    profileImage = FileEntity.of(profileImage.id),
-    accessCode = accessCode,
-)
 
 internal fun GroupEntity.toDomain(): Group = Group(
     id = GroupId(id),

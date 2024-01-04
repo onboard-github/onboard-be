@@ -20,6 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-security:$springVersion")
 
+    testImplementation(project(":domain", "testArchive"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.0")
@@ -38,7 +39,8 @@ tasks {
     openapi3 {
         setServers(
             listOf(
-                toServer("http://3.39.205.168:8080"),
+                toServer("http://sandbox-api.onboardgame.co.kr"),
+                toServer("http://api.onboardgame.co.kr"),
             )
         )
         title = "온보드 API"
