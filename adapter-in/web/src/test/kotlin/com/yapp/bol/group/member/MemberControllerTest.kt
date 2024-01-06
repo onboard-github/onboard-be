@@ -291,7 +291,6 @@ class MemberControllerTest : ControllerTest() {
 
                 patch(
                     url = "/api/v1/group/{groupId}/member/{memberId}/assign-owner",
-                    request = null,
                     pathParams = arrayOf(groupId.value, memberId.value)
                 ) {
                     authorizationHeader(userId)
