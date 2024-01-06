@@ -55,6 +55,7 @@ object InvalidMemberRoleException : MemberException("Member005", 500, "맴버의
 object AlreadyExistMemberException : MemberException("Member006", 400, "이미 가입된 그룹입니다.")
 object NotFoundMemberException : MemberException("Member007", 400, "맴버를 찾을 수 없습니다.")
 object CannotDeleteOwnerException : MemberException("Member008", 400, "모임장은 탈퇴 할 수 없습니다.")
+object ForbiddenMemberException : MemberException("Member009", 400, "권한이 없습니다.")
 
 object NotExistRequiredTermsException : BolRatingException("Onboard001", 400, "필수 약관이 동의 되지 않았습니다.")
 object OldVersionTermsException : BolRatingException("Onboard002", 400, "구버전 약관을 요청 했습니다.")
