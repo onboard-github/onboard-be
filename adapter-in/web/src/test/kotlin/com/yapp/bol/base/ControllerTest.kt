@@ -142,7 +142,7 @@ abstract class ControllerTest : FunSpec() {
         )
     protected fun patch(
         url: String,
-        request: Any,
+        request: Any?,
         pathParams: Array<Any> = emptyArray(),
         buildRequest: MockHttpServletRequestBuilder.() -> Unit
     ): ResultActions =

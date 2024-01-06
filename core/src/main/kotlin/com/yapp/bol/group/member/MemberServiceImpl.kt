@@ -1,5 +1,6 @@
 package com.yapp.bol.group.member
 
+import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.DuplicatedMemberNicknameException
 import com.yapp.bol.ForbiddenMemberException
