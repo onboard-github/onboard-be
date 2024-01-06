@@ -5,6 +5,7 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,7 +20,7 @@ internal class MemberQueryRepositoryImpl(
     }
 
     override fun getMemberListByCursor(
-        request: PaginationCursorMemberRequest
+        request: PaginationCursorMemberRequest,
     ): SimplePaginationCursorResponse<Member, String> {
         val originalSize = request.size
 
@@ -49,6 +50,17 @@ internal class MemberQueryRepositoryImpl(
     @Transactional(readOnly = true)
     override fun findByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member? {
         return memberRepository.findByGroupIdAndUserId(groupId.value, userId.value)?.toDomain()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findByIdAndGroupId(memberId: MemberId, groupId: GroupId): Member? {
+        val member = memberRepository.findByIdOrNull(memberId.value)
+
+        if (member?.groupId != groupId.value) {
+            return null
+        }
+
+        return member.toDomain()
     }
 
     @Transactional(readOnly = true)
