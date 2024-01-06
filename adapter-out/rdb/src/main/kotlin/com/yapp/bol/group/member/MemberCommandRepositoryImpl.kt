@@ -5,6 +5,7 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 internal class MemberCommandRepositoryImpl(
@@ -20,6 +21,17 @@ internal class MemberCommandRepositoryImpl(
 
         member.toHost(userId.value)
         memberRepository.save(member)
+    }
+
+    @Transactional
+    override fun assignOwner(groupId: GroupId, originOwnerId: MemberId, targetMemberId: MemberId) {
+        val originOwner = memberRepository.findByIdOrNull(originOwnerId.value) ?: throw NotFoundMemberException
+        val targetMember = memberRepository.findByIdOrNull(targetMemberId.value) ?: throw NotFoundMemberException
+
+        originOwner.toHost()
+        targetMember.toOwner()
+
+        memberRepository.saveAll(listOf(originOwner, targetMember))
     }
 
     override fun deleteMember(memberId: MemberId) {

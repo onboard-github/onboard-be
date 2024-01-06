@@ -17,5 +17,12 @@ interface MemberService {
 
     fun findMembersByGroupId(groupId: GroupId): List<Member>
 
+    fun findMemberByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member?
+
     fun deleteMyMember(groupId: GroupId, userId: UserId)
+    fun assignOwner(
+        groupId: GroupId,
+        originOwnerId: UserId,
+        targetMemberId: MemberId,
+    )
 }

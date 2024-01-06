@@ -16,6 +16,7 @@ import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -106,6 +107,23 @@ class MemberController(
                 requestUserId = userId,
                 nickname = request.nickname,
             )
+        )
+
+        return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/member/{memberId}/assign-owner")
+    fun assignOwner(
+        @PathVariable groupId: GroupId,
+        @PathVariable memberId: MemberId,
+    ): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        memberService.assignOwner(
+            groupId = groupId,
+            originOwnerId = userId,
+            targetMemberId = memberId,
         )
 
         return EmptyResponse
