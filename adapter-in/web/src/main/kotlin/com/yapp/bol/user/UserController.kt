@@ -7,6 +7,7 @@ import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.user.dto.CheckOnboardResponse
+import com.yapp.bol.user.dto.GetUserMatchCountResponse
 import com.yapp.bol.user.dto.JoinedGroupResponse
 import com.yapp.bol.user.dto.MyInfoResponse
 import com.yapp.bol.user.dto.PutUserInfoRequest
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService,
     private val groupService: GroupService,
-    private val onboardingService: OnboardingService
+    private val onboardingService: OnboardingService,
 ) {
 
     @ApiMinVersion("1.11.0")
@@ -70,6 +71,16 @@ class UserController(
 
         userService.putUser(user)
         return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me/match/count")
+    fun getMatchCount(): GetUserMatchCountResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        val result = userService.getMatchCountByUserId(userId)
+
+        return GetUserMatchCountResponse(result)
     }
 
     @PreAuthorize("isAuthenticated()")

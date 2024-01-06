@@ -119,6 +119,22 @@ class UserControllerTest : ControllerTest() {
                 )
         }
 
+        test("내가 플레이한 게임 수 가져오기 (없으면 0)") {
+            val userId = UserId(123L)
+            every { userService.getMatchCountByUserId(userId) } returns 10L
+
+            get("/api/v1/user/me/match/count") {
+                authorizationHeader(userId)
+            }
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    responseFields(
+                        "matchCount" type NUMBER means "플레이한 게임 수",
+                    )
+                )
+        }
+
         test("유저 탈퇴") {
             val userId = UserId(123L)
 

@@ -6,5 +6,5 @@ import com.yapp.bol.match.dto.CreateMatchDto
 interface GameMemberService {
     fun processScore(createMatchDto: CreateMatchDto): List<GameMember>
 
-    fun getMatchCount(memberId: MemberId): Long
+    fun getMatchCountByMemberId(memberId: MemberId): Long
 }

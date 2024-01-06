@@ -4,4 +4,6 @@ import com.yapp.bol.auth.UserId
 
 interface UserQueryRepository {
     fun getUser(userId: UserId): User?
+
+    fun getMatchCount(userId: UserId): Long
 }
