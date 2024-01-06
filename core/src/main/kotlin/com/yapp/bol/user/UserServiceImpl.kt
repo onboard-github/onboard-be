@@ -1,7 +1,9 @@
 package com.yapp.bol.user
 
 import com.yapp.bol.InvalidNicknameException
+import com.yapp.bol.auth.AuthCommandRepository
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.token.TokenCommandRepository
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
 
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service
 class UserServiceImpl(
     private val userQueryRepository: UserQueryRepository,
     private val userCommandRepository: UserCommandRepository,
+    private val authCommandRepository: AuthCommandRepository,
+    private val tokenCommandRepository: TokenCommandRepository,
 ) : UserService {
 
     override fun getUser(userId: UserId): User? {
@@ -25,5 +29,11 @@ class UserServiceImpl(
 
     override fun getMatchCountByUserId(userId: UserId): Long {
         return userQueryRepository.getMatchCount(userId)
+    }
+
+    override fun deleteUser(userId: UserId) {
+        userCommandRepository.deleteUser(userId)
+        authCommandRepository.deleteUser(userId)
+        tokenCommandRepository.deleteAllToken(userId)
     }
 }

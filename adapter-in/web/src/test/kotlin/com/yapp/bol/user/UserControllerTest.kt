@@ -134,5 +134,19 @@ class UserControllerTest : ControllerTest() {
                     )
                 )
         }
+
+        test("유저 탈퇴") {
+            val userId = UserId(123L)
+
+            every { userService.deleteUser(any()) } returns Unit
+
+            delete("/api/v1/user/me") {
+                authorizationHeader(userId)
+            }
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                )
+        }
     }
 }

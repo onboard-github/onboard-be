@@ -50,15 +50,6 @@ internal class GroupEntity(
     val deleted: Boolean = false
 }
 
-internal fun Group.toEntity(): GroupEntity = GroupEntity(
-    id = id,
-    name = name,
-    description = description,
-    organization = organization,
-    profileImage = FileEntity.of(profileImage.id),
-    accessCode = accessCode,
-)
-
 internal fun GroupEntity.toDomain(): Group = Group(
     id = GroupId(id),
     name = name,
