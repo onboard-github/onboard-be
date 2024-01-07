@@ -6,7 +6,7 @@ import com.yapp.bol.group.member.MemberId
 class CustomGameMemberRepositoryImpl(
     val queryFactory: JPAQueryFactory,
 ) : CustomGameMemberRepository {
-    override fun getMatchCount(memberId: MemberId): Long? {
+    override fun getMatchCount(memberId: MemberId): Long {
         val gameMember = QGameMemberEntity.gameMemberEntity
 
         val express = gameMember.memberId.eq(memberId.value)
@@ -15,6 +15,6 @@ class CustomGameMemberRepositoryImpl(
             .from(gameMember)
             .where(express)
             .fetchOne()
-            ?.toLong()
+            ?.toLong() ?: 0L
     }
 }
