@@ -64,4 +64,8 @@ internal class MemberQueryRepositoryImpl(
     override fun getCount(groupId: GroupId): Int {
         return memberRepository.countByGroupId(groupId.value).toInt()
     }
+
+    override fun getCountExceptionGuest(groupId: GroupId): Int {
+        return memberRepository.countByGroupIdAndRoleIn(groupId.value, listOf(MemberRole.HOST, MemberRole.OWNER)).toInt()
+    }
 }
