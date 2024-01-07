@@ -1,5 +1,6 @@
 package com.yapp.bol.group.member
 
+import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.base.ARRAY
@@ -245,8 +246,27 @@ class MemberControllerTest : ControllerTest() {
                         pathParameters(
                             "groupId" type NUMBER means "그룹 ID",
                         ),
-                        requestFields(
-                            "nickname" type STRING means "그룹 전용 닉네임, null 일 경우 유저 기본 닉네임을 사용" isOptional false,
+                        responseFields(
+                            "code" type STRING means "에러 코드",
+                            "message" type STRING means "에러메시지",
+                        )
+                    )
+            }
+            test("맴버 탈퇴 - Only One Member") {
+                val groupId = GroupId(1)
+                val userId = UserId(1)
+                val request = AddGuestRequest("nickname")
+
+                every { memberService.deleteMyMember(any(), any()) } throws CannotDeleteOnlyOneMemberException
+
+                delete("/api/v1/group/{groupId}/me", request, arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(400)
+                    .makeDocument(
+                        DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID",
                         ),
                         responseFields(
                             "code" type STRING means "에러 코드",
