@@ -29,5 +29,7 @@ internal interface MemberRepository : JpaRepository<MemberEntity, Long>, CustomM
     @Modifying
     fun deleteAllByGroupId(groupId: Long)
 
+    fun findByUserId(userId: Long): List<MemberEntity>
+
     fun countByGroupIdAndRoleIn(groupId: Long, roles: List<MemberRole>): Long
 }
