@@ -28,4 +28,6 @@ internal interface MemberRepository : JpaRepository<MemberEntity, Long>, CustomM
     @Query("UPDATE MemberEntity m SET m.deleted=true, m.nickname=null WHERE m.groupId = :groupId")
     @Modifying
     fun deleteAllByGroupId(groupId: Long)
+
+    fun countByGroupIdAndRoleIn(groupId: Long, roles: List<MemberRole>): Long
 }
