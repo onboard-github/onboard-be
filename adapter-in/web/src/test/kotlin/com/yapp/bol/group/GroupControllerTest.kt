@@ -1,5 +1,6 @@
 package com.yapp.bol.group
 
+import com.yapp.bol.NoPermissionDeleteGroupException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
@@ -250,6 +251,57 @@ class GroupControllerTest : ControllerTest() {
                         "owner.level" type NUMBER means "주사위 등급",
                     )
                 )
+        }
+
+        context("그룹 삭제") {
+
+            test("성공") {
+                val groupId = GroupId(123L)
+                val userId = UserId(321L)
+
+                every { groupService.deleteGroup(userId, groupId) } returns Unit
+
+                delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(
+                            identifier = "group/{method-name}",
+                            description = "그룹 삭제하기, Onwer만 가능",
+                            tag = OpenApiTag.GROUP,
+                        ),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID"
+                        ),
+                    )
+            }
+
+            test("오너가 아닌 사람") {
+                val groupId = GroupId(123L)
+                val userId = UserId(321L)
+
+                every { groupService.deleteGroup(userId, groupId) } throws NoPermissionDeleteGroupException
+
+                delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(400)
+                    .makeDocument(
+                        DocumentInfo(
+                            identifier = "group/{method-name}",
+                            description = "그룹 삭제하기, Onwer만 가능",
+                            tag = OpenApiTag.GROUP,
+                        ),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID"
+                        ),
+                        responseFields(
+                            "code" type STRING means "에러 코드",
+                            "message" type STRING means "에러메시지",
+                        )
+                    )
+            }
         }
     }
 
