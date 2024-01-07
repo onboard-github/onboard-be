@@ -17,6 +17,8 @@ interface MemberService {
 
     fun findMembersByGroupId(groupId: GroupId): List<Member>
 
+    fun updateMemberInfo(groupId: GroupId, memberId: MemberId, nickname: String): Member
+
     fun deleteMyMember(groupId: GroupId, userId: UserId)
 
     fun findByUserId(userId: UserId): List<Member>
