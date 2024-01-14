@@ -12,7 +12,7 @@ interface MemberQueryRepository {
     fun getMemberListByCursor(request: PaginationCursorMemberRequest): SimplePaginationCursorResponse<Member, String>
     fun findOwner(groupId: GroupId): OwnerMember
     fun getCount(groupId: GroupId): Int
-    fun findMembersIdsByUserId(userId: UserId): List<MemberId>
     fun findByUserId(userId: UserId): List<Member>
+    fun findMembersIdsByUserId(userId: UserId): List<MemberId>
     fun getCountExceptionGuest(groupId: GroupId): Int
 }
