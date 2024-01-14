@@ -1,5 +1,6 @@
 package com.yapp.bol.group.member
 
+import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.DuplicatedMemberNicknameException
 import com.yapp.bol.ForbiddenMemberException
@@ -49,6 +50,16 @@ internal class MemberServiceImpl(
     override fun findMembersByGroupId(groupId: GroupId): List<Member> =
         memberQueryRepository.findByGroupId(groupId)
 
+    override fun updateMemberInfo(
+        groupId: GroupId,
+        memberId: MemberId,
+        nickname: String
+    ): Member {
+        if (validateUniqueNickname(groupId, nickname).not()) throw DuplicatedMemberNicknameException
+
+        return memberCommandRepository.updateMemberInfo(groupId, memberId, nickname)
+    }
+
     private fun validateUniqueNickname(groupId: GroupId, nickname: String): Boolean =
         memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) == null
 
@@ -56,6 +67,7 @@ internal class MemberServiceImpl(
         val member = findMemberByGroupIdAndUserId(groupId, userId)
             ?: throw NotFoundMemberException
 
+        if (memberQueryRepository.getCountExceptionGuest(groupId) == 1) throw CannotDeleteOnlyOneMemberException
         if (member.isOwner()) throw CannotDeleteOwnerException
 
         memberCommandRepository.deleteMember(member.id)
@@ -95,5 +107,9 @@ internal class MemberServiceImpl(
             originOwnerId = originOwner.id,
             targetMemberId = targetMember.id
         )
+    }
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberQueryRepository.findByUserId(userId)
     }
 }
