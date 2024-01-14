@@ -21,6 +21,7 @@ class UnAuthenticationException(cause: Throwable? = null) : AuthException("Auth0
 class UnAuthorizationException(cause: Throwable? = null) : AuthException("Auth005", 403, "권한이 없습니다.", cause)
 
 object NotFoundUserException : BolRatingException("User001", 400, "유저를 찾을 수 없습니다.")
+object NotDeleteUserByOwnerException : BolRatingException("User002", 400, "오너인 그룹이 있어서 탈퇴 할 수 없습니다.")
 
 object IllegalFileStateException : BolRatingException("File001", 500, "요청한 파일의 Status가 올바르지 않습니다.")
 object NotFoundFileException : BolRatingException("File002", 400, "파일을 찾을 수 없습니다.")
@@ -55,6 +56,7 @@ object InvalidMemberRoleException : MemberException("Member005", 500, "맴버의
 object AlreadyExistMemberException : MemberException("Member006", 400, "이미 가입된 그룹입니다.")
 object NotFoundMemberException : MemberException("Member007", 400, "맴버를 찾을 수 없습니다.")
 object CannotDeleteOwnerException : MemberException("Member008", 400, "모임장은 탈퇴 할 수 없습니다.")
+object CannotDeleteOnlyOneMemberException : MemberException("Member009", 400, "다른 모임원이 없어서 탈퇴 할 수 없습니다.")
 
 object NotExistRequiredTermsException : BolRatingException("Onboard001", 400, "필수 약관이 동의 되지 않았습니다.")
 object OldVersionTermsException : BolRatingException("Onboard002", 400, "구버전 약관을 요청 했습니다.")

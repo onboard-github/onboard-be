@@ -1,14 +1,17 @@
 package com.yapp.bol.user
 
 import com.yapp.bol.InvalidNicknameException
+import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.AuthCommandRepository
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.token.TokenCommandRepository
+import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
 
 @Service
 class UserServiceImpl(
+    private val memberService: MemberService,
     private val userQueryRepository: UserQueryRepository,
     private val userCommandRepository: UserCommandRepository,
     private val authCommandRepository: AuthCommandRepository,
@@ -32,8 +35,18 @@ class UserServiceImpl(
     }
 
     override fun deleteUser(userId: UserId) {
+        assertDeleteUser(userId)
+
         userCommandRepository.deleteUser(userId)
         authCommandRepository.deleteUser(userId)
         tokenCommandRepository.deleteAllToken(userId)
+    }
+
+    private fun assertDeleteUser(userId: UserId) {
+        val memberList = memberService.findByUserId(userId)
+
+        if (memberList.any { it.isOwner() }) {
+            throw NotDeleteUserByOwnerException
+        }
     }
 }
