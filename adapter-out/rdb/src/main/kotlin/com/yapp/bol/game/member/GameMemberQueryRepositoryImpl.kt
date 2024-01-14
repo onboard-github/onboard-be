@@ -14,7 +14,7 @@ class GameMemberQueryRepositoryImpl(
     }
 
     override fun getMatchCount(memberId: MemberId): Long {
-        return gameMemberRepository.getMatchCount(memberId = memberId) ?: 0
+        return gameMemberRepository.getMatchCount(memberId = memberId)
     }
 
     override fun getMatchCounts(memberIds: List<MemberId>): Map<MemberId, Long> {
