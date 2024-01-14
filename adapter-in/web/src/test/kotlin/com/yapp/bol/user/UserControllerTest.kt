@@ -11,6 +11,8 @@ import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
+import com.yapp.bol.group.dto.GroupWithMemberDto
+import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
@@ -69,17 +71,21 @@ class UserControllerTest : ControllerTest() {
                 )
         }
 
-        test("내가 가입한 그룹 목록 가져오기 v1 (추후 변경 예정)") {
+        test("내가 가입한 그룹 목록 가져오기") {
             val user = User(
                 id = UserId(2220),
                 nickname = "닉네임",
             )
-            every { groupService.getGroupsByUserId(user.id) } returns listOf(
-                Group(
-                    name = "그룹명",
+
+            every { groupService.getGroupWithMemberInfo(user.id) } returns listOf(
+                GroupWithMemberDto(
+                    id = GroupId(1),
+                    name = "그룹 이름",
                     description = "그룹 설명",
                     organization = "그룹 소속",
-                    profileImage = MockFileInfo(),
+                    profileImageUrl = MockFileInfo().getUrl(),
+                    nickname = "닉네임",
+                    matchCount = 10L
                 )
             )
 
@@ -96,6 +102,9 @@ class UserControllerTest : ControllerTest() {
                         "contents[].description" type STRING means "그룹 소개",
                         "contents[].organization" type STRING means "그룹 소속" isOptional true,
                         "contents[].profileImageUrl" type STRING means "그룹 이미지 URL",
+                        "contents[].nickname" type STRING means "멤버 이름",
+                        "contents[].organization" type STRING means "그룹 소속",
+                        "contents[].matchCount" type NUMBER means "그룹 내 플레이한 게임 수",
                     )
                 )
         }

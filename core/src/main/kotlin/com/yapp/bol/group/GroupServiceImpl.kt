@@ -14,6 +14,7 @@ import com.yapp.bol.game.GameId
 import com.yapp.bol.game.member.GameMemberQueryRepository
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
+import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
 import com.yapp.bol.group.dto.JoinGroupDto
@@ -158,7 +159,7 @@ internal class GroupServiceImpl(
         return registerGroups.any { it.id == groupId }
     }
 
-    override fun getJoinedGroups(userId: UserId): List<JoinedGroupDto> {
+    override fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto> {
         val groups = getGroupsByUserId(userId)
 
         val memberIds = groups.mapNotNull {
@@ -167,8 +168,8 @@ internal class GroupServiceImpl(
 
         val matchCountMap = gameMemberQueryRepository.getMatchCounts(memberIds)
 
-        val joinedGroups = groups.mapNotNull {
-            val member = memberQueryRepository.findByGroupIdAndUserId(it.id, userId)
+        val joinedGroups = groups.mapNotNull { group ->
+            val member = memberQueryRepository.findByGroupIdAndUserId(group.id, userId)
 
             if (member == null) {
                 null
@@ -176,15 +177,32 @@ internal class GroupServiceImpl(
 
             val matchCount = matchCountMap[member?.id] ?: 0L
 
-            JoinedGroupDto(
-                groupId = it.id,
-                groupName = it.name,
+            GroupWithMemberDto(
+                id = group.id,
+                name = group.name,
+                description = group.description,
+                organization = group.organization,
+                profileImageUrl = group.profileImage.getUrl(),
                 nickname = member!!.nickname,
-                organization = it.organization,
                 matchCount = matchCount
             )
         }
 
         return joinedGroups
+    }
+
+    @Deprecated("TODO: 앱에서 v2 제거 전까지만 유지")
+    override fun getJoinedGroupsForV2(userId: UserId): List<JoinedGroupDto> {
+        val groupAndMemberDto = getGroupWithMemberInfo(userId)
+
+        return groupAndMemberDto.map {
+            JoinedGroupDto(
+                groupId = it.id,
+                groupName = it.name,
+                nickname = it.nickname,
+                organization = it.organization,
+                matchCount = it.matchCount
+            )
+        }
     }
 }

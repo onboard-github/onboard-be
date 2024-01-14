@@ -18,13 +18,13 @@ class UserControllerTestV2 : ControllerTest() {
         get() = UserControllerV2(groupService)
 
     init {
-        test("내가 가입한 그룹 목록 가져오기 v2") {
+        test("내가 가입한 그룹 목록 가져오기 v2 (삭제 예정, 기존으로 롤백)") {
             val user = User(
                 id = UserId(2220),
                 nickname = "닉네임",
             )
 
-            every { groupService.getJoinedGroups(user.id) } returns listOf(
+            every { groupService.getJoinedGroupsForV2(user.id) } returns listOf(
                 JoinedGroupDto(
                     groupId = GroupId(1),
                     groupName = "그룹 이름",

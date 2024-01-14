@@ -4,7 +4,6 @@ import com.yapp.bol.EmptyResponse
 import com.yapp.bol.UnknownException
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
 import com.yapp.bol.group.GroupService
-import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.user.dto.CheckOnboardResponse
 import com.yapp.bol.user.dto.GetUserMatchCountResponse
@@ -48,15 +47,14 @@ class UserController(
         return user.toResponse()
     }
 
-    @Deprecated("추후 v2로 변경")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/group")
     fun getJoinedGroups(): JoinedGroupResponse {
         val userId = getSecurityUserIdOrThrow()
 
-        val groups = groupService.getGroupsByUserId(userId)
+        val groupAndMemberDtos = groupService.getGroupWithMemberInfo(userId)
 
-        return JoinedGroupResponse(groups.map { it.toResponse() })
+        return JoinedGroupResponse(groupAndMemberDtos)
     }
 
     @PreAuthorize("isAuthenticated()")

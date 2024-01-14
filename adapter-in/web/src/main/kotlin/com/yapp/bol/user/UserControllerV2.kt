@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController
 class UserControllerV2(
     private val groupService: GroupService,
 ) {
+    @Deprecated("기존 버전으로 롤백")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me/group")
     fun getJoinedGroups(): JoinedGroupResponseV2 {
         val userId = getSecurityUserIdOrThrow()
 
-        val joinedGroupDtos = groupService.getJoinedGroups(userId)
+        val joinedGroupDtos = groupService.getJoinedGroupsForV2(userId)
 
         return JoinedGroupResponseV2(
             contents = joinedGroupDtos
