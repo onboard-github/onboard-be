@@ -8,11 +8,9 @@ import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
 import com.yapp.bol.file.MockFileInfo
-import com.yapp.bol.group.Group
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.GroupWithMemberDto
-import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
