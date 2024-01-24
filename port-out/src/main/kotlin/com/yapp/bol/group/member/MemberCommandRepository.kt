@@ -10,4 +10,5 @@ interface MemberCommandRepository {
     fun deleteMember(memberId: MemberId)
 
     fun deleteAllMember(groupId: GroupId)
+    fun assignOwner(groupId: GroupId, originOwnerId: MemberId, targetMemberId: MemberId)
 }

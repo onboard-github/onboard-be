@@ -3,6 +3,9 @@ package com.yapp.bol.group.member
 import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.DuplicatedMemberNicknameException
+import com.yapp.bol.ForbiddenMemberException
+import com.yapp.bol.InvalidMemberRoleException
+import com.yapp.bol.InvalidRequestException
 import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
@@ -61,13 +64,49 @@ internal class MemberServiceImpl(
         memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) == null
 
     override fun deleteMyMember(groupId: GroupId, userId: UserId) {
-        val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId)
+        val member = findMemberByGroupIdAndUserId(groupId, userId)
             ?: throw NotFoundMemberException
 
         if (memberQueryRepository.getCountExceptionGuest(groupId) == 1) throw CannotDeleteOnlyOneMemberException
         if (member.isOwner()) throw CannotDeleteOwnerException
 
         memberCommandRepository.deleteMember(member.id)
+    }
+
+    override fun findMemberByGroupIdAndUserId(groupId: GroupId, userId: UserId): Member? {
+        return memberQueryRepository.findByGroupIdAndUserId(groupId, userId)
+    }
+
+    override fun assignOwner(
+        groupId: GroupId,
+        originOwnerId: UserId,
+        targetMemberId: MemberId,
+    ) {
+        val originOwner = findMemberByGroupIdAndUserId(groupId, originOwnerId)
+            ?: throw NotFoundMemberException
+
+        if (originOwner.isOwner().not()) {
+            throw ForbiddenMemberException
+        }
+
+        val targetMember = memberQueryRepository.findByIdAndGroupId(
+            memberId = targetMemberId,
+            groupId = groupId,
+        ) ?: throw NotFoundMemberException
+
+        if (targetMember.isGuest()) {
+            throw InvalidMemberRoleException
+        }
+
+        if (originOwner.id == targetMember.id) {
+            throw InvalidRequestException("자기 자신을 그룹장으로 임명할 수 없습니다.")
+        }
+
+        memberCommandRepository.assignOwner(
+            groupId = groupId,
+            originOwnerId = originOwner.id,
+            targetMemberId = targetMember.id
+        )
     }
 
     override fun findByUserId(userId: UserId): List<Member> {

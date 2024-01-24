@@ -5,6 +5,7 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,7 +20,7 @@ internal class MemberQueryRepositoryImpl(
     }
 
     override fun getMemberListByCursor(
-        request: PaginationCursorMemberRequest
+        request: PaginationCursorMemberRequest,
     ): SimplePaginationCursorResponse<Member, String> {
         val originalSize = request.size
 
@@ -52,6 +53,17 @@ internal class MemberQueryRepositoryImpl(
     }
 
     @Transactional(readOnly = true)
+    override fun findByIdAndGroupId(memberId: MemberId, groupId: GroupId): Member? {
+        val member = memberRepository.findByIdOrNull(memberId.value)
+
+        if (member?.groupId != groupId.value) {
+            return null
+        }
+
+        return member.toDomain()
+    }
+
+    @Transactional(readOnly = true)
     override fun findOwner(groupId: GroupId): OwnerMember {
         val list = memberRepository.findByGroupIdAndRole(groupId.value, MemberRole.OWNER)
 
@@ -65,11 +77,16 @@ internal class MemberQueryRepositoryImpl(
         return memberRepository.countByGroupId(groupId.value).toInt()
     }
 
-    override fun findByUserId(userId: UserId): List<Member> {
-        return memberRepository.findByUserId(userId.value).map { it.toDomain() }
-    }
-
     override fun getCountExceptionGuest(groupId: GroupId): Int {
         return memberRepository.countByGroupIdAndRoleIn(groupId.value, listOf(MemberRole.HOST, MemberRole.OWNER)).toInt()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findMembersIdsByUserId(userId: UserId): List<MemberId> {
+        return memberRepository.findAllByUserId(userId.value).map { MemberId(it.id) }
+    }
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberRepository.findByUserId(userId.value).map { it.toDomain() }
     }
 }

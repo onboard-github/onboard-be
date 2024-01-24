@@ -10,6 +10,7 @@ import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.member.dto.AddGuestRequest
@@ -24,7 +25,8 @@ import io.mockk.mockk
 class MemberControllerTest : ControllerTest() {
     private val groupService: GroupService = mockk()
     private val memberService: MemberService = mockk()
-    override val controller = MemberController(groupService, memberService)
+    private val gameMemberService: GameMemberService = mockk()
+    override val controller = MemberController(groupService, memberService, gameMemberService)
 
     init {
         test("멤버 닉네임 검사") {
@@ -163,6 +165,26 @@ class MemberControllerTest : ControllerTest() {
                 )
         }
 
+        test("그룹 내 멤버의 플레이 횟수 가져오기 (없으면 0)") {
+            val groupId = GroupId(1)
+            val memberId = MemberId(1)
+
+            every { gameMemberService.getMatchCountByMemberId(any()) } returns 1L
+
+            get("/api/v1/group/{groupId}/member/{memberId}/match/count", arrayOf(groupId.value, memberId.value)) {}
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                    pathParameters(
+                        "groupId" type NUMBER means "그룹 ID",
+                        "memberId" type NUMBER means "멤버 ID",
+                    ),
+                    responseFields(
+                        "matchCount" type NUMBER means "플레이 횟수",
+                    )
+                )
+        }
+
         test("멤버 정보 변경") {
             val userId = UserId(1L)
             val groupId = GroupId(1L)
@@ -272,6 +294,27 @@ class MemberControllerTest : ControllerTest() {
                             "code" type STRING means "에러 코드",
                             "message" type STRING means "에러메시지",
                         )
+                    )
+            }
+
+            test("그룹장 임명 (Owner -> Host)") {
+                val groupId = GroupId(1)
+                val userId = UserId(1)
+                val memberId = MemberId(2)
+
+                every { memberService.assignOwner(any(), any(), any()) } returns Unit
+
+                patch("/api/v1/group/{groupId}/member/{memberId}/assign-owner", arrayOf(groupId.value, memberId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID",
+                            "memberId" type NUMBER means "맴버 ID",
+                        ),
+                        responseFields()
                     )
             }
         }

@@ -30,6 +30,10 @@ class UserServiceImpl(
         userCommandRepository.updateUser(user)
     }
 
+    override fun getMatchCountByUserId(userId: UserId): Long {
+        return userQueryRepository.getMatchCount(userId)
+    }
+
     override fun deleteUser(userId: UserId) {
         assertDeleteUser(userId)
 
