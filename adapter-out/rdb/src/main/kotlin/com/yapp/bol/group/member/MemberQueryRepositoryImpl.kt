@@ -65,10 +65,6 @@ internal class MemberQueryRepositoryImpl(
         return memberRepository.countByGroupId(groupId.value).toInt()
     }
 
-    override fun findByUserId(userId: UserId): List<Member> {
-        return memberRepository.findByUserId(userId.value).map { it.toDomain() }
-    }
-
     override fun getCountExceptionGuest(groupId: GroupId): Int {
         return memberRepository.countByGroupIdAndRoleIn(groupId.value, listOf(MemberRole.HOST, MemberRole.OWNER)).toInt()
     }
@@ -76,5 +72,9 @@ internal class MemberQueryRepositoryImpl(
     @Transactional(readOnly = true)
     override fun findMembersIdsByUserId(userId: UserId): List<MemberId> {
         return memberRepository.findAllByUserId(userId.value).map { MemberId(it.id) }
+    }
+
+    override fun findByUserId(userId: UserId): List<Member> {
+        return memberRepository.findByUserId(userId.value).map { it.toDomain() }
     }
 }

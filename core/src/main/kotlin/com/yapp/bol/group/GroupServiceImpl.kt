@@ -5,17 +5,21 @@ import com.yapp.bol.AlreadyExistMemberException
 import com.yapp.bol.InvalidRequestException
 import com.yapp.bol.NotFoundFileException
 import com.yapp.bol.NotFoundGroupException
+import com.yapp.bol.NotFoundMemberException
 import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.file.FileInfo
 import com.yapp.bol.file.FilePurpose
 import com.yapp.bol.file.FileQueryRepository
 import com.yapp.bol.game.GameId
+import com.yapp.bol.game.member.GameMemberQueryRepository
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
+import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinGroupDto
+import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.MemberCommandRepository
 import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
@@ -30,11 +34,12 @@ internal class GroupServiceImpl(
     private val memberService: MemberService,
     private val memberQueryRepository: MemberQueryRepository,
     private val memberCommandRepository: MemberCommandRepository,
+    private val gameMemberQueryRepository: GameMemberQueryRepository,
     private val fileQueryRepository: FileQueryRepository,
 ) : GroupService {
 
     override fun createGroup(
-        createGroupDto: CreateGroupDto
+        createGroupDto: CreateGroupDto,
     ): GroupMemberList {
 
         val group = Group(
@@ -101,7 +106,7 @@ internal class GroupServiceImpl(
     override fun searchGroup(
         keyword: String?,
         pageNumber: Int,
-        pageSize: Int
+        pageSize: Int,
     ): PaginationOffsetResponse<GroupWithMemberCount> {
         val groups = groupQueryRepository.search(
             keyword = keyword,
@@ -153,5 +158,51 @@ internal class GroupServiceImpl(
         val registerGroups = groupQueryRepository.getGroupsByUserId(userId)
 
         return registerGroups.any { it.id == groupId }
+    }
+
+    override fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto> {
+        val groups = getGroupsByUserId(userId)
+
+        val memberIds = groups.mapNotNull {
+            memberQueryRepository.findByGroupIdAndUserId(it.id, userId)?.id
+        }
+
+        val matchCountMap = gameMemberQueryRepository.getMatchCounts(memberIds)
+
+        val joinedGroups = groups.mapNotNull { group ->
+            val member = memberQueryRepository.findByGroupIdAndUserId(group.id, userId)
+                ?: throw NotFoundMemberException
+
+            val matchCount = matchCountMap[member.id] ?: 0L
+
+            GroupWithMemberDto(
+                id = group.id,
+                name = group.name,
+                description = group.description,
+                organization = group.organization,
+                profileImageUrl = group.profileImage.getUrl(),
+                memberId = member.id,
+                nickname = member.nickname,
+                matchCount = matchCount,
+            )
+        }
+
+        return joinedGroups
+    }
+
+    @Deprecated("TODO: 앱에서 v2 제거 전까지만 유지")
+    override fun getJoinedGroupsForV2(userId: UserId): List<JoinedGroupDto> {
+        val groupAndMemberDto = getGroupWithMemberInfo(userId)
+
+        return groupAndMemberDto.map {
+            JoinedGroupDto(
+                groupId = it.id,
+                groupName = it.name,
+                nickname = it.nickname,
+                organization = it.organization,
+                memberId = it.memberId,
+                matchCount = it.matchCount,
+            )
+        }
     }
 }
