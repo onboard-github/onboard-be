@@ -296,6 +296,27 @@ class MemberControllerTest : ControllerTest() {
                         )
                     )
             }
+
+            test("그룹장 임명 (Owner -> Host)") {
+                val groupId = GroupId(1)
+                val userId = UserId(1)
+                val memberId = MemberId(2)
+
+                every { memberService.assignOwner(any(), any(), any()) } returns Unit
+
+                patch("/api/v1/group/{groupId}/member/{memberId}/assign-owner", arrayOf(groupId.value, memberId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID",
+                            "memberId" type NUMBER means "맴버 ID",
+                        ),
+                        responseFields()
+                    )
+            }
         }
     }
 }

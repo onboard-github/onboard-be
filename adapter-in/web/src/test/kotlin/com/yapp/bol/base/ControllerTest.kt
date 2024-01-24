@@ -155,6 +155,19 @@ abstract class ControllerTest : FunSpec() {
                 }
         )
 
+    protected fun patch(
+        url: String,
+        pathParams: Array<Any> = emptyArray(),
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+    ): ResultActions =
+        mockMvc.perform(
+            patch(url, *pathParams)
+                .apply {
+                    contentType(MediaType.APPLICATION_JSON)
+                    buildRequest()
+                }
+        )
+
     protected fun put(
         url: String,
         request: Any,

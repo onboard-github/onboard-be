@@ -117,6 +117,23 @@ class MemberController(
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/member/{memberId}/assign-owner")
+    fun assignOwner(
+        @PathVariable groupId: GroupId,
+        @PathVariable memberId: MemberId,
+    ): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        memberService.assignOwner(
+            groupId = groupId,
+            originOwnerId = userId,
+            targetMemberId = memberId,
+        )
+
+        return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/member/{memberId}")
     fun updateMemberInfo(
         @PathVariable groupId: GroupId,
