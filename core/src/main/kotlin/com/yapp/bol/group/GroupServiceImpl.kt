@@ -3,6 +3,7 @@ package com.yapp.bol.group
 import com.yapp.bol.AccessCodeNotMatchException
 import com.yapp.bol.AlreadyExistMemberException
 import com.yapp.bol.InvalidRequestException
+import com.yapp.bol.NoPermissionDeleteGroupException
 import com.yapp.bol.NotFoundFileException
 import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.NotFoundMemberException
@@ -158,6 +159,17 @@ internal class GroupServiceImpl(
         val registerGroups = groupQueryRepository.getGroupsByUserId(userId)
 
         return registerGroups.any { it.id == groupId }
+    }
+
+    override fun deleteGroup(userId: UserId, groupId: GroupId) {
+        val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId) ?: throw NoPermissionDeleteGroupException
+
+        if (member.isOwner().not()) {
+            throw NoPermissionDeleteGroupException
+        }
+
+        memberCommandRepository.deleteAllMember(groupId)
+        groupCommandRepository.deleteGroup(groupId)
     }
 
     override fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto> {

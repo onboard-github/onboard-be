@@ -46,4 +46,9 @@ internal class MemberCommandRepositoryImpl(
     override fun deleteMember(memberId: MemberId) {
         memberRepository.deleteById(memberId.value)
     }
+
+    @Transactional
+    override fun deleteAllMember(groupId: GroupId) {
+        memberRepository.deleteAllByGroupId(groupId.value)
+    }
 }

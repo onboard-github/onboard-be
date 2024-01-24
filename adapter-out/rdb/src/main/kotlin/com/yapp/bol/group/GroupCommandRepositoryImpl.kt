@@ -38,4 +38,8 @@ internal class GroupCommandRepositoryImpl(
         profileImage = fileRepository.findByIdOrNull(profileImage.id.value) ?: throw NotFoundFileException,
         accessCode = accessCode,
     )
+
+    override fun deleteGroup(groupId: GroupId) {
+        groupRepository.deleteById(groupId.value)
+    }
 }
