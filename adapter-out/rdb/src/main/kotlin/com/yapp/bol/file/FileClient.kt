@@ -35,20 +35,21 @@ class FileClient(
     }
 
     override fun getFile(uuid: String): RawFileData {
-        val s3Object = s3Client.getObject(bucketName, uuid)
 
-        val accessLevelValue =
-            s3Object.objectMetadata.getUserMetaDataOf(METADATA_PURPOSE) ?: throw IllegalFileStateException
-        val purpose = FilePurpose.valueOf(accessLevelValue)
-        val userId = s3Object.objectMetadata.getUserMetaDataOf(METADATA_USER_ID) ?: throw IllegalFileStateException
-        val contentType = s3Object.objectMetadata.contentType ?: throw IllegalFileStateException
+        s3Client.getObject(bucketName, uuid).use { s3Object ->
+            val accessLevelValue =
+                s3Object.objectMetadata.getUserMetaDataOf(METADATA_PURPOSE) ?: throw IllegalFileStateException
+            val purpose = FilePurpose.valueOf(accessLevelValue)
+            val userId = s3Object.objectMetadata.getUserMetaDataOf(METADATA_USER_ID) ?: throw IllegalFileStateException
+            val contentType = s3Object.objectMetadata.contentType ?: throw IllegalFileStateException
 
-        return RawFileData(
-            userId = UserId(userId.toLong()),
-            content = s3Object.objectContent.delegateStream,
-            contentType = contentType,
-            purpose = purpose,
-        )
+            return RawFileData(
+                userId = UserId(userId.toLong()),
+                content = s3Object.objectContent.delegateStream,
+                contentType = contentType,
+                purpose = purpose,
+            )
+        }
     }
 
     override fun getFileInfo(uuid: String): FileInfo? {
