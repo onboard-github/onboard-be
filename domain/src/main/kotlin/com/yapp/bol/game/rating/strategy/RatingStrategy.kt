@@ -1,7 +1,8 @@
 package com.yapp.bol.game.rating.strategy
 
-import com.yapp.bol.game.rating.dto.RatingInput
+import com.yapp.bol.game.member.GameMember
+import com.yapp.bol.game.rating.dto.MatchInput
 
 interface RatingStrategy {
-    fun compute(input: RatingInput): Int
+    fun compute(input: MatchInput): List<GameMember>
 }
