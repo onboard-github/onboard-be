@@ -17,9 +17,9 @@ data class GameMember(
     val winningPercentage: Double,
 ) {
 
-    fun updateScore(newScore: Int): GameMember {
+    fun updateScore(deltaScore: Int): GameMember {
         return this.copy(
-            finalScore = newScore,
+            finalScore = finalScore + deltaScore,
             matchCount = this.matchCount + 1,
         )
     }
