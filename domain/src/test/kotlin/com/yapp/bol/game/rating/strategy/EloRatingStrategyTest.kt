@@ -1,9 +1,9 @@
-//package com.yapp.bol.game.rating.strategy
+// package com.yapp.bol.game.rating.strategy
 //
-//import io.kotest.core.spec.style.FunSpec
-//import io.kotest.matchers.shouldBe
+// import io.kotest.core.spec.style.FunSpec
+// import io.kotest.matchers.shouldBe
 //
-//class EloRatingStrategyTest : FunSpec() {
+// class EloRatingStrategyTest : FunSpec() {
 //    private val eloRatingStrategy = EloRatingStrategy
 //
 //    init {
@@ -37,4 +37,4 @@
 //            eloRatingStrategy.compute(input3) shouldBe 33
 //        }
 //    }
-//}
+// }

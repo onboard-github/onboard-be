@@ -51,7 +51,7 @@ object BloRatingStrategy : RatingStrategy {
                 deltaScore += min(deltaScore * 0.2, 3.0)
             }
 
-            member.updateScore( deltaScore.toInt())
+            member.updateScore(deltaScore.toInt())
         }
     }
 }
