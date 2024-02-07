@@ -1,6 +1,6 @@
 package com.yapp.bol.config.filter
 
-import com.yapp.bol.utils.logger
+import com.yapp.bol.logging.utils.logger
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest

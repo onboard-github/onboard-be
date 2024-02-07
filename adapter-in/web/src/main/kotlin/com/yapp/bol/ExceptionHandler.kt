@@ -1,6 +1,6 @@
 package com.yapp.bol
 
-import com.yapp.bol.utils.logger
+import com.yapp.bol.logging.utils.logger
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
