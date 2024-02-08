@@ -6,7 +6,9 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.validate.NicknameValidator
 
 @JvmInline
-value class MemberId(val value: Long)
+value class MemberId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 abstract class Member internal constructor(
     val id: MemberId,

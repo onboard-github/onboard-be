@@ -7,7 +7,9 @@ import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.season.Season
 
 @JvmInline
-value class GameMemberId(val value: Long)
+value class GameMemberId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class GameMember(
     val id: GameMemberId = GameMemberId(0),

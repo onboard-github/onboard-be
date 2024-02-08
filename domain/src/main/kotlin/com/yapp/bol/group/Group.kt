@@ -6,7 +6,9 @@ import com.yapp.bol.InvalidGroupOrganizationException
 import com.yapp.bol.file.FileInfo
 
 @JvmInline
-value class GroupId(val value: Long)
+value class GroupId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class Group(
     override val id: GroupId = GroupId(0),
