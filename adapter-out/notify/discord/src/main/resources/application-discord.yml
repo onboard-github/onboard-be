@@ -1,0 +1,2 @@
+discord:
+    webhook: ${DISCORD_WEBHOOK}
