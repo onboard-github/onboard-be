@@ -1,5 +1,6 @@
 package com.yapp.bol.group
 
+import com.yapp.bol.NoPermissionDeleteGroupException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
@@ -10,6 +11,7 @@ import com.yapp.bol.base.OBJECT
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
 import com.yapp.bol.file.FileService
+import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.dto.CheckAccessCodeRequest
 import com.yapp.bol.group.dto.CreateGroupRequest
@@ -31,7 +33,7 @@ class GroupControllerTest : ControllerTest() {
 
     init {
         test("그룹 기본 이미지 가져오기") {
-            every { fileService.getDefaultGroupImageUrl() } returns "http://localhost:8080/default-image"
+            every { fileService.getDefaultGroupImage() } returns MockFileInfo()
 
             get("/api/v1/group/default-image") {}
                 .isStatus(200)
@@ -42,6 +44,7 @@ class GroupControllerTest : ControllerTest() {
                         tag = OpenApiTag.GROUP
                     ),
                     responseFields(
+                        "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "기본이미지 URL",
                     )
                 )
@@ -52,7 +55,8 @@ class GroupControllerTest : ControllerTest() {
                 name = "뽀글뽀글",
                 description = "보겜동입니다",
                 organization = "카카오",
-                profileImageUrl = "https://profile.com",
+                profileImageUrl = null,
+                profileImageUuid = "abcdefg",
                 nickname = "홀든",
             )
 
@@ -65,12 +69,17 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 생성하기"
+                    ),
                     requestFields(
                         "name" type STRING means "그룹 이름",
                         "description" type STRING means "그룹 설명",
                         "organization" type STRING means "그룹 소속",
-                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL" isOptional true,
+                        "profileImageUuid" type STRING means "그룹 프로필 이미지 Uuid (구버전 지원을 위해 Optional이지만, 실제론 필수값" isOptional true,
+                        "profileImageUrl" type STRING means "그룹 프로필 이미지 URL, profileImageUuid 사용 바람 (구버전 지원을 위해 남겨둔 상태)" deprecated true isOptional true,
                         "nickname" type STRING means "그룹장 닉네임" isOptional true,
                     ),
                     responseFields(
@@ -104,7 +113,11 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 리스트 가져오기"
+                    ),
                     queryParameters(
                         "keyword" type STRING means "검색하고자 하는 텍스트, (이름/소속)을 검색합니다. (디폴트 All)" isOptional true,
                         "pageNumber" type NUMBER means "페이지 번호 (디폴트 0)" isOptional true,
@@ -189,7 +202,11 @@ class GroupControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.GROUP),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.GROUP,
+                        description = "그룹 가입 중 참여 코드 확인"
+                    ),
                     pathParameters(
                         "groupId" type NUMBER means "그룹 ID"
                     ),
@@ -247,6 +264,57 @@ class GroupControllerTest : ControllerTest() {
                     )
                 )
         }
+
+        context("그룹 삭제") {
+
+            test("성공") {
+                val groupId = GroupId(123L)
+                val userId = UserId(321L)
+
+                every { groupService.deleteGroup(userId, groupId) } returns Unit
+
+                delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(
+                            identifier = "group/{method-name}",
+                            description = "그룹 삭제하기, Onwer만 가능",
+                            tag = OpenApiTag.GROUP,
+                        ),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID"
+                        ),
+                    )
+            }
+
+            test("오너가 아닌 사람") {
+                val groupId = GroupId(123L)
+                val userId = UserId(321L)
+
+                every { groupService.deleteGroup(userId, groupId) } throws NoPermissionDeleteGroupException
+
+                delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(400)
+                    .makeDocument(
+                        DocumentInfo(
+                            identifier = "group/{method-name}",
+                            description = "그룹 삭제하기, Onwer만 가능",
+                            tag = OpenApiTag.GROUP,
+                        ),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID"
+                        ),
+                        responseFields(
+                            "code" type STRING means "에러 코드",
+                            "message" type STRING means "에러메시지",
+                        )
+                    )
+            }
+        }
     }
 
     companion object {
@@ -255,7 +323,7 @@ class GroupControllerTest : ControllerTest() {
             name = "뽀글뽀글",
             description = "보겜동입니다",
             organization = "카카오",
-            profileImageUrl = "https://profile.com",
+            profileImage = MockFileInfo(),
             accessCode = "1A2B3C",
         )
 

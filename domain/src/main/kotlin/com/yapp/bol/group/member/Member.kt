@@ -6,7 +6,9 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.validate.NicknameValidator
 
 @JvmInline
-value class MemberId(val value: Long)
+value class MemberId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 abstract class Member internal constructor(
     val id: MemberId,
@@ -30,6 +32,24 @@ abstract class Member internal constructor(
     fun isOwner(): Boolean = this is OwnerMember
     fun isGuest(): Boolean = userId == null || this is GuestMember
     fun isHost(): Boolean = this is HostMember
+
+    fun changeNickname(nickname: String): Member {
+        when {
+            isOwner() -> return OwnerMember(
+                id = id,
+                userId = this.userId!!,
+                nickname = nickname,
+                level = level,
+            )
+            isHost() -> return HostMember(
+                id = id,
+                userId = this.userId!!,
+                nickname = nickname,
+                level = level,
+            )
+            else -> throw InvalidMemberRoleException
+        }
+    }
 
     companion object {
         const val MAX_NICKNAME_LENGTH = 10

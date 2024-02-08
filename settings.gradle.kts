@@ -19,6 +19,7 @@ include(
     "port-in",
     "port-out",
     "adapter-in:web",
+    "adapter-out:notify:discord",
     "adapter-out:rdb",
     "adapter-out:social",
     "support:jwt",

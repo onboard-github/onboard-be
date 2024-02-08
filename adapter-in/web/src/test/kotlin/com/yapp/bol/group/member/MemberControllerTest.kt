@@ -1,5 +1,6 @@
 package com.yapp.bol.group.member
 
+import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.base.ARRAY
@@ -9,10 +10,12 @@ import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.member.dto.AddGuestRequest
 import com.yapp.bol.group.member.dto.JoinGroupRequest
+import com.yapp.bol.group.member.dto.UpdateMemberInfoRequest
 import com.yapp.bol.group.member.nickname.NicknameValidation
 import com.yapp.bol.group.member.nickname.NicknameValidationReason
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
@@ -22,7 +25,8 @@ import io.mockk.mockk
 class MemberControllerTest : ControllerTest() {
     private val groupService: GroupService = mockk()
     private val memberService: MemberService = mockk()
-    override val controller = MemberController(groupService, memberService)
+    private val gameMemberService: GameMemberService = mockk()
+    override val controller = MemberController(groupService, memberService, gameMemberService)
 
     init {
         test("멤버 닉네임 검사") {
@@ -161,6 +165,70 @@ class MemberControllerTest : ControllerTest() {
                 )
         }
 
+        test("그룹 내 멤버의 플레이 횟수 가져오기 (없으면 0)") {
+            val groupId = GroupId(1)
+            val memberId = MemberId(1)
+
+            every { gameMemberService.getMatchCountByMemberId(any()) } returns 1L
+
+            get("/api/v1/group/{groupId}/member/{memberId}/match/count", arrayOf(groupId.value, memberId.value)) {}
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                    pathParameters(
+                        "groupId" type NUMBER means "그룹 ID",
+                        "memberId" type NUMBER means "멤버 ID",
+                    ),
+                    responseFields(
+                        "matchCount" type NUMBER means "플레이 횟수",
+                    )
+                )
+        }
+
+        test("멤버 정보 변경") {
+            val userId = UserId(1L)
+            val groupId = GroupId(1L)
+            val memberId = MemberId(1L)
+
+            val newNickname = "new"
+
+            val request = UpdateMemberInfoRequest(newNickname)
+
+            every {
+                memberService.updateMemberInfo(any(), any(), any())
+            } returns HostMember(
+                id = MemberId(1),
+                userId = UserId(1),
+                nickname = newNickname,
+                level = 0,
+            )
+
+            patch(
+                url = "/api/v1/group/{groupId}/member/{memberId}",
+                pathParams = arrayOf(groupId.value, memberId.value),
+                request = request
+            ) {
+                authorizationHeader(userId)
+            }
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                    pathParameters(
+                        "groupId" type NUMBER means "그룹 ID",
+                        "memberId" type NUMBER means "멤버 ID",
+                    ),
+                    requestFields(
+                        "nickname" type STRING means "변경할 닉네임",
+                    ),
+                    responseFields(
+                        "id" type NUMBER means "맴버 ID",
+                        "role" type ENUM(MemberRole::class) means "맴버 종류 구분",
+                        "nickname" type STRING means "맴버가 그룹에서 사용하는 닉네임",
+                        "level" type NUMBER means "주사위 모양 데이터",
+                    )
+                )
+        }
+
         context("맴버 탈퇴") {
             test("맴버 탈퇴 - Host Member") {
                 val groupId = GroupId(1)
@@ -200,13 +268,53 @@ class MemberControllerTest : ControllerTest() {
                         pathParameters(
                             "groupId" type NUMBER means "그룹 ID",
                         ),
-                        requestFields(
-                            "nickname" type STRING means "그룹 전용 닉네임, null 일 경우 유저 기본 닉네임을 사용" isOptional false,
+                        responseFields(
+                            "code" type STRING means "에러 코드",
+                            "message" type STRING means "에러메시지",
+                        )
+                    )
+            }
+            test("맴버 탈퇴 - Only One Member") {
+                val groupId = GroupId(1)
+                val userId = UserId(1)
+                val request = AddGuestRequest("nickname")
+
+                every { memberService.deleteMyMember(any(), any()) } throws CannotDeleteOnlyOneMemberException
+
+                delete("/api/v1/group/{groupId}/me", request, arrayOf(groupId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(400)
+                    .makeDocument(
+                        DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID",
                         ),
                         responseFields(
                             "code" type STRING means "에러 코드",
                             "message" type STRING means "에러메시지",
                         )
+                    )
+            }
+
+            test("그룹장 임명 (Owner -> Host)") {
+                val groupId = GroupId(1)
+                val userId = UserId(1)
+                val memberId = MemberId(2)
+
+                every { memberService.assignOwner(any(), any(), any()) } returns Unit
+
+                patch("/api/v1/group/{groupId}/member/{memberId}/assign-owner", arrayOf(groupId.value, memberId.value)) {
+                    authorizationHeader(userId)
+                }
+                    .isStatus(200)
+                    .makeDocument(
+                        DocumentInfo(identifier = "member/{method-name}", tag = OpenApiTag.MEMBER),
+                        pathParameters(
+                            "groupId" type NUMBER means "그룹 ID",
+                            "memberId" type NUMBER means "맴버 ID",
+                        ),
+                        responseFields()
                     )
             }
         }

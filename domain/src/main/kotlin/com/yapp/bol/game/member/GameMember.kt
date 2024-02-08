@@ -1,13 +1,13 @@
 package com.yapp.bol.game.member
 
 import com.yapp.bol.game.GameId
-import com.yapp.bol.game.rating.dto.RatingInput
-import com.yapp.bol.game.rating.strategy.RatingStrategy
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.season.Season
 
 @JvmInline
-value class GameMemberId(val value: Long)
+value class GameMemberId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class GameMember(
     val id: GameMemberId = GameMemberId(0),
@@ -18,14 +18,11 @@ data class GameMember(
     val matchCount: Int,
     val winningPercentage: Double,
 ) {
-    fun updateScore(input: RatingInput, strategy: RatingStrategy): GameMember {
-        val matchCount = this.matchCount + 1
 
-        val updatedScore = strategy.compute(input)
-
+    fun updateScore(deltaScore: Int): GameMember {
         return this.copy(
-            finalScore = updatedScore,
-            matchCount = matchCount,
+            finalScore = finalScore + deltaScore,
+            matchCount = this.matchCount + 1,
         )
     }
 

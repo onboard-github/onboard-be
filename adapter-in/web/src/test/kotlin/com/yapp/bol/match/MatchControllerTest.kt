@@ -64,7 +64,11 @@ class MatchControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "group/{method-name}", tag = OpenApiTag.MATCH),
+                    DocumentInfo(
+                        identifier = "group/{method-name}",
+                        tag = OpenApiTag.MATCH,
+                        description = "매치 기록하기",
+                    ),
                     requestFields(
                         "gameId" type NUMBER means "game id",
                         "groupId" type NUMBER means "group id",
