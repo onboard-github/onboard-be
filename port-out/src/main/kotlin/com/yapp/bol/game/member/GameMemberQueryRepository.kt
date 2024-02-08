@@ -8,6 +8,4 @@ interface GameMemberQueryRepository {
     fun findGameMember(memberId: MemberId, gameId: GameId, groupId: GroupId): GameMember?
 
     fun getMatchCount(memberId: MemberId): Long
-
-    fun getMatchCounts(memberIds: List<MemberId>): Map<MemberId, Long>
 }

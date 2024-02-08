@@ -6,7 +6,6 @@ import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.file.FileQueryRepository
 import com.yapp.bol.file.MockFileInfo
-import com.yapp.bol.game.member.GameMemberQueryRepository
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.GuestMember
@@ -27,16 +26,14 @@ class GroupServiceImplTest : FunSpec() {
     private val memberQueryRepository: MemberQueryRepository = mockk()
     private val memberCommandRepository: MemberCommandRepository = mockk()
     private val fileQueryRepository: FileQueryRepository = mockk()
-    private val gameMemberQueryRepository: GameMemberQueryRepository = mockk()
 
     private val sut = GroupServiceImpl(
-        groupQueryRepository = groupQueryRepository,
-        groupCommandRepository = groupCommandRepository,
-        memberService = memberService,
-        memberQueryRepository = memberQueryRepository,
-        memberCommandRepository = memberCommandRepository,
-        fileQueryRepository = fileQueryRepository,
-        gameMemberQueryRepository = gameMemberQueryRepository
+        groupQueryRepository,
+        groupCommandRepository,
+        memberService,
+        memberQueryRepository,
+        memberCommandRepository,
+        fileQueryRepository,
     )
 
     init {
@@ -59,12 +56,7 @@ class GroupServiceImplTest : FunSpec() {
 
             test("Success") {
                 every { groupQueryRepository.findById(request.groupId) } returns mockGroup
-                every {
-                    memberQueryRepository.findByGroupIdAndUserId(
-                        request.groupId,
-                        request.userId
-                    )
-                } returns null
+                every { memberQueryRepository.findByGroupIdAndUserId(request.groupId, request.userId) } returns null
                 every { memberService.createHostMember(any(), any(), any()) } returns HostMember(
                     userId = request.userId,
                     nickname = request.nickname!!,

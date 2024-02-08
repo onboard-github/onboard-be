@@ -17,23 +17,4 @@ class CustomGameMemberRepositoryImpl(
             .fetchOne()
             ?.toLong()
     }
-
-    override fun getMatchCounts(memberIds: List<MemberId>): Map<MemberId, Long> {
-        val gameMember = QGameMemberEntity.gameMemberEntity
-
-        val conditions = gameMember.memberId.`in`(memberIds.map { it.value })
-
-        return queryFactory
-            .select(gameMember.memberId, gameMember.matchCount.sum())
-            .from(gameMember)
-            .where(conditions)
-            .groupBy(gameMember.memberId)
-            .fetch()
-            .associate { result ->
-                val memberId = MemberId(result.get(gameMember.memberId)!!)
-                val matchCount = result.get(gameMember.matchCount.sum())?.toLong() ?: 0L
-
-                memberId to matchCount
-            }
-    }
 }

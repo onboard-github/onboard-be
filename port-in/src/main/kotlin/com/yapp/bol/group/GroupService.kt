@@ -7,7 +7,6 @@ import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
 import com.yapp.bol.group.dto.JoinGroupDto
-import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 
@@ -37,6 +36,4 @@ interface GroupService {
     fun getOwner(groupId: GroupId): OwnerMember
 
     fun isRegisterGroup(userId: UserId, groupId: GroupId): Boolean
-
-    fun getJoinedGroups(userId: UserId): List<JoinedGroupDto>
 }
