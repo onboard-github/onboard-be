@@ -12,5 +12,5 @@ data class CheckOnboardResponse(
 fun OnboardingGuide.toResponse(): CheckOnboardResponse =
     CheckOnboardResponse(
         onboarding = this.list,
-        mainGroupId = this.mainGroupId
+        mainGroupId = this.mainGroupId,
     )

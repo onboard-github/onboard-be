@@ -32,7 +32,7 @@ internal class MemberServiceImpl(
 
         val member = HostMember(
             userId = userId,
-            nickname = nickname
+            nickname = nickname,
         )
 
         return memberCommandRepository.createMember(groupId, member) as HostMember
@@ -53,7 +53,7 @@ internal class MemberServiceImpl(
     override fun updateMemberInfo(
         groupId: GroupId,
         memberId: MemberId,
-        nickname: String
+        nickname: String,
     ): Member {
         if (validateUniqueNickname(groupId, nickname).not()) throw DuplicatedMemberNicknameException
 
@@ -105,7 +105,7 @@ internal class MemberServiceImpl(
         memberCommandRepository.assignOwner(
             groupId = groupId,
             originOwnerId = originOwner.id,
-            targetMemberId = targetMember.id
+            targetMemberId = targetMember.id,
         )
     }
 

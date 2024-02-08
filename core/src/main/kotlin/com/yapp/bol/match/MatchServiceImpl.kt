@@ -72,7 +72,7 @@ class MatchServiceImpl(
                     rank = it.ranking,
                     gameScore = it.score,
                 )
-            }.toSet()
+            }.toSet(),
         )
     }
 }

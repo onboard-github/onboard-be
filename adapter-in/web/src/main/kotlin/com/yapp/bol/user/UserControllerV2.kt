@@ -22,7 +22,7 @@ class UserControllerV2(
         val joinedGroupDtos = groupService.getJoinedGroupsForV2(userId)
 
         return JoinedGroupResponseV2(
-            contents = joinedGroupDtos
+            contents = joinedGroupDtos,
         )
     }
 }

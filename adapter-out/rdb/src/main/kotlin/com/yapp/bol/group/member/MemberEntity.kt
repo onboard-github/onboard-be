@@ -27,7 +27,7 @@ class MemberEntity(
     userId: Long? = null,
     groupId: Long = 0,
     role: MemberRole,
-    nickname: String
+    nickname: String,
 ) : AuditingEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

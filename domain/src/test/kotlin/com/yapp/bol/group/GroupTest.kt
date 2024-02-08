@@ -15,7 +15,7 @@ class GroupTest : FunSpec() {
             name = "name",
             description = "description",
             organization = "organization",
-            profileImage = MockFileInfo()
+            profileImage = MockFileInfo(),
         )
 
         test("그룹 생성") {

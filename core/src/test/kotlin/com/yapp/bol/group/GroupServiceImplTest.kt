@@ -36,7 +36,7 @@ class GroupServiceImplTest : FunSpec() {
         memberQueryRepository = memberQueryRepository,
         memberCommandRepository = memberCommandRepository,
         fileQueryRepository = fileQueryRepository,
-        gameMemberQueryRepository = gameMemberQueryRepository
+        gameMemberQueryRepository = gameMemberQueryRepository,
     )
 
     init {
@@ -54,7 +54,7 @@ class GroupServiceImplTest : FunSpec() {
                 description = "description",
                 organization = "organization",
                 profileImage = MockFileInfo(),
-                accessCode = request.accessCode
+                accessCode = request.accessCode,
             )
 
             test("Success") {
@@ -62,7 +62,7 @@ class GroupServiceImplTest : FunSpec() {
                 every {
                     memberQueryRepository.findByGroupIdAndUserId(
                         request.groupId,
-                        request.userId
+                        request.userId,
                     )
                 } returns null
                 every { memberService.createHostMember(any(), any(), any()) } returns HostMember(
@@ -96,19 +96,19 @@ class GroupServiceImplTest : FunSpec() {
             val request = AddGuestDto(
                 groupId = GroupId(0),
                 nickname = "name",
-                requestUserId = UserId(0)
+                requestUserId = UserId(0),
             )
 
             val mockMember = HostMember(
                 userId = request.requestUserId,
-                nickname = "other"
+                nickname = "other",
             )
 
             test("Success") {
                 every {
                     memberQueryRepository.findByGroupIdAndUserId(
                         request.groupId,
-                        request.requestUserId
+                        request.requestUserId,
                     )
                 } returns mockMember
                 every { memberService.createGuestMember(any(), any()) } returns GuestMember(
@@ -124,7 +124,7 @@ class GroupServiceImplTest : FunSpec() {
                 every {
                     memberQueryRepository.findByGroupIdAndUserId(
                         request.groupId,
-                        request.requestUserId
+                        request.requestUserId,
                     )
                 } returns null
                 every { memberService.createGuestMember(any(), any()) } returns GuestMember(

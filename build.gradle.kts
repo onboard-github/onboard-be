@@ -7,7 +7,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("kapt") version "1.7.22"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.springframework.boot")
 }
@@ -58,9 +58,9 @@ subprojects {
 configure(
     subprojects.filter {
         it.path in listOf(
-            ":domain"
+            ":domain",
         )
-    }
+    },
 ) {
     configurations.register("testArchive") {
         extendsFrom(configurations.testImplementation.get())

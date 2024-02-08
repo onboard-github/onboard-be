@@ -23,7 +23,7 @@ class GameController(
         val games = gameService.getGameList(groupId, sortType)
 
         return GameListResponse(
-            games.map { it.toResponse() }
+            games.map { it.toResponse() },
         )
     }
 }

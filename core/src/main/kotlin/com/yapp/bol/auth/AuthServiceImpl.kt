@@ -12,8 +12,11 @@ internal class AuthServiceImpl(
     private val tokenService: TokenService,
 ) : AuthService {
     override fun login(loginType: LoginType, token: String): AuthToken {
-        return if (loginType == LoginType.REFRESH) loginByRefreshToken(token)
-        else socialLogin(loginType, token)
+        return if (loginType == LoginType.REFRESH) {
+            loginByRefreshToken(token)
+        } else {
+            socialLogin(loginType, token)
+        }
     }
 
     override fun getAuthUserByAccessToken(token: String): AuthUser? {

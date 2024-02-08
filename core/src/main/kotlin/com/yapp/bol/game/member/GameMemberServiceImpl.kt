@@ -32,9 +32,9 @@ class GameMemberServiceImpl(
             GameMember.of(
                 gameId = gameId,
                 memberId = memberId,
-                season = season
+                season = season,
             ),
-            groupId = groupId
+            groupId = groupId,
         )
     }
 

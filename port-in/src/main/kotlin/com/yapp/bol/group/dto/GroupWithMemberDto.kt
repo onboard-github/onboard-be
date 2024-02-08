@@ -11,5 +11,5 @@ data class GroupWithMemberDto(
     val profileImageUrl: String,
     val memberId: MemberId,
     val nickname: String,
-    val matchCount: Long
+    val matchCount: Long,
 )

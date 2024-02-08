@@ -14,7 +14,7 @@ import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 
 interface GroupService {
     fun createGroup(
-        createGroupDto: CreateGroupDto
+        createGroupDto: CreateGroupDto,
     ): GroupMemberList
 
     fun joinGroup(request: JoinGroupDto)
@@ -22,7 +22,7 @@ interface GroupService {
     fun searchGroup(
         keyword: String?,
         pageNumber: Int,
-        pageSize: Int
+        pageSize: Int,
     ): PaginationOffsetResponse<GroupWithMemberCount>
 
     fun addGuest(request: AddGuestDto)

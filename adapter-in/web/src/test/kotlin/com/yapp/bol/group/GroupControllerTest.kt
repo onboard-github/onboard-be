@@ -41,12 +41,12 @@ class GroupControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "group/{method-name}",
                         description = "그룹 기본 이미지 랜덤으로 가져오기",
-                        tag = OpenApiTag.GROUP
+                        tag = OpenApiTag.GROUP,
                     ),
                     responseFields(
                         "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "기본이미지 URL",
-                    )
+                    ),
                 )
         }
 
@@ -72,7 +72,7 @@ class GroupControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "group/{method-name}",
                         tag = OpenApiTag.GROUP,
-                        description = "그룹 생성하기"
+                        description = "그룹 생성하기",
                     ),
                     requestFields(
                         "name" type STRING means "그룹 이름",
@@ -89,8 +89,8 @@ class GroupControllerTest : ControllerTest() {
                         "owner" type STRING means "그룹장 닉네임",
                         "organization" type STRING means "그룹 소속",
                         "profileImageUrl" type STRING means "그룹 프로필 이미지 URL",
-                        "accessCode" type STRING means "그룹 접근 코드"
-                    )
+                        "accessCode" type STRING means "그룹 접근 코드",
+                    ),
                 )
         }
 
@@ -116,12 +116,12 @@ class GroupControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "group/{method-name}",
                         tag = OpenApiTag.GROUP,
-                        description = "그룹 리스트 가져오기"
+                        description = "그룹 리스트 가져오기",
                     ),
                     queryParameters(
                         "keyword" type STRING means "검색하고자 하는 텍스트, (이름/소속)을 검색합니다. (디폴트 All)" isOptional true,
                         "pageNumber" type NUMBER means "페이지 번호 (디폴트 0)" isOptional true,
-                        "pageSize" type NUMBER means "페이지 크기 (디폴트 10)" isOptional true
+                        "pageSize" type NUMBER means "페이지 크기 (디폴트 10)" isOptional true,
                     ),
                     responseFields(
                         "content" type ARRAY means "그룹 목록",
@@ -131,8 +131,8 @@ class GroupControllerTest : ControllerTest() {
                         "content[].organization" type STRING means "그룹 소속" isOptional true,
                         "content[].profileImageUrl" type STRING means "그룹 프로필 이미지 URL",
                         "content[].memberCount" type NUMBER means "그룹 멤버 수",
-                        "hasNext" type BOOLEAN means "다음 페이지 존재 여부"
-                    )
+                        "hasNext" type BOOLEAN means "다음 페이지 존재 여부",
+                    ),
                 )
         }
 
@@ -160,7 +160,7 @@ class GroupControllerTest : ControllerTest() {
                     score = null,
                     matchCount = null,
                     isChangeRecent = true,
-                )
+                ),
             )
 
             get("/api/v1/group/{groupId}/game/{gameId}", arrayOf(groupId.value, gameId.value)) {}
@@ -169,7 +169,7 @@ class GroupControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "group/{method-name}",
                         description = "게임 별 리더보드 보기",
-                        tag = OpenApiTag.GROUP
+                        tag = OpenApiTag.GROUP,
                     ),
                     pathParameters(
                         "groupId" type NUMBER means "그룹 ID",
@@ -186,7 +186,7 @@ class GroupControllerTest : ControllerTest() {
                         "contents[].score" type NUMBER means "승점" isOptional true,
                         "contents[].matchCount" type NUMBER means "총 플레이 횟수" isOptional true,
                         "contents[].isChangeRecent" type BOOLEAN means "최근(1시간 이내) 변경점이 존재하는 지 여부",
-                    )
+                    ),
                 )
         }
 
@@ -205,17 +205,17 @@ class GroupControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "group/{method-name}",
                         tag = OpenApiTag.GROUP,
-                        description = "그룹 가입 중 참여 코드 확인"
+                        description = "그룹 가입 중 참여 코드 확인",
                     ),
                     pathParameters(
-                        "groupId" type NUMBER means "그룹 ID"
+                        "groupId" type NUMBER means "그룹 ID",
                     ),
                     requestFields(
-                        "accessCode" type STRING means "엑세스 코드"
+                        "accessCode" type STRING means "엑세스 코드",
                     ),
                     responseFields(
                         "result" type BOOLEAN means "엑세스 코드 기출 여부",
-                    )
+                    ),
                 )
         }
 
@@ -245,7 +245,7 @@ class GroupControllerTest : ControllerTest() {
                         tag = OpenApiTag.GROUP,
                     ),
                     pathParameters(
-                        "groupId" type NUMBER means "그룹 ID"
+                        "groupId" type NUMBER means "그룹 ID",
                     ),
                     responseFields(
                         "id" type NUMBER means "그룹 ID",
@@ -261,7 +261,7 @@ class GroupControllerTest : ControllerTest() {
                         "owner.role" type ENUM(MemberRole::class) means "OWNER 로 고정",
                         "owner.nickname" type STRING means "Owner 닉네임",
                         "owner.level" type NUMBER means "주사위 등급",
-                    )
+                    ),
                 )
         }
 
@@ -284,7 +284,7 @@ class GroupControllerTest : ControllerTest() {
                             tag = OpenApiTag.GROUP,
                         ),
                         pathParameters(
-                            "groupId" type NUMBER means "그룹 ID"
+                            "groupId" type NUMBER means "그룹 ID",
                         ),
                     )
             }
@@ -306,12 +306,12 @@ class GroupControllerTest : ControllerTest() {
                             tag = OpenApiTag.GROUP,
                         ),
                         pathParameters(
-                            "groupId" type NUMBER means "그룹 ID"
+                            "groupId" type NUMBER means "그룹 ID",
                         ),
                         responseFields(
                             "code" type STRING means "에러 코드",
                             "message" type STRING means "에러메시지",
-                        )
+                        ),
                     )
             }
         }
@@ -331,12 +331,12 @@ class GroupControllerTest : ControllerTest() {
             OwnerMember(
                 userId = UserId(1),
                 nickname = "홀든",
-            )
+            ),
         )
 
         val GROUP_WITH_MEMBER_COUNT = GroupWithMemberCount(
             group = GROUP,
-            memberCount = MEMBER_LIST.getSize()
+            memberCount = MEMBER_LIST.getSize(),
         )
     }
 }

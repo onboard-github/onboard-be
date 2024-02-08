@@ -32,7 +32,7 @@ class SettingControllerTest : ControllerTest() {
                         "contents[].title" type STRING means "약관 제목",
                         "contents[].isRequired" type BOOLEAN means "약관 필수 여부",
                         "contents[].url" type STRING means "약관 내용 url",
-                    )
+                    ),
                 )
         }
     }

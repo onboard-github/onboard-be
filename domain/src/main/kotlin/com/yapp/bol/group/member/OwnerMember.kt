@@ -11,5 +11,5 @@ class OwnerMember(
     id = id,
     userId = userId,
     nickname = nickname,
-    level = level
+    level = level,
 )

@@ -17,7 +17,7 @@ class SecurityExceptionHandler(
     override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authException: AuthenticationException
+        authException: AuthenticationException,
     ) {
         handler.resolveException(request, response, null, authException)
     }
@@ -25,7 +25,7 @@ class SecurityExceptionHandler(
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        accessDeniedException: AccessDeniedException
+        accessDeniedException: AccessDeniedException,
     ) {
         handler.resolveException(request, response, null, accessDeniedException)
     }

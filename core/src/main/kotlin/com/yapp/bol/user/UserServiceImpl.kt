@@ -5,8 +5,8 @@ import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.AuthCommandRepository
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.token.TokenCommandRepository
-import com.yapp.bol.transaction.MyTransactional
 import com.yapp.bol.group.member.MemberService
+import com.yapp.bol.transaction.MyTransactional
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
 

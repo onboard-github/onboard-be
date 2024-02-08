@@ -4,7 +4,7 @@ import com.yapp.bol.game.member.GameMember
 import kotlin.math.max
 
 data class MatchInput(
-    val items: Set<MatchInputItem>
+    val items: Set<MatchInputItem>,
 )
 
 data class MatchInputItem(

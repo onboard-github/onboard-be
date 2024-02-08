@@ -37,7 +37,7 @@ class MemberControllerTest : ControllerTest() {
                 memberService.validateMemberNickname(any(), any())
             } returns NicknameValidation(
                 isAvailable = false,
-                reason = NicknameValidationReason.DUPLICATED_NICKNAME
+                reason = NicknameValidationReason.DUPLICATED_NICKNAME,
             )
 
             get("/api/v1/group/{groupId}/member/validateNickname", arrayOf(groupId.value)) {
@@ -48,18 +48,18 @@ class MemberControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "member/{method-name}",
                         tag = OpenApiTag.MEMBER,
-                        description = "맴버 닉네임 검사"
+                        description = "맴버 닉네임 검사",
                     ),
                     pathParameters(
                         "groupId" type NUMBER means "그룹 ID",
                     ),
                     queryParameters(
-                        "nickname" type STRING means "닉네임"
+                        "nickname" type STRING means "닉네임",
                     ),
                     responseFields(
                         "isAvailable" type BOOLEAN means "그룹 내에서 닉네임 사용 가능 여부",
-                        "reason" type ENUM(NicknameValidationReason::class) means "닉네임 사용 불가능한 이유"
-                    )
+                        "reason" type ENUM(NicknameValidationReason::class) means "닉네임 사용 불가능한 이유",
+                    ),
                 )
         }
 
@@ -94,7 +94,7 @@ class MemberControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "member/{method-name}",
                         tag = OpenApiTag.MEMBER,
-                        description = "맴버 목록 가져오기"
+                        description = "맴버 목록 가져오기",
                     ),
                     pathParameters(
                         "groupId" type NUMBER means "그룹 ID",
@@ -113,7 +113,7 @@ class MemberControllerTest : ControllerTest() {
                         "contents[].level" type NUMBER means "주사위 모양 데이터",
                         "cursor" type STRING means "다음 페이지를 가져오기 위한 기준 값",
                         "hasNext" type BOOLEAN means "다음 페이지 존재 여부",
-                    )
+                    ),
                 )
         }
 
@@ -138,7 +138,7 @@ class MemberControllerTest : ControllerTest() {
                         "guestId" type STRING means "게스트 연동 할 ID, nickname보다 우선시 됩니다." isOptional true,
                         "accessCode" type STRING means "그룹에 가입하기 위한 참여 코드",
                     ),
-                    responseFields()
+                    responseFields(),
                 )
         }
 
@@ -161,7 +161,7 @@ class MemberControllerTest : ControllerTest() {
                     requestFields(
                         "nickname" type STRING means "그룹 전용 닉네임, null 일 경우 유저 기본 닉네임을 사용" isOptional false,
                     ),
-                    responseFields()
+                    responseFields(),
                 )
         }
 
@@ -181,7 +181,7 @@ class MemberControllerTest : ControllerTest() {
                     ),
                     responseFields(
                         "matchCount" type NUMBER means "플레이 횟수",
-                    )
+                    ),
                 )
         }
 
@@ -206,7 +206,7 @@ class MemberControllerTest : ControllerTest() {
             patch(
                 url = "/api/v1/group/{groupId}/member/{memberId}",
                 pathParams = arrayOf(groupId.value, memberId.value),
-                request = request
+                request = request,
             ) {
                 authorizationHeader(userId)
             }
@@ -225,7 +225,7 @@ class MemberControllerTest : ControllerTest() {
                         "role" type ENUM(MemberRole::class) means "맴버 종류 구분",
                         "nickname" type STRING means "맴버가 그룹에서 사용하는 닉네임",
                         "level" type NUMBER means "주사위 모양 데이터",
-                    )
+                    ),
                 )
         }
 
@@ -249,7 +249,7 @@ class MemberControllerTest : ControllerTest() {
                         requestFields(
                             "nickname" type STRING means "그룹 전용 닉네임, null 일 경우 유저 기본 닉네임을 사용" isOptional false,
                         ),
-                        responseFields()
+                        responseFields(),
                     )
             }
             test("맴버 탈퇴 - Owner Member") {
@@ -271,7 +271,7 @@ class MemberControllerTest : ControllerTest() {
                         responseFields(
                             "code" type STRING means "에러 코드",
                             "message" type STRING means "에러메시지",
-                        )
+                        ),
                     )
             }
             test("맴버 탈퇴 - Only One Member") {
@@ -293,7 +293,7 @@ class MemberControllerTest : ControllerTest() {
                         responseFields(
                             "code" type STRING means "에러 코드",
                             "message" type STRING means "에러메시지",
-                        )
+                        ),
                     )
             }
 
@@ -314,7 +314,7 @@ class MemberControllerTest : ControllerTest() {
                             "groupId" type NUMBER means "그룹 ID",
                             "memberId" type NUMBER means "맴버 ID",
                         ),
-                        responseFields()
+                        responseFields(),
                     )
             }
         }

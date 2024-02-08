@@ -42,7 +42,6 @@ internal class GroupServiceImpl(
     override fun createGroup(
         createGroupDto: CreateGroupDto,
     ): GroupMemberList {
-
         val group = Group(
             name = createGroupDto.name,
             description = createGroupDto.description,
@@ -50,13 +49,13 @@ internal class GroupServiceImpl(
             profileImage = getProfileImage(
                 createGroupDto.ownerId,
                 createGroupDto.profileImageUrl,
-                createGroupDto.profileImageUuid
-            )
+                createGroupDto.profileImageUuid,
+            ),
         )
 
         val owner = OwnerMember(
             userId = createGroupDto.ownerId,
-            nickname = createGroupDto.nickname ?: "기본 닉네임" // TODO: User Service
+            nickname = createGroupDto.nickname ?: "기본 닉네임", // TODO: User Service
         )
 
         return groupCommandRepository.createGroup(group, owner)
@@ -69,8 +68,9 @@ internal class GroupServiceImpl(
         val fileData = fileQueryRepository.getFile(finalUuid)
             ?: throw NotFoundFileException
 
-        if ((fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE || (fileData.userId == userId && fileData.purpose == FilePurpose.GROUP_IMAGE)).not())
+        if ((fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE || (fileData.userId == userId && fileData.purpose == FilePurpose.GROUP_IMAGE)).not()) {
             throw NotFoundFileException
+        }
 
         return fileQueryRepository.getFileInfo(finalUuid) ?: throw NotFoundFileException
     }
@@ -112,7 +112,7 @@ internal class GroupServiceImpl(
         val groups = groupQueryRepository.search(
             keyword = keyword,
             pageNumber = pageNumber,
-            pageSize = pageSize
+            pageSize = pageSize,
         )
 
         val groupWithMemberCount = groups.content.map { group ->

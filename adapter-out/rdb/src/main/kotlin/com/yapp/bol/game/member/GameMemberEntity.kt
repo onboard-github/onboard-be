@@ -59,7 +59,7 @@ class GameMemberEntity : AuditingEntity() {
             season: SeasonEntity,
             finalScore: Int,
             matchCount: Int,
-            winningPercentage: Double
+            winningPercentage: Double,
         ): GameMemberEntity {
             return GameMemberEntity().apply {
                 this.id = id
@@ -91,5 +91,5 @@ internal fun GameMember.toEntity(): GameMemberEntity = GameMemberEntity.of(
     season = season.toEntity(),
     finalScore = finalScore,
     matchCount = matchCount,
-    winningPercentage = winningPercentage
+    winningPercentage = winningPercentage,
 )
