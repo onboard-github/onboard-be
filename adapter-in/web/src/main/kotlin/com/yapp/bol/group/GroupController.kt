@@ -1,5 +1,6 @@
 package com.yapp.bol.group
 
+import com.yapp.bol.EmptyResponse
 import com.yapp.bol.auth.getSecurityUserId
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
 import com.yapp.bol.file.FileService
@@ -18,6 +19,7 @@ import com.yapp.bol.group.dto.toListResponse
 import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -88,5 +90,17 @@ class GroupController(
         val isRegister = if (userId != null) groupService.isRegisterGroup(userId, groupId) else null
 
         return GroupDetailResponse.of(group, owner, isRegister)
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{groupId}")
+    fun deleteGroup(
+        @PathVariable groupId: GroupId,
+    ): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        groupService.deleteGroup(userId, groupId)
+
+        return EmptyResponse
     }
 }

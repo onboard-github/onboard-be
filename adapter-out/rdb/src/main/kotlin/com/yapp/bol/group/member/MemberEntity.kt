@@ -59,10 +59,27 @@ class MemberEntity(
     lateinit var gameMembers: List<GameMemberEntity>
         protected set
 
+    // guest -> host
     fun toHost(userId: Long) {
         if (this.userId != null) throw InvalidGuestIdException
         this.userId = userId
         this.role = MemberRole.HOST
+    }
+
+    fun toHost() {
+        if (this.userId == null) {
+            throw InvalidMemberRoleException
+        }
+
+        this.role = MemberRole.HOST
+    }
+
+    fun toOwner() {
+        if (this.userId == null) {
+            throw InvalidMemberRoleException
+        }
+
+        this.role = MemberRole.OWNER
     }
 }
 

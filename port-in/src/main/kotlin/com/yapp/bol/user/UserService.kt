@@ -8,4 +8,6 @@ interface UserService {
     fun putUser(user: User)
 
     fun getMatchCountByUserId(userId: UserId): Long
+
+    fun deleteUser(userId: UserId)
 }

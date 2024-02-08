@@ -13,11 +13,13 @@ import com.yapp.bol.group.member.dto.JoinGroupRequest
 import com.yapp.bol.group.member.dto.MemberResponse
 import com.yapp.bol.group.member.dto.NicknameValidationResponse
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
+import com.yapp.bol.group.member.dto.UpdateMemberInfoRequest
 import com.yapp.bol.group.member.dto.toResponse
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -112,6 +114,35 @@ class MemberController(
         )
 
         return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/member/{memberId}/assign-owner")
+    fun assignOwner(
+        @PathVariable groupId: GroupId,
+        @PathVariable memberId: MemberId,
+    ): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        memberService.assignOwner(
+            groupId = groupId,
+            originOwnerId = userId,
+            targetMemberId = memberId,
+        )
+
+        return EmptyResponse
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/member/{memberId}")
+    fun updateMemberInfo(
+        @PathVariable groupId: GroupId,
+        @PathVariable memberId: MemberId,
+        @RequestBody request: UpdateMemberInfoRequest,
+    ): MemberResponse {
+        val result = memberService.updateMemberInfo(groupId, memberId, request.nickname)
+
+        return result.toResponse()
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -4,7 +4,6 @@ import com.yapp.bol.EmptyResponse
 import com.yapp.bol.UnknownException
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
 import com.yapp.bol.group.GroupService
-import com.yapp.bol.group.dto.toResponse
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.user.dto.CheckOnboardResponse
 import com.yapp.bol.user.dto.GetUserMatchCountResponse
@@ -14,6 +13,7 @@ import com.yapp.bol.user.dto.PutUserInfoRequest
 import com.yapp.bol.user.dto.toResponse
 import com.yapp.bol.utils.ApiMinVersion
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -52,9 +52,9 @@ class UserController(
     fun getJoinedGroups(): JoinedGroupResponse {
         val userId = getSecurityUserIdOrThrow()
 
-        val groups = groupService.getGroupsByUserId(userId)
+        val groupAndMemberDtos = groupService.getGroupWithMemberInfo(userId)
 
-        return JoinedGroupResponse(groups.map { it.toResponse() })
+        return JoinedGroupResponse(groupAndMemberDtos)
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -80,5 +80,14 @@ class UserController(
         val result = userService.getMatchCountByUserId(userId)
 
         return GetUserMatchCountResponse(result)
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/me")
+    fun deleteMe(): EmptyResponse {
+        val userId = getSecurityUserIdOrThrow()
+
+        userService.deleteUser(userId)
+        return EmptyResponse
     }
 }

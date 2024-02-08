@@ -34,6 +34,10 @@ internal class UserClient(
             gameMemberQueryRepository.getMatchCount(memberId = it)
         }
     }
+
+    override fun deleteUser(userId: UserId) {
+        userRepository.deleteById(userId.value)
+    }
 }
 
 private fun UserEntity.toDomain(): User = User(
