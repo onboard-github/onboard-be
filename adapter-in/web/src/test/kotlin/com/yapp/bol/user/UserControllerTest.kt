@@ -46,7 +46,7 @@ class UserControllerTest : ControllerTest() {
                         identifier = "user/{method-name}",
                         tag = OpenApiTag.USER,
                         description = "온보딩 진행 정도 가져오기"
-                        ),
+                    ),
                     responseFields(
                         "onboarding" type ARRAY means "남은 온보딩 단계 ${OnboardingType.values().toList()}",
                         "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID, 가입한 그룹이 없을 경우 NULL" isOptional true,
