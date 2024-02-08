@@ -30,7 +30,11 @@ class GameControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "game/{method-name}", tag = OpenApiTag.GAME),
+                    DocumentInfo(
+                        identifier = "game/{method-name}",
+                        tag = OpenApiTag.GAME,
+                        description = "게임 목록 가져오기"
+                    ),
                     pathParameters(
                         "groupId" type NUMBER means "게임 목록을 조회하고자 하는 groupId, 현재는 아무값이나 넣어도 검증 없이 동일하게 내려감"
                     ),

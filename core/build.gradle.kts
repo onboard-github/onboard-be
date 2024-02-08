@@ -8,6 +8,7 @@ dependencies {
     val springVersion by properties
 
     api(project(":port-in"))
+    implementation(project(":adapter-out:notify:discord"))
     implementation(project(":adapter-out:rdb"))
     implementation(project(":adapter-out:social"))
     implementation(project(":support:jwt"))

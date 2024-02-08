@@ -1,7 +1,9 @@
 package com.yapp.bol.game
 
 @JvmInline
-value class GameId(val value: Long)
+value class GameId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class GameWithMatchCount(
     val game: Game,

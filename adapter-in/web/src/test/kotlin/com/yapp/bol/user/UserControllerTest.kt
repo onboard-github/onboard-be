@@ -42,7 +42,11 @@ class UserControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        tag = OpenApiTag.USER,
+                        description = "온보딩 진행 정도 가져오기"
+                    ),
                     responseFields(
                         "onboarding" type ARRAY means "남은 온보딩 단계 ${OnboardingType.values().toList()}",
                         "mainGroupId" type NUMBER means "홈에 보여줄 그룹 ID, 가입한 그룹이 없을 경우 NULL" isOptional true,
@@ -62,7 +66,11 @@ class UserControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        tag = OpenApiTag.USER,
+                        description = "내 기본 정보 가져오기"
+                    ),
                     responseFields(
                         "id" type NUMBER means "유저 아이디",
                         "nickname" type STRING means "유저 기본 닉네임" isOptional true,
@@ -94,7 +102,11 @@ class UserControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        tag = OpenApiTag.USER,
+                        description = "내가 가입한 그룹 목록 가져오기 v1 (추후 변경 예정)"
+                    ),
                     responseFields(
                         "contents" type ARRAY means "그룹 목록",
                         "contents[].id" type NUMBER means "그룹 ID",
@@ -122,7 +134,11 @@ class UserControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        tag = OpenApiTag.USER,
+                        description = "유저 전체 정보 업데이트"
+                    ),
                     requestFields(
                         "nickname" type STRING means "수정하고자 하는 닉네임",
                     )
@@ -138,7 +154,11 @@ class UserControllerTest : ControllerTest() {
             }
                 .isStatus(200)
                 .makeDocument(
-                    DocumentInfo(identifier = "user/{method-name}", tag = OpenApiTag.USER),
+                    DocumentInfo(
+                        identifier = "user/{method-name}",
+                        description = "내가 플레이한 게임 수 가져오기 (없으면 0)",
+                        tag = OpenApiTag.USER
+                    ),
                     responseFields(
                         "matchCount" type NUMBER means "플레이한 게임 수",
                     )

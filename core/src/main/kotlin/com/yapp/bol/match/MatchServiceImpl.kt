@@ -1,27 +1,35 @@
 package com.yapp.bol.match
 
 import com.yapp.bol.InvalidMatchMemberException
+import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.game.GameService
 import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.game.rating.dto.MatchInput
 import com.yapp.bol.game.rating.dto.MatchInputItem
 import com.yapp.bol.game.rating.strategy.BloRatingStrategy
+import com.yapp.bol.group.GroupQueryRepository
 import com.yapp.bol.match.dto.CreateMatchDto
 import com.yapp.bol.match.dto.toDomain
+import com.yapp.bol.notify.DeveloperNotifyService
+import com.yapp.bol.notify.DeveloperNotifyType
 import com.yapp.bol.season.SeasonService
 import org.springframework.stereotype.Service
 
 @Service
 class MatchServiceImpl(
     private val matchCommandRepository: MatchCommandRepository,
+    private val groupQueryRepository: GroupQueryRepository,
     private val gameMemberService: GameMemberService,
     private val seasonService: SeasonService,
     private val gameService: GameService,
+    private val developerNotifyService: DeveloperNotifyService,
 ) : MatchService {
+
     // TODO: @Transactional
     override fun createMatch(createMatchDto: CreateMatchDto): Match {
         validateMatch(createMatchDto)
 
+        val group = groupQueryRepository.findById(createMatchDto.groupId) ?: throw NotFoundGroupException
         val matchInput = createMatchDto.toMatchInput()
         val resultGameMember = BloRatingStrategy.compute(matchInput)
 
@@ -29,7 +37,11 @@ class MatchServiceImpl(
 
         val match = createMatchDto.toDomain(season = season)
 
-        return matchCommandRepository.createMatch(match = match, gameMembers = resultGameMember)
+        val savedMatch = matchCommandRepository.createMatch(match = match, gameMembers = resultGameMember)
+
+        developerNotifyService.notify(DeveloperNotifyType.CREATE_MATCH(savedMatch, group))
+
+        return savedMatch
     }
 
     private fun validateMatch(createMatchDto: CreateMatchDto) {
