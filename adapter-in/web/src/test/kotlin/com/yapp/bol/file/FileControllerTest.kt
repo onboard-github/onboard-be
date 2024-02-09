@@ -37,7 +37,7 @@ class FileControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "file",
                         description = "https://www.notion.so/yapp-workspace/API-Doc-23c98b2c35964072a8a5920f88f776b0?pvs=4 (multipart 문서 어캐 쓰는지 모르겠네요 ㅜㅜ)",
-                        tag = OpenApiTag.FILE
+                        tag = OpenApiTag.FILE,
                     ),
                     requestHeaders(
                         "Content-Type" type STRING means "multipart/form-data 고정",
@@ -50,7 +50,7 @@ class FileControllerTest : ControllerTest() {
                     responseFields(
                         "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "다운로드 할 수 있는 URL",
-                    )
+                    ),
                 )
         }
     }

@@ -21,8 +21,9 @@ class YamlEnvironmentPostProcessor : EnvironmentPostProcessor {
         val resources = resourcePatternResolver.getResources("classpath*:/*.yml")
 
         resources.forEach { resource ->
-            if (!resource.exists())
+            if (!resource.exists()) {
                 throw IllegalArgumentException("Resource $resource does not exist")
+            }
 
             loader.load(resource.filename, resource)
                 .stream().asSequence()

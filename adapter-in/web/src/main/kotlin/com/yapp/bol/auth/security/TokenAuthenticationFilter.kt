@@ -15,7 +15,7 @@ class TokenAuthenticationFilter(
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         try {
             val authHeader = request.getHeader(HEADER_AUTHORIZATION) ?: return

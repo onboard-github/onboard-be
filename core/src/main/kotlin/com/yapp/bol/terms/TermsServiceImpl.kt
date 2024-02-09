@@ -30,7 +30,9 @@ class TermsServiceImpl(
         if (getNeedTermsAgreeList(userId)
             .filter { it.isRequired }
             .any { termsInfoList.existAgreed(it).not() }
-        ) throw NotExistRequiredTermsException
+        ) {
+            throw NotExistRequiredTermsException
+        }
 
         termsCommandRepository.saveTermsAgreeInfo(userId, termsInfoList)
     }

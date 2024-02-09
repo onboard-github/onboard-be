@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class GameMemberCommandRepositoryImpl(
-    private val gameMemberRepository: GameMemberRepository
+    private val gameMemberRepository: GameMemberRepository,
 ) : GameMemberCommandRepository {
     @Transactional
     override fun createGameMember(gameMember: GameMember, groupId: GroupId): GameMember {

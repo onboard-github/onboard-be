@@ -17,6 +17,6 @@ sealed class DeveloperNotifyType(
             매치 인원수: ${match.memberCount}
             매치 게임 ID: ${match.gameId}
         """.trimIndent(),
-        "Match 생성 알림"
+        "Match 생성 알림",
     )
 }

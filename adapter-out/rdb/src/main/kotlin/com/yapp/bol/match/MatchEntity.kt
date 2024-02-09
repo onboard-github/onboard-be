@@ -73,7 +73,7 @@ class MatchEntity : AuditingEntity() {
             matchedDate: LocalDateTime,
             memberCount: Int,
             season: SeasonEntity,
-            matchMembers: List<MatchMember>
+            matchMembers: List<MatchMember>,
         ) = MatchEntity().apply {
             this.id = id
             this.gameId = gameId
@@ -93,7 +93,7 @@ internal fun Match.toEntity(): MatchEntity = MatchEntity.of(
     matchedDate = this.matchedDate,
     memberCount = this.memberCount,
     season = this.season.toEntity(),
-    matchMembers = this.matchMembers
+    matchMembers = this.matchMembers,
 )
 
 internal fun MatchEntity.toDomain(): Match = Match(
@@ -103,5 +103,5 @@ internal fun MatchEntity.toDomain(): Match = Match(
     matchedDate = this.matchedDate,
     memberCount = this.memberCount,
     season = this.season.toDomain(),
-    matchMembers = this.matchMembers.map { it.toDomain() }
+    matchMembers = this.matchMembers.map { it.toDomain() },
 )

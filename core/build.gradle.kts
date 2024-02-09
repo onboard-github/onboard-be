@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":adapter-out:rdb"))
     implementation(project(":adapter-out:social"))
     implementation(project(":support:jwt"))
+    implementation(project(":support:transaction"))
 
     implementation("org.springframework.boot:spring-boot-starter:$springVersion")
 

@@ -41,7 +41,7 @@ tasks {
             listOf(
                 toServer("http://sandbox-api.onboardgame.co.kr"),
                 toServer("http://api.onboardgame.co.kr"),
-            )
+            ),
         )
         title = "온보드 API"
         description = "온보드 클라이언트에게 제공하는 API"

@@ -24,6 +24,6 @@ class TestController(private val environment: Environment) {
     }
 
     data class TestResponse(
-        val value: String
+        val value: String,
     )
 }

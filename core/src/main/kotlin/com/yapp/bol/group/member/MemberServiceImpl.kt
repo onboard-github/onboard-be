@@ -12,6 +12,7 @@ import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
 import com.yapp.bol.group.member.nickname.NicknameValidation
 import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
+import com.yapp.bol.transaction.MyTransactional
 import com.yapp.bol.validate.NicknameValidator
 import org.springframework.stereotype.Service
 
@@ -32,7 +33,7 @@ internal class MemberServiceImpl(
 
         val member = HostMember(
             userId = userId,
-            nickname = nickname
+            nickname = nickname,
         )
 
         return memberCommandRepository.createMember(groupId, member) as HostMember
@@ -53,7 +54,7 @@ internal class MemberServiceImpl(
     override fun updateMemberInfo(
         groupId: GroupId,
         memberId: MemberId,
-        nickname: String
+        nickname: String,
     ): Member {
         if (validateUniqueNickname(groupId, nickname).not()) throw DuplicatedMemberNicknameException
 
@@ -63,6 +64,7 @@ internal class MemberServiceImpl(
     private fun validateUniqueNickname(groupId: GroupId, nickname: String): Boolean =
         memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) == null
 
+    @MyTransactional
     override fun deleteMyMember(groupId: GroupId, userId: UserId) {
         val member = findMemberByGroupIdAndUserId(groupId, userId)
             ?: throw NotFoundMemberException
@@ -77,6 +79,7 @@ internal class MemberServiceImpl(
         return memberQueryRepository.findByGroupIdAndUserId(groupId, userId)
     }
 
+    @MyTransactional
     override fun assignOwner(
         groupId: GroupId,
         originOwnerId: UserId,
@@ -105,7 +108,7 @@ internal class MemberServiceImpl(
         memberCommandRepository.assignOwner(
             groupId = groupId,
             originOwnerId = originOwner.id,
-            targetMemberId = targetMember.id
+            targetMemberId = targetMember.id,
         )
     }
 

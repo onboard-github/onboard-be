@@ -10,5 +10,5 @@ data class MyInfoResponse(
 
 fun User.toResponse(): MyInfoResponse = MyInfoResponse(
     id = this.id,
-    nickname = this.nickname
+    nickname = this.nickname,
 )

@@ -62,7 +62,7 @@ class GroupController(
     fun searchGroup(
         @RequestParam keyword: String?,
         @RequestParam(defaultValue = "0") pageNumber: Int,
-        @RequestParam(defaultValue = "10") pageSize: Int
+        @RequestParam(defaultValue = "10") pageSize: Int,
     ): PaginationOffsetResponse<GroupListResponse> =
         groupService.searchGroup(
             keyword = keyword,

@@ -18,5 +18,5 @@ fun CreateGroupRequest.toDto(ownerId: UserId) = CreateGroupDto(
     profileImageUrl = profileImageUrl,
     profileImageUuid = profileImageUuid,
     ownerId = ownerId,
-    nickname = nickname
+    nickname = nickname,
 )

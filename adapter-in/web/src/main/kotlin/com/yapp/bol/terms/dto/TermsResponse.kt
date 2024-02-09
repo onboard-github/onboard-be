@@ -3,7 +3,7 @@ package com.yapp.bol.terms.dto
 import com.yapp.bol.terms.TermsCode
 
 data class TermsResponse(
-    val contents: List<TermsItemResponse>
+    val contents: List<TermsItemResponse>,
 )
 
 data class TermsItemResponse(

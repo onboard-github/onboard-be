@@ -6,7 +6,7 @@ import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.group.member.MemberRole
 
 data class LeaderBoardResponse(
-    val contents: List<RankMemberResponse>
+    val contents: List<RankMemberResponse>,
 )
 
 data class RankMemberResponse(

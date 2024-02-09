@@ -36,7 +36,7 @@ internal class TermsAgreeEntity : AuditingEntity() {
         fun of(
             userId: Long,
             code: TermsCode,
-            isAgree: Boolean
+            isAgree: Boolean,
         ): TermsAgreeEntity = TermsAgreeEntity().apply {
             this.userId = userId
             this.code = code

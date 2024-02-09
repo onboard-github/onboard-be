@@ -26,7 +26,7 @@ class TermsController(
         val userId = getSecurityUserIdOrThrow()
         val list = termsService.getNeedTermsAgreeList(userId)
         return TermsResponse(
-            list.map { it.toResponse(host) }
+            list.map { it.toResponse(host) },
         )
     }
 

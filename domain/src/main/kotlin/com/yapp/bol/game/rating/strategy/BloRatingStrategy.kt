@@ -12,7 +12,7 @@ object BloRatingStrategy : RatingStrategy {
         val winningRate = calculator.calcWinningRate(
             input.items.associate {
                 it.gameMember.id to it.gameMember.finalScore
-            }
+            },
         )
 
         val gameReliability = input.items.maxOf { it.reliability }
@@ -29,20 +29,23 @@ object BloRatingStrategy : RatingStrategy {
             var deltaScore = 50.0 * winningRateScore * rankScore * reliabilityScore
 
             if (member.finalScore < 300 && member.matchCount <= 7) {
-                if (deltaScore <= 0)
+                if (deltaScore <= 0) {
                     deltaScore = 0.0
-                else
+                } else {
                     deltaScore += 40 * reliabilityScore
+                }
             } else if (member.finalScore < 400 && member.matchCount <= 15) {
-                if (deltaScore <= 0)
+                if (deltaScore <= 0) {
                     deltaScore *= 0.3
-                else
+                } else {
                     deltaScore += 30 * reliabilityScore
+                }
             } else if (member.finalScore < 500 && member.matchCount <= 15) {
-                if (deltaScore <= 0)
+                if (deltaScore <= 0) {
                     deltaScore *= 0.7
-                else
+                } else {
                     deltaScore += 20 * reliabilityScore
+                }
             } else if (deltaScore < 0 && member.finalScore + deltaScore < 100) {
                 deltaScore *= 0.2
             }

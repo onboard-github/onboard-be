@@ -15,7 +15,7 @@ data class CreateMatchRequest(
     val gameId: Long,
     val groupId: Long,
     val matchedDate: String,
-    val matchMembers: List<MatchMemberRequest>
+    val matchMembers: List<MatchMemberRequest>,
 )
 
 internal fun MatchMemberRequest.toDto() = CreateMatchMemberDto(
@@ -28,5 +28,5 @@ internal fun CreateMatchRequest.toDto() = CreateMatchDto(
     gameId = GameId(this.gameId),
     groupId = GroupId(this.groupId),
     matchedDate = DateTimeUtils.parseString(this.matchedDate),
-    createMatchMemberDtos = this.matchMembers.map { it.toDto() }
+    createMatchMemberDtos = this.matchMembers.map { it.toDto() },
 )

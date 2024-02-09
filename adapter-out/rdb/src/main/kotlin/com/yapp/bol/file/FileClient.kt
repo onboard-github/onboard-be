@@ -36,7 +36,6 @@ class FileClient(
     }
 
     override fun getFile(uuid: String): RawFileData {
-
         val s3Object = s3Client.getObject(bucketName, uuid)
         val accessLevelValue =
             s3Object.objectMetadata.getUserMetaDataOf(METADATA_PURPOSE) ?: throw IllegalFileStateException
