@@ -20,7 +20,6 @@ import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
 import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinGroupDto
-import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.MemberCommandRepository
 import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
@@ -207,21 +206,5 @@ internal class GroupServiceImpl(
         }
 
         return joinedGroups
-    }
-
-    @Deprecated("TODO: 앱에서 v2 제거 전까지만 유지")
-    override fun getJoinedGroupsForV2(userId: UserId): List<JoinedGroupDto> {
-        val groupAndMemberDto = getGroupWithMemberInfo(userId)
-
-        return groupAndMemberDto.map {
-            JoinedGroupDto(
-                groupId = it.id,
-                groupName = it.name,
-                nickname = it.nickname,
-                organization = it.organization,
-                memberId = it.memberId,
-                matchCount = it.matchCount,
-            )
-        }
     }
 }
