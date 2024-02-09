@@ -27,8 +27,9 @@ class ForceUpdateAspect {
             val annotation = method.getAnnotation(ApiMinVersion::class.java)
 
             if (appType.lowercase() == "android") {
-                if (Version.of(annotation.androidVersion) > Version.of(version))
+                if (Version.of(annotation.androidVersion) > Version.of(version)) {
                     throw NeedForceUpdateException
+                }
             }
         } catch (e: Exception) {
             throw NeedForceUpdateException

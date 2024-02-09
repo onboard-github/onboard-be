@@ -36,7 +36,8 @@ class FileEntity : AuditingEntity() {
         return when (purpose) {
             FilePurpose.GAME_IMAGE,
             FilePurpose.GROUP_DEFAULT_IMAGE,
-            FilePurpose.GROUP_IMAGE ->
+            FilePurpose.GROUP_IMAGE,
+            ->
                 createS3PublicFileInfo(this)
 
             FilePurpose.MATCH_IMAGE -> createS3PublicFileInfo(this) // TODO : 추후 알맞은 것으로 변경
@@ -52,7 +53,7 @@ class FileEntity : AuditingEntity() {
         fun of(
             name: String,
             userId: Long,
-            purpose: FilePurpose
+            purpose: FilePurpose,
         ): FileEntity = FileEntity().apply {
             this.name = name
             this.userId = userId

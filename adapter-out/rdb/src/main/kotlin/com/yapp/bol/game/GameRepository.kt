@@ -12,7 +12,7 @@ interface GameRepository : JpaRepository<GameEntity, Long> {
             "LEFT JOIN MatchEntity m ON m.gameId = g.id " +
             "WHERE m.groupId = :groupId " +
             "GROUP BY g.id " +
-            "ORDER BY cnt DESC"
+            "ORDER BY cnt DESC",
     )
     fun getMatchCount(groupId: Long): List<List<Any>>
 }

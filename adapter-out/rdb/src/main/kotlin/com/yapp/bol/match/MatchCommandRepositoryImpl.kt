@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 internal class MatchCommandRepositoryImpl(
     private val matchRepository: MatchRepository,
-    private val gameMemberRepository: GameMemberRepository
+    private val gameMemberRepository: GameMemberRepository,
 ) : MatchCommandRepository {
     @Transactional
     override fun createMatch(match: Match, gameMembers: List<GameMember>): Match {
@@ -18,7 +18,7 @@ internal class MatchCommandRepositoryImpl(
         gameMemberRepository.saveAll(
             gameMembers.map {
                 it.toEntity()
-            }
+            },
         )
 
         return match

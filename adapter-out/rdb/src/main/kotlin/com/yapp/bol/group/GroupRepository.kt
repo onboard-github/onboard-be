@@ -16,14 +16,14 @@ internal interface GroupRepository : JpaRepository<GroupEntity, Long> {
                  WHEN g.organization = :exactOrganization THEN 2
                  ELSE 3 END,
             g.createdDate DESC
-    """
+    """,
     )
     fun findByNameOrOrganizationWithPriority(
         @Param("name") name: String,
         @Param("organization") organization: String,
         @Param("exactName") exactName: String,
         @Param("exactOrganization") exactOrganization: String,
-        pageable: Pageable
+        pageable: Pageable,
     ): Slice<GroupEntity>
 
     @Query("SELECT g FROM MemberEntity m JOIN FETCH GroupEntity g ON m.groupId = g.id WHERE m.userId=:userId")

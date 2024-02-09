@@ -65,7 +65,7 @@ abstract class ControllerTest : FunSpec() {
                     .uris().withScheme("http").withHost("localhost").and()
                     .operationPreprocessors()
                     .withRequestDefaults(prettyPrint())
-                    .withResponseDefaults(prettyPrint())
+                    .withResponseDefaults(prettyPrint()),
             )
             .setControllerAdvice(ExceptionHandler())
 //            .setCustomArgumentResolvers()
@@ -79,14 +79,14 @@ abstract class ControllerTest : FunSpec() {
     protected fun get(
         url: String,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(get(url, *pathParams).apply(buildRequest))
 
     protected fun post(
         url: String,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(post(url, *pathParams).apply(buildRequest))
 
@@ -94,21 +94,21 @@ abstract class ControllerTest : FunSpec() {
         url: String,
         request: Any,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(
             post(url, *pathParams).apply {
                 contentType(MediaType.APPLICATION_JSON)
                 content(objectMapper.writeValueAsString(request))
                 buildRequest()
-            }
+            },
         )
 
     protected fun multipart(
         url: String,
         mockFiles: List<MockMultipartFile>,
         mockParts: List<MockPart>,
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions {
         return mockMvc.perform(
             RestDocumentationRequestBuilders.multipart(url)
@@ -116,14 +116,14 @@ abstract class ControllerTest : FunSpec() {
                     mockFiles.forEach { this.file(it) }
                     mockParts.forEach { this.part(it) }
                     buildRequest()
-                }
+                },
         )
     }
 
     protected fun delete(
         url: String,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(delete(url, *pathParams).apply(buildRequest))
 
@@ -131,20 +131,20 @@ abstract class ControllerTest : FunSpec() {
         url: String,
         request: Any,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(
             delete(url, *pathParams).apply {
                 contentType(MediaType.APPLICATION_JSON)
                 content(objectMapper.writeValueAsString(request))
                 buildRequest()
-            }
+            },
         )
     protected fun patch(
         url: String,
         request: Any,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(
             patch(url, *pathParams)
@@ -152,27 +152,27 @@ abstract class ControllerTest : FunSpec() {
                     contentType(MediaType.APPLICATION_JSON)
                     content(objectMapper.writeValueAsString(request))
                     buildRequest()
-                }
+                },
         )
 
     protected fun patch(
         url: String,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(
             patch(url, *pathParams)
                 .apply {
                     contentType(MediaType.APPLICATION_JSON)
                     buildRequest()
-                }
+                },
         )
 
     protected fun put(
         url: String,
         request: Any,
         pathParams: Array<Any> = emptyArray(),
-        buildRequest: MockHttpServletRequestBuilder.() -> Unit
+        buildRequest: MockHttpServletRequestBuilder.() -> Unit,
     ): ResultActions =
         mockMvc.perform(
             put(url, *pathParams)
@@ -180,7 +180,7 @@ abstract class ControllerTest : FunSpec() {
                     contentType(MediaType.APPLICATION_JSON)
                     content(objectMapper.writeValueAsString(request))
                     buildRequest()
-                }
+                },
         )
 
     protected fun MockHttpServletRequestBuilder.authorizationHeader(userId: UserId) {
@@ -194,7 +194,7 @@ abstract class ControllerTest : FunSpec() {
 
     protected fun ResultActions.makeDocument(
         documentInfo: DocumentInfo,
-        vararg snippets: Snippet
+        vararg snippets: Snippet,
     ): ResultActions =
         andDo(
             document(
@@ -203,8 +203,8 @@ abstract class ControllerTest : FunSpec() {
                     .description(documentInfo.description)
                     .deprecated(documentInfo.deprecated)
                     .tag(documentInfo.tag.value),
-                snippets = snippets
-            )
+                snippets = snippets,
+            ),
         )
 
     protected infix fun String.type(fieldType: DocumentFieldType): DocumentField {
@@ -222,32 +222,32 @@ abstract class ControllerTest : FunSpec() {
 
     protected fun requestHeaders(vararg fields: DocumentField): RequestHeadersSnippet =
         HeaderDocumentation.requestHeaders(
-            fields.map(DocumentField::toHeaderDescriptor).toList()
+            fields.map(DocumentField::toHeaderDescriptor).toList(),
         )
 
     protected fun responseHeaders(vararg fields: DocumentField): ResponseHeadersSnippet =
         HeaderDocumentation.responseHeaders(
-            fields.map(DocumentField::toHeaderDescriptor).toList()
+            fields.map(DocumentField::toHeaderDescriptor).toList(),
         )
 
     protected fun pathParameters(vararg fields: DocumentField): PathParametersSnippet =
         pathParameters(
-            fields.map(DocumentField::toParameterDescriptor).toList()
+            fields.map(DocumentField::toParameterDescriptor).toList(),
         )
 
     protected fun queryParameters(vararg fields: DocumentField): QueryParametersSnippet =
         queryParameters(
-            fields.map(DocumentField::toParameterDescriptor).toList()
+            fields.map(DocumentField::toParameterDescriptor).toList(),
         )
 
     protected fun requestFields(vararg fields: DocumentField): RequestFieldsSnippet =
         requestFields(
-            fields.map(DocumentField::toFieldDescriptor).toList()
+            fields.map(DocumentField::toFieldDescriptor).toList(),
         )
 
     protected fun responseFields(vararg fields: DocumentField): ResponseFieldsSnippet =
         responseFields(
-            fields.map(DocumentField::toFieldDescriptor).toList()
+            fields.map(DocumentField::toFieldDescriptor).toList(),
         )
 
     protected data class DocumentInfo(

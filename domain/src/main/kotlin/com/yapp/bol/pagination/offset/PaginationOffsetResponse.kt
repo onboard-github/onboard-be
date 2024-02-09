@@ -2,7 +2,7 @@ package com.yapp.bol.pagination.offset
 
 data class PaginationOffsetResponse<T>(
     val content: List<T>,
-    val hasNext: Boolean
+    val hasNext: Boolean,
 ) {
     fun <U> mapContents(func: (T) -> U): PaginationOffsetResponse<U> {
         return PaginationOffsetResponse(

@@ -12,7 +12,7 @@ object RatingTestHelper {
                 memberId = MemberId(ranking.toLong()),
                 score = 100 / ranking,
                 ranking = ranking,
-                finalScore = score
+                finalScore = score,
             )
         }
 

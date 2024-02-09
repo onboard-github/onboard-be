@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 internal class UserClient(
     private val userRepository: UserRepository,
     private val memberQueryRepository: MemberQueryRepository,
-    private val gameMemberQueryRepository: GameMemberQueryRepository
+    private val gameMemberQueryRepository: GameMemberQueryRepository,
 ) : UserQueryRepository, UserCommandRepository {
     override fun getUser(userId: UserId): User? {
         val userEntity = userRepository.findByIdOrNull(userId.value) ?: throw NotFoundUserException
@@ -42,5 +42,5 @@ internal class UserClient(
 
 private fun UserEntity.toDomain(): User = User(
     id = UserId(this.id),
-    nickname = this.name
+    nickname = this.name,
 )

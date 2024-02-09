@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yapp.bol.group.member.dto.PaginationCursorMemberRequest
 
 class CustomMemberRepositoryImpl(
-    val queryFactory: JPAQueryFactory
+    val queryFactory: JPAQueryFactory,
 ) : CustomMemberRepository {
     override fun getByGroupIdWithCursor(request: PaginationCursorMemberRequest): List<MemberEntity> {
         val groupId = request.groupId.value

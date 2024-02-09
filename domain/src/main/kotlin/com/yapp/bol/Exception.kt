@@ -6,7 +6,7 @@ sealed class BolRatingException(
     val code: String,
     val status: Int,
     override val message: String,
-    override val cause: Throwable? = null
+    override val cause: Throwable? = null,
 ) : RuntimeException(message, cause)
 
 object NeedForceUpdateException : BolRatingException("FORCE_UPDATE", 400, "새로운 버전으로 업데이트가 필요합니다.")

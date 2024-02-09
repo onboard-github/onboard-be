@@ -19,7 +19,7 @@ class AuthControllerTest : ControllerTest() {
             val userId = UserId(123L)
             val authToken = AuthToken(
                 Token("ACCESS_TOKEN", userId, LocalDateTime.now()),
-                Token("REFRESH_TOKEN", userId, LocalDateTime.now())
+                Token("REFRESH_TOKEN", userId, LocalDateTime.now()),
             )
             every { authService.login(any(), any()) } returns authToken
 
@@ -38,7 +38,7 @@ class AuthControllerTest : ControllerTest() {
                     responseFields(
                         "accessToken" type STRING means "Access 토큰",
                         "refreshToken" type STRING means "Refresh 토큰" isOptional true,
-                    )
+                    ),
                 )
         }
     }

@@ -26,6 +26,7 @@ import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
+import com.yapp.bol.transaction.MyTransactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -39,10 +40,10 @@ internal class GroupServiceImpl(
     private val fileQueryRepository: FileQueryRepository,
 ) : GroupService {
 
+    @MyTransactional
     override fun createGroup(
         createGroupDto: CreateGroupDto,
     ): GroupMemberList {
-
         val group = Group(
             name = createGroupDto.name,
             description = createGroupDto.description,
@@ -50,13 +51,13 @@ internal class GroupServiceImpl(
             profileImage = getProfileImage(
                 createGroupDto.ownerId,
                 createGroupDto.profileImageUrl,
-                createGroupDto.profileImageUuid
-            )
+                createGroupDto.profileImageUuid,
+            ),
         )
 
         val owner = OwnerMember(
             userId = createGroupDto.ownerId,
-            nickname = createGroupDto.nickname ?: "기본 닉네임" // TODO: User Service
+            nickname = createGroupDto.nickname ?: "기본 닉네임", // TODO: User Service
         )
 
         return groupCommandRepository.createGroup(group, owner)
@@ -69,8 +70,9 @@ internal class GroupServiceImpl(
         val fileData = fileQueryRepository.getFile(finalUuid)
             ?: throw NotFoundFileException
 
-        if ((fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE || (fileData.userId == userId && fileData.purpose == FilePurpose.GROUP_IMAGE)).not())
+        if ((fileData.purpose == FilePurpose.GROUP_DEFAULT_IMAGE || (fileData.userId == userId && fileData.purpose == FilePurpose.GROUP_IMAGE)).not()) {
             throw NotFoundFileException
+        }
 
         return fileQueryRepository.getFileInfo(finalUuid) ?: throw NotFoundFileException
     }
@@ -79,6 +81,7 @@ internal class GroupServiceImpl(
         return url.substring(url.lastIndexOf('/') + 1)
     }
 
+    @MyTransactional
     override fun joinGroup(request: JoinGroupDto) {
         val group = groupQueryRepository.findById(request.groupId) ?: throw NotFoundGroupException
         if (group.accessCode != request.accessCode) throw AccessCodeNotMatchException
@@ -112,7 +115,7 @@ internal class GroupServiceImpl(
         val groups = groupQueryRepository.search(
             keyword = keyword,
             pageNumber = pageNumber,
-            pageSize = pageSize
+            pageSize = pageSize,
         )
 
         val groupWithMemberCount = groups.content.map { group ->
@@ -124,6 +127,7 @@ internal class GroupServiceImpl(
         return PaginationOffsetResponse(groupWithMemberCount, groups.hasNext)
     }
 
+    @MyTransactional
     override fun addGuest(request: AddGuestDto) {
         memberQueryRepository.findByGroupIdAndUserId(request.groupId, request.requestUserId)
             ?: throw UnAuthorizationException()
@@ -145,6 +149,7 @@ internal class GroupServiceImpl(
         return group.accessCode == accessToken
     }
 
+    @MyTransactional
     override fun getGroupWithMemberCount(groupId: GroupId): GroupWithMemberCount {
         val group = groupQueryRepository.findById(groupId) ?: throw NotFoundGroupException
         val memberCount = memberQueryRepository.getCount(groupId)
@@ -161,6 +166,7 @@ internal class GroupServiceImpl(
         return registerGroups.any { it.id == groupId }
     }
 
+    @MyTransactional
     override fun deleteGroup(userId: UserId, groupId: GroupId) {
         val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId) ?: throw NoPermissionDeleteGroupException
 
@@ -172,6 +178,7 @@ internal class GroupServiceImpl(
         groupCommandRepository.deleteGroup(groupId)
     }
 
+    @MyTransactional
     override fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto> {
         val groups = getGroupsByUserId(userId)
 

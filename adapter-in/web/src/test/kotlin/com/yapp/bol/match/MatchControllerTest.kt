@@ -52,7 +52,7 @@ class MatchControllerTest : ControllerTest() {
                 gameId = 1,
                 groupId = 1,
                 matchedDate = STRING_DATE,
-                matchMembers = matchMembers
+                matchMembers = matchMembers,
             )
 
             every {

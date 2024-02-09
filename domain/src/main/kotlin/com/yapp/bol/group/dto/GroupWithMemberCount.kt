@@ -6,12 +6,12 @@ import com.yapp.bol.group.member.MemberList
 
 data class GroupWithMemberCount(
     val group: GroupBasicInfo,
-    val memberCount: Int
+    val memberCount: Int,
 ) : GroupBasicInfo by group {
     companion object {
         fun of(group: Group, members: MemberList) = GroupWithMemberCount(
             group = group,
-            memberCount = members.getSize()
+            memberCount = members.getSize(),
         )
     }
 }

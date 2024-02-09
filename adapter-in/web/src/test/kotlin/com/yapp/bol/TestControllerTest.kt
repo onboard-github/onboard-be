@@ -23,8 +23,8 @@ class TestControllerTest : ControllerTest() {
                     DocumentInfo(identifier = "test", tag = OpenApiTag.TEST),
                     responseFields(
                         "value" type STRING means "English??",
-                        "test" type NUMBER means "이건 몬지몰라" isOptional true
-                    )
+                        "test" type NUMBER means "이건 몬지몰라" isOptional true,
+                    ),
                 )
         }
     }

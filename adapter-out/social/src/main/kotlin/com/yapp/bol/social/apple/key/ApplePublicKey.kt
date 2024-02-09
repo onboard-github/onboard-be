@@ -3,7 +3,7 @@ package com.yapp.bol.social.apple.key
 import com.yapp.bol.jwt.key.JwtKey
 
 data class ApplePublicKeysResponse(
-    val keys: List<ApplePublicKey>
+    val keys: List<ApplePublicKey>,
 ) {
     operator fun get(kid: String, alg: String): ApplePublicKey? =
         keys.firstOrNull {

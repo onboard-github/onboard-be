@@ -9,5 +9,5 @@ data class JoinedGroupDto(
     val nickname: String,
     val organization: String?,
     val matchCount: Long,
-    val memberId: MemberId
+    val memberId: MemberId,
 )

@@ -4,9 +4,9 @@ import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinedGroupDto
 
 data class JoinedGroupResponseV2(
-    val contents: List<JoinedGroupDto>
+    val contents: List<JoinedGroupDto>,
 )
 
 data class JoinedGroupResponse(
-    val contents: List<GroupWithMemberDto>
+    val contents: List<GroupWithMemberDto>,
 )

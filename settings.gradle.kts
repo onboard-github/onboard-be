@@ -23,6 +23,9 @@ include(
     "adapter-out:rdb",
     "adapter-out:social",
     "support:jwt",
-    "support:yaml",
     "support:logging",
+    "support:transaction",
+    "support:yaml",
 )
+include("support:transaction")
+findProject(":support:transaction")?.name = "transaction"

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(
     private val groupService: GroupService,
     private val memberService: MemberService,
-    private val gameMemberService: GameMemberService
+    private val gameMemberService: GameMemberService,
 ) {
     @GetMapping("/member/validateNickname")
     fun validateMemberName(
@@ -59,7 +59,7 @@ class MemberController(
                 role = role,
                 size = size,
                 cursor = cursor,
-            )
+            ),
         )
 
         return result.mapContents { it.toResponse() }
@@ -91,7 +91,7 @@ class MemberController(
                 nickname = request.nickname,
                 accessCode = request.accessCode,
                 guestId = if (request.guestId == null) null else MemberId(request.guestId),
-            )
+            ),
         )
 
         return EmptyResponse
@@ -110,7 +110,7 @@ class MemberController(
                 groupId = groupId,
                 requestUserId = userId,
                 nickname = request.nickname,
-            )
+            ),
         )
 
         return EmptyResponse

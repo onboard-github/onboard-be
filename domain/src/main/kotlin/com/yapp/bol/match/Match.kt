@@ -18,5 +18,5 @@ data class Match(
     val matchedDate: LocalDateTime,
     val memberCount: Int,
     val season: Season,
-    val matchMembers: List<MatchMember>
+    val matchMembers: List<MatchMember>,
 )
