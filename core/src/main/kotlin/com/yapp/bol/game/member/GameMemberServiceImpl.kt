@@ -5,6 +5,7 @@ import com.yapp.bol.game.GameService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.season.SeasonService
+import com.yapp.bol.transaction.MyTransactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,6 +16,7 @@ class GameMemberServiceImpl(
     private val seasonService: SeasonService,
 ) : GameMemberService {
 
+    @MyTransactional
     override fun getOrCreateGameMember(
         groupId: GroupId,
         gameId: GameId,

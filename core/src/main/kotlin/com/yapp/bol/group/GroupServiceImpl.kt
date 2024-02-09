@@ -26,6 +26,7 @@ import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
+import com.yapp.bol.transaction.MyTransactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -39,6 +40,7 @@ internal class GroupServiceImpl(
     private val fileQueryRepository: FileQueryRepository,
 ) : GroupService {
 
+    @MyTransactional
     override fun createGroup(
         createGroupDto: CreateGroupDto,
     ): GroupMemberList {
@@ -79,6 +81,7 @@ internal class GroupServiceImpl(
         return url.substring(url.lastIndexOf('/') + 1)
     }
 
+    @MyTransactional
     override fun joinGroup(request: JoinGroupDto) {
         val group = groupQueryRepository.findById(request.groupId) ?: throw NotFoundGroupException
         if (group.accessCode != request.accessCode) throw AccessCodeNotMatchException
@@ -124,6 +127,7 @@ internal class GroupServiceImpl(
         return PaginationOffsetResponse(groupWithMemberCount, groups.hasNext)
     }
 
+    @MyTransactional
     override fun addGuest(request: AddGuestDto) {
         memberQueryRepository.findByGroupIdAndUserId(request.groupId, request.requestUserId)
             ?: throw UnAuthorizationException()
@@ -145,6 +149,7 @@ internal class GroupServiceImpl(
         return group.accessCode == accessToken
     }
 
+    @MyTransactional
     override fun getGroupWithMemberCount(groupId: GroupId): GroupWithMemberCount {
         val group = groupQueryRepository.findById(groupId) ?: throw NotFoundGroupException
         val memberCount = memberQueryRepository.getCount(groupId)
@@ -161,6 +166,7 @@ internal class GroupServiceImpl(
         return registerGroups.any { it.id == groupId }
     }
 
+    @MyTransactional
     override fun deleteGroup(userId: UserId, groupId: GroupId) {
         val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId) ?: throw NoPermissionDeleteGroupException
 
@@ -172,6 +178,7 @@ internal class GroupServiceImpl(
         groupCommandRepository.deleteGroup(groupId)
     }
 
+    @MyTransactional
     override fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto> {
         val groups = getGroupsByUserId(userId)
 

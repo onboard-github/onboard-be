@@ -2,6 +2,7 @@ package com.yapp.bol.auth
 
 import com.yapp.bol.AuthException
 import com.yapp.bol.auth.social.SocialLoginClient
+import com.yapp.bol.transaction.MyTransactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,6 +12,8 @@ internal class AuthServiceImpl(
     private val authQueryRepository: AuthQueryRepository,
     private val tokenService: TokenService,
 ) : AuthService {
+
+    @MyTransactional
     override fun login(loginType: LoginType, token: String): AuthToken {
         return if (loginType == LoginType.REFRESH) {
             loginByRefreshToken(token)
@@ -19,6 +22,7 @@ internal class AuthServiceImpl(
         }
     }
 
+    @MyTransactional
     override fun getAuthUserByAccessToken(token: String): AuthUser? {
         return try {
             val accessToken = tokenService.validateAccessToken(token)

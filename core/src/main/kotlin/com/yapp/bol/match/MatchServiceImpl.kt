@@ -13,6 +13,7 @@ import com.yapp.bol.match.dto.toDomain
 import com.yapp.bol.notify.DeveloperNotifyService
 import com.yapp.bol.notify.DeveloperNotifyType
 import com.yapp.bol.season.SeasonService
+import com.yapp.bol.transaction.MyTransactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -25,7 +26,7 @@ class MatchServiceImpl(
     private val developerNotifyService: DeveloperNotifyService,
 ) : MatchService {
 
-    // TODO: @Transactional
+    @MyTransactional
     override fun createMatch(createMatchDto: CreateMatchDto): Match {
         validateMatch(createMatchDto)
 
