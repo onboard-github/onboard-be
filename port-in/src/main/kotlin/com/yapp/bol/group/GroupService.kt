@@ -41,6 +41,4 @@ interface GroupService {
 
     fun deleteGroup(userId: UserId, groupId: GroupId)
     fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto>
-
-    fun getJoinedGroupsForV2(userId: UserId): List<JoinedGroupDto>
 }

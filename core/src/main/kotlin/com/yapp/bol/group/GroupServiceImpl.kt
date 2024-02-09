@@ -202,19 +202,4 @@ internal class GroupServiceImpl(
         return joinedGroups
     }
 
-    @Deprecated("TODO: 앱에서 v2 제거 전까지만 유지")
-    override fun getJoinedGroupsForV2(userId: UserId): List<JoinedGroupDto> {
-        val groupAndMemberDto = getGroupWithMemberInfo(userId)
-
-        return groupAndMemberDto.map {
-            JoinedGroupDto(
-                groupId = it.id,
-                groupName = it.name,
-                nickname = it.nickname,
-                organization = it.organization,
-                memberId = it.memberId,
-                matchCount = it.matchCount,
-            )
-        }
-    }
 }
