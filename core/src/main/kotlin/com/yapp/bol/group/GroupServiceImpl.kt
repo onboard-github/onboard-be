@@ -20,7 +20,6 @@ import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
 import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinGroupDto
-import com.yapp.bol.group.dto.JoinedGroupDto
 import com.yapp.bol.group.member.MemberCommandRepository
 import com.yapp.bol.group.member.MemberQueryRepository
 import com.yapp.bol.group.member.MemberService
@@ -208,5 +207,4 @@ internal class GroupServiceImpl(
 
         return joinedGroups
     }
-
 }
