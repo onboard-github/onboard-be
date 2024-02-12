@@ -68,10 +68,13 @@ tasks.register<Copy>("copyWeb") {
     }
 }
 
-tasks.withType<Jar> { enabled = false }
-tasks.withType<BootJar> {
+tasks.withType<Jar> {
     enabled = true
-    dependsOn("copyWeb") // buildReact 태스크에 의존
+    dependsOn("copyWeb")
+}
+tasks.withType<BootJar> {
+    enabled = false
+    dependsOn("copyWeb")
     mainClass.set("com.yapp.bol.AdminApplicationKt")
 }
 
