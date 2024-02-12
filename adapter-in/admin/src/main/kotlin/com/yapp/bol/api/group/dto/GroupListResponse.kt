@@ -4,7 +4,7 @@ import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.dto.GroupWithMemberCount
 
 data class GroupListResponse(
-    val list: List<GroupListItemResponse>
+    val list: List<GroupListItemResponse>,
 )
 
 data class GroupListItemResponse(

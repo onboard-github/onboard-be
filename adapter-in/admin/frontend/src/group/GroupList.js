@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
+import {httpClient} from "../http/HttpClient";
 
 export default function GroupList() {
     const [groupList, setGroupList] = useState([])
@@ -10,7 +10,7 @@ export default function GroupList() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/admin/v1/group-list');
+            const response = await httpClient.get('/admin/v1/group-list');
             setGroupList(response.data.list);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -41,6 +41,13 @@ export default function GroupList() {
                     ))}
                     </tbody>
                 </table>
+                ---
+                <div>
+                    ${
+                    process.env
+                }
+                ---
+                </div>
             </div>
     )
 }

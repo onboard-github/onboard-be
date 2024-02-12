@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebConfiguration(
     private val adminResourceResolver: AdminResourceResolver,
-) : WebMvcConfigurer{
+) : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/static/**")
             .addResourceLocations("classpath:/static/admin/static/")

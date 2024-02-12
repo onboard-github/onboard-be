@@ -20,7 +20,6 @@ buildscript {
     }
 }
 
-
 dependencies {
     val springVersion by properties
     implementation(project(":support:logging"))
@@ -54,11 +53,12 @@ node {
 tasks.register<NpmTask>("buildReact") {
     workingDir.set(file(frontendDir))
 
-    val phase = System.getenv("DEPLOY_TO_PHASE") ?: "sandbox"
-    args.addAll("run", "build")
+    println(System.getenv())
+    val phase = System.getenv("PHASE") ?: "local"
+    args.addAll("run", "build-$phase")
 }
 
-tasks.register<Copy>("copyWeb") {
+tasks.register<Copy>("copyAdminWeb") {
     dependsOn("buildReact")
 
     into("src/main/resources/static/.")
@@ -70,11 +70,9 @@ tasks.register<Copy>("copyWeb") {
 
 tasks.withType<Jar> {
     enabled = true
-    dependsOn("copyWeb")
 }
 tasks.withType<BootJar> {
     enabled = false
-    dependsOn("copyWeb")
     mainClass.set("com.yapp.bol.AdminApplicationKt")
 }
 

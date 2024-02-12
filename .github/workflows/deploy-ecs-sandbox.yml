@@ -58,6 +58,9 @@ jobs:
                 id: login-ecr
                 uses: aws-actions/amazon-ecr-login@v1
 
+            -   name: Npm Build
+                run: ./gradlew copyAdminWeb
+
             -   name: Build, tag, and push image to Amazon ECR
                 id: build-image
                 env:
@@ -77,7 +80,9 @@ jobs:
         name: Deploy
         runs-on: ubuntu-latest
         environment: sandbox
-        needs: build
+        needs:
+            - test
+            - build
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3

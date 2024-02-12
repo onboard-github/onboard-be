@@ -8,12 +8,13 @@ import org.springframework.web.servlet.resource.PathResourceResolver
 class AdminResourceResolver : PathResourceResolver() {
     override fun getResource(resourcePath: String, location: Resource): Resource? {
         if (
-            resourcePath.startsWith("api") || resourcePath.startsWith("/api")
-            || resourcePath.startsWith("admin") || resourcePath.startsWith("/admin")
-        )
+            resourcePath.startsWith("api") || resourcePath.startsWith("/api") ||
+            resourcePath.startsWith("admin") || resourcePath.startsWith("/admin")
+        ) {
             return null
+        }
 
-        if(location.exists() && location.isReadable) return location
+        if (location.exists() && location.isReadable) return location
 
         return null
     }
