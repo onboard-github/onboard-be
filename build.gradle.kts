@@ -1,12 +1,9 @@
-import org.gradle.kotlin.dsl.sourceSets
-import org.gradle.kotlin.dsl.test
-import org.gradle.kotlin.dsl.testImplementation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    kotlin("jvm") version "1.7.22"
-    kotlin("kapt") version "1.7.22"
+    kotlin("jvm")
+    kotlin("kapt")
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.springframework.boot")
