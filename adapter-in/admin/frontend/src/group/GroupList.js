@@ -41,13 +41,6 @@ export default function GroupList() {
                     ))}
                     </tbody>
                 </table>
-                ---
-                <div>
-                    ${
-                    process.env
-                }
-                ---
-                </div>
             </div>
     )
 }

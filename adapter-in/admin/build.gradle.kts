@@ -43,12 +43,12 @@ val frontendDir = "${project.projectDir}/frontend"
 val frontendBuildDir = "$frontendDir/build"
 
 // Node.js 설정
-//node {
+// node {
 //    version.set("14.17.5") // 사용할 Node.js 버전 지정
 //    npmVersion.set("7.20.3")
 //    download.set(false)
 //    nodeProjectDir.set(file("$frontendDir/node_modules"))
-//}
+// }
 
 tasks.register<NpmTask>("buildReact") {
     workingDir.set(file(frontendDir))

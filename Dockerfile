@@ -6,7 +6,8 @@ COPY . /app_source
 WORKDIR /app_source
 
 RUN chmod +x ./gradlew
-RUN ./gradlew :adapter-in:web:copySwaggerUI
+RUN ./gradlew copyAdminWeb
+RUN ./gradlew copySwaggerUI
 RUN ./gradlew :adapter-in:web:bootJar
 
 FROM eclipse-temurin:17-jdk-alpine AS RUNNER

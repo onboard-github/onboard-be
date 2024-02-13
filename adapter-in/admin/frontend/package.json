@@ -16,9 +16,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-local": "set \"REACT_APP_ENV=local\" && react-scripts build",
-    "build-sandbox": "set \"REACT_APP_ENV=sandbox\" && react-scripts build",
-    "build-production": "set \"REACT_APP_ENV=production\" && react-scripts build",
+    "build-local": "react-scripts build",
+    "build-sandbox": "react-scripts build",
+    "build-production": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

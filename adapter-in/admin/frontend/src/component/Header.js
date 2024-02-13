@@ -2,7 +2,7 @@ import './Header.css';
 
 
 export default function Header() {
-    const basePath = "bgbg"
+    const basePath = "/bgbg"
 
     return (
             <div className="header">

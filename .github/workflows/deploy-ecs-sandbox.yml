@@ -37,9 +37,6 @@ jobs:
 
             -   name: Test with Gradle
                 run: ./gradlew test
-
-            -   name: Npm Build
-                run: ./gradlew copyAdminWeb
     build:
         name: Build
         runs-on: ubuntu-latest
@@ -61,6 +58,9 @@ jobs:
                 id: login-ecr
                 uses: aws-actions/amazon-ecr-login@v1
 
+            -   name: Create .env File
+                run: |
+                    echo "REACT_APP_HOST_URL=$REACT_APP_HOST_URL" >> adapter-in/admin/frontend/.env
 
             -   name: Build, tag, and push image to Amazon ECR
                 id: build-image
