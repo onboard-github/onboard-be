@@ -44,18 +44,19 @@ val frontendBuildDir = "$frontendDir/build"
 
 // Node.js 설정
 node {
-    version.set("20.11.0") // 사용할 Node.js 버전 지정
-    npmVersion.set("10.2.4")
-    download.set(true)
-    nodeProjectDir.set(file("$frontendDir/node_modules"))
+//    version.set("20.11.0") // 사용할 Node.js 버전 지정
+//    npmVersion.set("")
+    download.set(false)
+//    npmInstallCommand.set("install")
+    nodeProjectDir.set(file(frontendDir))
+//    npmWorkDir.set(file("${project.projectDir}/.gradle/npm"))
+//    workDir.set(file("${project.projectDir}/.gradle/nodejs"))
 }
 
 tasks.register<NpmTask>("buildReact") {
+    dependsOn("npmInstall")
     workingDir.set(file(frontendDir))
-
-    println(System.getenv())
-    val phase = System.getenv("PHASE") ?: "local"
-    args.addAll("run", "build-$phase")
+    args.addAll("run", "build")
 }
 
 tasks.register<Copy>("copyAdminWeb") {
