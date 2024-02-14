@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - 'sandbox'
-            - 'feat/ONB-211'
 
 env:
     AWS_REGION: ap-northeast-2

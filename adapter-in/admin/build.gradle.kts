@@ -1,4 +1,3 @@
-import com.github.gradle.node.npm.task.NpmTask
 import groovy.lang.Closure
 import io.swagger.v3.oas.models.servers.Server
 import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
@@ -6,18 +5,11 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 
 plugins {
-    id("com.github.node-gradle.node") version "7.0.2" // Node.js 플러그인 추가
     id("com.epages.restdocs-api-spec") version "0.18.0"
     id("org.hidetake.swagger.generator") version "2.19.2"
     id("org.springframework.boot")
     kotlin("plugin.spring")
     id("io.spring.dependency-management")
-}
-
-buildscript {
-    dependencies {
-        classpath("com.github.node-gradle:gradle-node-plugin:7.0.2")
-    }
 }
 
 dependencies {
@@ -38,30 +30,7 @@ dependencies {
     swaggerUI("org.webjars:swagger-ui:4.18.2")
 }
 
-// Spring Boot 백엔드와 React 프론트엔드 경로 설정
-val frontendDir = "${project.projectDir}/frontend"
-val frontendBuildDir = "$frontendDir/build"
-
-// Node.js 설정
-node {
-//    version.set("20.11.0") // 사용할 Node.js 버전 지정
-//    npmVersion.set("")
-    download.set(false)
-//    npmInstallCommand.set("install")
-    nodeProjectDir.set(file(frontendDir))
-//    npmWorkDir.set(file("${project.projectDir}/.gradle/npm"))
-//    workDir.set(file("${project.projectDir}/.gradle/nodejs"))
-}
-
-tasks.register<NpmTask>("buildReact") {
-    dependsOn("npmInstall")
-    workingDir.set(file(frontendDir))
-    args.addAll("run", "build")
-}
-
 tasks.register<Copy>("copyAdminWeb") {
-    dependsOn("buildReact")
-
     into("src/main/resources/static/.")
 
     into("/admin") {
@@ -70,6 +39,7 @@ tasks.register<Copy>("copyAdminWeb") {
 }
 
 tasks.withType<Jar> {
+    dependsOn("copyAdminWeb")
     enabled = true
 }
 tasks.withType<BootJar> {

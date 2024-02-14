@@ -1,12 +1,19 @@
-FROM timbru31/java-node:jdk-18 AS BUILDER
+FROM node:latest AS NODE_BUILDER
 
 RUN mkdir /app_source
 COPY . /app_source
 
+WORKDIR /app_source/adapter-in/admin/frontend
+
+RUN npm install
+RUN npm run build
+
+FROM eclipse-temurin:17-jdk-alpine AS BUILDER
+
+COPY --from=NODE_BUILDER /app_source /app_source
 WORKDIR /app_source
 
 RUN chmod +x ./gradlew
-RUN ./gradlew copyAdminWeb --stacktrace
 RUN ./gradlew copySwaggerUI --scan
 RUN ./gradlew :adapter-in:web:bootJar
 
