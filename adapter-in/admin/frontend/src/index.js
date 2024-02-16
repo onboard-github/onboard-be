@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Header from "./component/Header";
+import Header from "./view/component/Header";
 import {BrowserRouter} from 'react-router-dom';
 import MainRouter from "./router/MainRouter";
 

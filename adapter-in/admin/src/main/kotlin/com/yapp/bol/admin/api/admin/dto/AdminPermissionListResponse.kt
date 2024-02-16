@@ -1,8 +1,8 @@
-package com.yapp.bol.admin.api.supervisor.dto
+package com.yapp.bol.admin.api.admin.dto
 
-import com.yapp.bol.admin.supervisor.AdminPermission
-import com.yapp.bol.admin.supervisor.AdminPermissionGroup
-import com.yapp.bol.admin.supervisor.AdminRole
+import com.yapp.bol.admin.AdminPermission
+import com.yapp.bol.admin.AdminPermissionGroup
+import com.yapp.bol.admin.AdminRole
 
 data class AdminPermissionListResponse(
     val roleList: List<AdminRole>,
@@ -19,5 +19,5 @@ data class AdminPermissionGroupResponse(
 
 fun AdminPermissionGroup.toResponse() = AdminPermissionGroupResponse(
     label = this.label,
-    url = this.url
+    url = this.url,
 )

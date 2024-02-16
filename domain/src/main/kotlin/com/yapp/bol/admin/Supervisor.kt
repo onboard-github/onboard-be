@@ -1,8 +1,8 @@
-package com.yapp.bol.admin.supervisor
+package com.yapp.bol.admin
 
 import com.yapp.bol.auth.UserId
 
-data class Supervisor(
+data class Admin(
     val userId: UserId,
     val name: String,
     val roles: Set<AdminRole>,

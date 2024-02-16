@@ -1,4 +1,4 @@
-package com.yapp.bol.admin.supervisor
+package com.yapp.bol.admin
 
 /**
  * AdminPermission 이 가장 작은 단위
@@ -13,6 +13,10 @@ enum class AdminRole(
     val description: String,
     val permissionSet: Set<AdminPermission>,
 ) {
+    ADMIN(
+        "어드민을 증명하는 기본 역할",
+        AdminPermission.REQUEST_PERMISSION,
+    ),
     GROUP_LIST_ALL(
         "그룹 목록 전체 권한",
         AdminPermission.VIEW_GROUP_LIST,
@@ -28,6 +32,7 @@ enum class AdminPermission(
     val group: AdminPermissionGroup,
     val description: String,
 ) {
+    REQUEST_PERMISSION(AdminPermissionGroup.ADMIN, "어드민 권한 요청을 할 수 있는 권한"),
     VIEW_GROUP_LIST(AdminPermissionGroup.GROUP_LIST, "그룹 조회 권한 (그룹 access code 포함)"),
     EDIT_GROUP_ACCESS_CODE(AdminPermissionGroup.GROUP_LIST, "그룹 Access Code 수정 권한"),
     DELETE_GROUP(AdminPermissionGroup.GROUP_LIST, "그룹 삭제 권한"),
@@ -37,6 +42,7 @@ enum class AdminPermissionGroup(
     val label: String,
     val url: String,
 ) {
+    ADMIN("Admin", "/admin"),
     USER("User", "/user"),
     GROUP_LIST("Group", "/group-list"),
 }

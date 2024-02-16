@@ -44,7 +44,7 @@ tasks.withType<Jar> {
 }
 tasks.withType<BootJar> {
     enabled = false
-    mainClass.set("com.yapp.bol.AdminApplicationKt")
+//    mainClass.set("com.yapp.bol.AdminApplicationKt")
 }
 
 tasks {

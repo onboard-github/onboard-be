@@ -1,8 +1,8 @@
 package com.yapp.admin.api.user
 
-import com.yapp.bol.admin.api.supervisor.AdminSupervisorController
-import com.yapp.bol.admin.supervisor.AdminRole
-import com.yapp.bol.admin.supervisor.SupervisorService
+import com.yapp.bol.admin.AdminRole
+import com.yapp.bol.admin.AdminService
+import com.yapp.bol.admin.api.admin.AdminController
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
@@ -12,8 +12,8 @@ import io.mockk.every
 import io.mockk.mockk
 
 class AdminUserControllerTest : BaseControllerTest() {
-    val adminUserService: SupervisorService = mockk()
-    override val controller = AdminSupervisorController(adminUserService)
+    val adminUserService: AdminService = mockk()
+    override val controller = AdminController(adminUserService)
 
     init {
         test("어드민의 권한 목록 가져오기") {

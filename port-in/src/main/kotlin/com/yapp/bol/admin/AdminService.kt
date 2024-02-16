@@ -1,7 +1,7 @@
-package com.yapp.bol.admin.supervisor
+package com.yapp.bol.admin
 
 import com.yapp.bol.auth.UserId
 
-interface SupervisorService {
+interface AdminService {
     fun getRoleList(userId: UserId): List<AdminRole>
 }

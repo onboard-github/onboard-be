@@ -1,10 +1,18 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
-import User from "../user/User";
+import User from "../view/user/User";
 import App from "../App";
-import GroupList from "../group/GroupList";
+import GroupList from "../view/group/GroupList";
+import Auth from "../view/auth/Auth";
+import {usePermissionState} from "../view/auth/AuthUtils";
 
 export default function MainRouter() {
+
+    const permission = usePermissionState()
+
+    if (permission.groupList == null || permission.groupList.length === 0)
+        return <Auth/>
+
     return (
             <Routes>
                 <Route path='/' element={<App/>}/>
