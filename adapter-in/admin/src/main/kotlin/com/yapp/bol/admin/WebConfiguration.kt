@@ -1,6 +1,6 @@
-package com.yapp.bol
+package com.yapp.bol.admin
 
-import com.yapp.bol.configuration.AdminResourceResolver
+import com.yapp.bol.admin.configuration.AdminResourceResolver
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

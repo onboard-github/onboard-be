@@ -1,4 +1,4 @@
-package com.yapp.bol
+package com.yapp.bol.admin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

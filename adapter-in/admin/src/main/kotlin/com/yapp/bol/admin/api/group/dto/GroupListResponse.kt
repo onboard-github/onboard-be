@@ -1,4 +1,4 @@
-package com.yapp.bol.api.group.dto
+package com.yapp.bol.admin.api.group.dto
 
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.dto.GroupWithMemberCount
