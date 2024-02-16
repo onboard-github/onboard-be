@@ -1,14 +1,14 @@
 package com.yapp.bol
 
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import io.mockk.every
 import io.mockk.mockk
 import org.springframework.core.env.Environment
 
-class TestControllerTest : ControllerTest() {
+class TestControllerTest : WebControllerTest() {
     private val environment: Environment = mockk()
 
     override val controller = TestController(environment)

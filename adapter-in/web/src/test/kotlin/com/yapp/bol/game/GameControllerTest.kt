@@ -1,16 +1,16 @@
 package com.yapp.bol.game
 
 import com.yapp.bol.base.ARRAY
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.group.GroupId
 import io.mockk.every
 import io.mockk.mockk
 
-class GameControllerTest : ControllerTest() {
+class GameControllerTest : WebControllerTest() {
     private val gameService: GameService = mockk()
     override val controller = GameController(gameService)
 

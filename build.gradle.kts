@@ -55,6 +55,8 @@ subprojects {
 configure(
     subprojects.filter {
         it.path in listOf(
+            ":adapter-in:support:auth",
+            ":adapter-in:support:oas",
             ":domain",
         )
     },

@@ -1,11 +1,12 @@
 package com.yapp.bol.match
 
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.date.DateTimeUtils
 import com.yapp.bol.game.GameId
 import com.yapp.bol.group.GroupId
@@ -19,7 +20,7 @@ import com.yapp.bol.season.SeasonId
 import io.mockk.every
 import io.mockk.mockk
 
-class MatchControllerTest : ControllerTest() {
+class MatchControllerTest : WebControllerTest() {
     private val matchService: MatchService = mockk()
     override val controller = MatchController(matchService)
 
