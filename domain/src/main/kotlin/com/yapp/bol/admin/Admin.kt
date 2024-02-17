@@ -4,6 +4,6 @@ import com.yapp.bol.auth.UserId
 
 data class Admin(
     val userId: UserId,
-    val name: String,
-    val roles: Set<AdminRole>,
+    val allowRoles: Set<AdminRole>,
+    val requestRoles: Set<AdminRole>,
 )

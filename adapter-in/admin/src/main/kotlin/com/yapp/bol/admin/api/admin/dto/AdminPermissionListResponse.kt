@@ -5,9 +5,9 @@ import com.yapp.bol.admin.AdminPermissionGroup
 import com.yapp.bol.admin.AdminRole
 
 data class AdminPermissionListResponse(
-    val roleList: List<AdminRole>,
+    val roleList: Set<AdminRole>,
 ) {
-    val permissionList: List<AdminPermission> = roleList.flatMap { it.permissionSet }
+    val permissionList: List<AdminPermission> = roleList.flatMap { it.permissionSet }.distinct()
     val groupList: List<AdminPermissionGroupResponse> =
         roleList.flatMap { role -> role.permissionSet.map { it.group } }.distinct().map { it.toResponse() }
 }
