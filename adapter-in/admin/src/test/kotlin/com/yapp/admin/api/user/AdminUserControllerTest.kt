@@ -8,6 +8,7 @@ import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BaseControllerTest
 import com.yapp.bol.base.OpenApiTag
+import com.yapp.bol.base.STRING
 import io.mockk.every
 import io.mockk.mockk
 
@@ -35,6 +36,8 @@ class AdminUserControllerTest : BaseControllerTest() {
                         "roleList" type ARRAY means "Role 목록",
                         "permissionList" type ARRAY means "권한 ID",
                         "groupList" type ARRAY means "권한 그룹 목록",
+                        "groupList[].label" type STRING means "그룹 표기 이름",
+                        "groupList[].url" type STRING means "그룹 URL",
                     ),
                 )
         }
