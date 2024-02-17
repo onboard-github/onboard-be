@@ -14,20 +14,20 @@ plugins {
 
 dependencies {
     val springVersion by properties
+    implementation(project(":adapter-in:support:auth"))
+    implementation(project(":adapter-in:support:oas"))
+
     implementation(project(":support:logging"))
     implementation(project(":support:yaml"))
     implementation(project(":core"))
 
     implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-aop:$springVersion")
-//    implementation("org.springframework.boot:spring-boot-starter-security:$springVersion")
 
+    testImplementation(project(":adapter-in:support:auth", "testArchive"))
+    testImplementation(project(":adapter-in:support:oas", "testArchive"))
     testImplementation(project(":domain", "testArchive"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0")
-    testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.0")
-    swaggerCodegen("io.swagger.codegen.v3:swagger-codegen-cli:3.0.42")
-    swaggerUI("org.webjars:swagger-ui:4.18.2")
 }
 
 tasks.register<Copy>("copyAdminWeb") {
@@ -44,7 +44,7 @@ tasks.withType<Jar> {
 }
 tasks.withType<BootJar> {
     enabled = false
-    mainClass.set("com.yapp.bol.AdminApplicationKt")
+//    mainClass.set("com.yapp.bol.AdminApplicationKt")
 }
 
 tasks {

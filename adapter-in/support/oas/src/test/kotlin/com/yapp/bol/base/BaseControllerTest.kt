@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder
 
 abstract class BaseControllerTest(
-    private val controllerAdvices: List<Any>,
+    private val controllerAdvices: List<Any> = emptyList(),
 ) : FunSpec() {
     protected abstract val controller: Any
 

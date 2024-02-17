@@ -1,4 +1,4 @@
-package com.yapp.bol.configuration
+package com.yapp.bol.admin.configuration
 
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component

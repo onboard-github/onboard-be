@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {httpClient} from "../http/HttpClient";
+import {httpClient} from "../../http/HttpClient";
 
 export default function GroupList() {
     const [groupList, setGroupList] = useState([])
