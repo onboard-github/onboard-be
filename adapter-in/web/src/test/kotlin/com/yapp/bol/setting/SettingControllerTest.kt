@@ -2,15 +2,15 @@ package com.yapp.bol.setting
 
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.terms.TermsCode
 import com.yapp.bol.terms.TermsService
 import io.mockk.every
 import io.mockk.mockk
 
-class SettingControllerTest : ControllerTest() {
+class SettingControllerTest : WebControllerTest() {
     private val termsService: TermsService = mockk()
     override val controller = SettingController("http://localhost:8080/", termsService)
 

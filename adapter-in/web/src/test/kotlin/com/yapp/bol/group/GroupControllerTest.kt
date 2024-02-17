@@ -2,14 +2,15 @@ package com.yapp.bol.group
 
 import com.yapp.bol.NoPermissionDeleteGroupException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OBJECT
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.file.FileService
 import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.game.GameId
@@ -26,7 +27,7 @@ import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 import io.mockk.every
 import io.mockk.mockk
 
-class GroupControllerTest : ControllerTest() {
+class GroupControllerTest : WebControllerTest() {
     private val groupService: GroupService = mockk()
     private val fileService: FileService = mockk()
     override val controller = GroupController(groupService, fileService)

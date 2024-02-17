@@ -3,13 +3,14 @@ package com.yapp.bol.group.member
 import com.yapp.bol.CannotDeleteOnlyOneMemberException
 import com.yapp.bol.CannotDeleteOwnerException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.game.member.GameMemberService
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
@@ -22,7 +23,7 @@ import com.yapp.bol.pagination.cursor.SimplePaginationCursorResponse
 import io.mockk.every
 import io.mockk.mockk
 
-class MemberControllerTest : ControllerTest() {
+class MemberControllerTest : WebControllerTest() {
     private val groupService: GroupService = mockk()
     private val memberService: MemberService = mockk()
     private val gameMemberService: GameMemberService = mockk()
@@ -297,7 +298,7 @@ class MemberControllerTest : ControllerTest() {
                     )
             }
 
-            test("그룹장 임명 (Owner -> Host)") {
+            test("그룹장 임명 Owner를 Host로") {
                 val groupId = GroupId(1)
                 val userId = UserId(1)
                 val memberId = MemberId(2)

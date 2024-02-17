@@ -1,9 +1,10 @@
 package com.yapp.bol.file
 
 import com.yapp.bol.auth.UserId
-import com.yapp.bol.base.ControllerTest
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import io.mockk.every
 import io.mockk.mockk
 import java.io.InputStream
@@ -13,7 +14,7 @@ import org.springframework.restdocs.payload.PayloadDocumentation.requestPartBody
 import org.springframework.restdocs.request.RequestDocumentation.partWithName
 import org.springframework.restdocs.request.RequestDocumentation.requestParts
 
-class FileControllerTest : ControllerTest() {
+class FileControllerTest : WebControllerTest() {
     private val fileService: FileService = mockk()
     override val controller = FileController(fileService)
 

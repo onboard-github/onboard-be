@@ -21,6 +21,8 @@ include(
     "port-in",
     "port-out",
     "adapter-in:admin",
+    "adapter-in:support:auth",
+    "adapter-in:support:oas",
     "adapter-in:web",
     "adapter-out:notify:discord",
     "adapter-out:rdb",
