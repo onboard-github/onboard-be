@@ -13,7 +13,7 @@ internal class MatchCommandRepositoryImpl(
 ) : MatchCommandRepository {
     @Transactional
     override fun createMatch(match: Match, gameMembers: List<GameMember>): Match {
-        val match = matchRepository.save(match.toEntity()).toDomain()
+        val result = matchRepository.save(match.toEntity()).toDomain()
 
         gameMemberRepository.saveAll(
             gameMembers.map {
@@ -21,6 +21,6 @@ internal class MatchCommandRepositoryImpl(
             },
         )
 
-        return match
+        return result
     }
 }
