@@ -2,6 +2,7 @@ package com.yapp.bol.group.dto
 
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.member.MemberId
+import com.yapp.bol.group.member.MemberRole
 
 data class GroupWithMemberDto(
     val id: GroupId, // group id
@@ -12,4 +13,5 @@ data class GroupWithMemberDto(
     val memberId: MemberId,
     val nickname: String,
     val matchCount: Long,
+    val role: MemberRole,
 )
