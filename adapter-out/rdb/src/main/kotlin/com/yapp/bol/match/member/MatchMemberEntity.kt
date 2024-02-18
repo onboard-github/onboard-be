@@ -48,7 +48,7 @@ class MatchMemberEntity : AuditingEntity() {
             memberId: Long,
             score: Int,
             ranking: Int,
-            match: MatchEntity
+            match: MatchEntity,
         ) = MatchMemberEntity().apply {
             this.id = id
             this.memberId = memberId

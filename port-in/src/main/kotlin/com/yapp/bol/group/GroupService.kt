@@ -6,13 +6,14 @@ import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.CreateGroupDto
 import com.yapp.bol.group.dto.GroupMemberList
 import com.yapp.bol.group.dto.GroupWithMemberCount
+import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 
 interface GroupService {
     fun createGroup(
-        createGroupDto: CreateGroupDto
+        createGroupDto: CreateGroupDto,
     ): GroupMemberList
 
     fun joinGroup(request: JoinGroupDto)
@@ -20,7 +21,7 @@ interface GroupService {
     fun searchGroup(
         keyword: String?,
         pageNumber: Int,
-        pageSize: Int
+        pageSize: Int,
     ): PaginationOffsetResponse<GroupWithMemberCount>
 
     fun addGuest(request: AddGuestDto)
@@ -36,4 +37,7 @@ interface GroupService {
     fun getOwner(groupId: GroupId): OwnerMember
 
     fun isRegisterGroup(userId: UserId, groupId: GroupId): Boolean
+
+    fun deleteGroup(userId: UserId, groupId: GroupId)
+    fun getGroupWithMemberInfo(userId: UserId): List<GroupWithMemberDto>
 }

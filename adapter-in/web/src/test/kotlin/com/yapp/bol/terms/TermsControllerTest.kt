@@ -35,7 +35,7 @@ class TermsControllerTest : ControllerTest() {
                         "contents[].title" type STRING means "약관 제목",
                         "contents[].isRequired" type BOOLEAN means "약관 필수 여부",
                         "contents[].url" type STRING means "약관 내용 url",
-                    )
+                    ),
                 )
         }
 
@@ -57,7 +57,7 @@ class TermsControllerTest : ControllerTest() {
                     requestFields(
                         "agree" type ARRAY means "동의 할 약관 Code 목록" isOptional true,
                         "disagree" type ARRAY means "동의하지 않는 약관 Code 목록" isOptional true,
-                    )
+                    ),
                 )
         }
     }

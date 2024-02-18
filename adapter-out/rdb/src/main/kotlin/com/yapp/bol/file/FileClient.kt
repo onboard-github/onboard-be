@@ -6,6 +6,7 @@ import com.yapp.bol.IllegalFileStateException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.aws.AwsProperties
 import com.yapp.bol.file.dto.RawFileData
+import java.io.ByteArrayInputStream
 import java.util.UUID
 import org.springframework.stereotype.Component
 
@@ -27,17 +28,15 @@ class FileClient(
             addUserMetadata(METADATA_USER_ID, file.userId.value.toString())
         }
 
-        s3Client.putObject(bucketName, key, file.content, metadata)
+        s3Client.putObject(bucketName, key, ByteArrayInputStream(file.content), metadata)
 
-        val entity = FileEntity(key, file.userId.value, file.purpose)
-        fileRepository.save(entity)
+        val entity = FileEntity.of(key, file.userId.value, file.purpose)
 
-        return FileInfo(FileNameConverter.convertFileUrl(key), file.contentType)
+        return fileRepository.save(entity).toFileInfo()
     }
 
-    override fun getFile(name: String): RawFileData {
-        val s3Object = s3Client.getObject(bucketName, name)
-
+    override fun getFile(uuid: String): RawFileData {
+        val s3Object = s3Client.getObject(bucketName, uuid)
         val accessLevelValue =
             s3Object.objectMetadata.getUserMetaDataOf(METADATA_PURPOSE) ?: throw IllegalFileStateException
         val purpose = FilePurpose.valueOf(accessLevelValue)
@@ -46,14 +45,18 @@ class FileClient(
 
         return RawFileData(
             userId = UserId(userId.toLong()),
-            content = s3Object.objectContent.delegateStream,
+            content = s3Object.objectContent.delegateStream.readAllBytes(),
             contentType = contentType,
             purpose = purpose,
         )
     }
 
-    override fun getFiles(filePurpose: FilePurpose): List<String> {
-        return fileRepository.findAllByPurpose(filePurpose).map { FileNameConverter.convertFileUrl(it.name) }
+    override fun getFileInfo(uuid: String): FileInfo? {
+        return fileRepository.findByName(uuid)?.toFileInfo()
+    }
+
+    override fun getFiles(filePurpose: FilePurpose): List<FileInfo> {
+        return fileRepository.findAllByPurpose(filePurpose).map { it.toFileInfo() }
     }
 
     companion object {

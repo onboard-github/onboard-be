@@ -37,6 +37,6 @@ class AppleIdTokenLoginClient(
 
     companion object {
         private const val APPLE_ISS = "https://appleid.apple.com"
-        private const val APPLE_AUD = "onboard.onboard-iOS"
+        private const val APPLE_AUD = "onboard.onboard-iOS-App"
     }
 }

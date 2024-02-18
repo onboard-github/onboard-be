@@ -7,7 +7,9 @@ import com.yapp.bol.season.Season
 import java.time.LocalDateTime
 
 @JvmInline
-value class MatchId(val value: Long)
+value class MatchId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class Match(
     val id: MatchId = MatchId(0),
@@ -16,5 +18,5 @@ data class Match(
     val matchedDate: LocalDateTime,
     val memberCount: Int,
     val season: Season,
-    val matchMembers: List<MatchMember>
+    val matchMembers: List<MatchMember>,
 )

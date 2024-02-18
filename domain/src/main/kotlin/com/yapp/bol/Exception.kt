@@ -6,7 +6,7 @@ sealed class BolRatingException(
     val code: String,
     val status: Int,
     override val message: String,
-    override val cause: Throwable? = null
+    override val cause: Throwable? = null,
 ) : RuntimeException(message, cause)
 
 object NeedForceUpdateException : BolRatingException("FORCE_UPDATE", 400, "새로운 버전으로 업데이트가 필요합니다.")
@@ -21,6 +21,7 @@ class UnAuthenticationException(cause: Throwable? = null) : AuthException("Auth0
 class UnAuthorizationException(cause: Throwable? = null) : AuthException("Auth005", 403, "권한이 없습니다.", cause)
 
 object NotFoundUserException : BolRatingException("User001", 400, "유저를 찾을 수 없습니다.")
+object NotDeleteUserByOwnerException : BolRatingException("User002", 400, "오너인 그룹이 있어서 탈퇴 할 수 없습니다.")
 
 object IllegalFileStateException : BolRatingException("File001", 500, "요청한 파일의 Status가 올바르지 않습니다.")
 object NotFoundFileException : BolRatingException("File002", 400, "파일을 찾을 수 없습니다.")
@@ -44,6 +45,7 @@ object InvalidGroupOrganizationException :
 object NotFoundGroupException : GroupException("Group004", "그룹을 찾을 수 없습니다.")
 object AccessCodeNotMatchException : GroupException("Group005", "참여 코드가 올바르지 않습니다.")
 object InvalidGuestIdException : GroupException("Group006", "게스트 ID가 올바르지 않습니다.")
+object NoPermissionDeleteGroupException : GroupException("Group007", "그룹을 삭제 할 수 있는 권한이 없습니다.")
 
 sealed class MemberException(code: String, status: Int, message: String, cause: Throwable? = null) :
     BolRatingException(code = code, status = status, message = message, cause = cause)
@@ -54,6 +56,9 @@ object MultiOwnerException : MemberException("Member004", 500, "그룹장이 2�
 object InvalidMemberRoleException : MemberException("Member005", 500, "맴버의 상태가 잘 못 되어 었습니다.")
 object AlreadyExistMemberException : MemberException("Member006", 400, "이미 가입된 그룹입니다.")
 object NotFoundMemberException : MemberException("Member007", 400, "맴버를 찾을 수 없습니다.")
+object CannotDeleteOwnerException : MemberException("Member008", 400, "모임장은 탈퇴 할 수 없습니다.")
+object ForbiddenMemberException : MemberException("Member009", 400, "권한이 없습니다.")
+object CannotDeleteOnlyOneMemberException : MemberException("Member009", 400, "다른 모임원이 없어서 탈퇴 할 수 없습니다.")
 
 object NotExistRequiredTermsException : BolRatingException("Onboard001", 400, "필수 약관이 동의 되지 않았습니다.")
 object OldVersionTermsException : BolRatingException("Onboard002", 400, "구버전 약관을 요청 했습니다.")

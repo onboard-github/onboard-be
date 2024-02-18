@@ -12,7 +12,7 @@ import org.springframework.restdocs.snippet.Attributes
 class DocumentField(
     private val name: String,
     private var fieldType: JsonFieldType? = null,
-    private val enumValues: List<Any>? = null
+    private val enumValues: List<Any>? = null,
 ) {
     private var description: String? = null
     private var isOptimal = false

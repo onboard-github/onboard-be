@@ -5,6 +5,7 @@ import com.yapp.bol.auth.UserId
 import com.yapp.bol.group.GroupQueryRepository
 import com.yapp.bol.terms.TermsQueryRepository
 import com.yapp.bol.terms.existUpdatedTerms
+import com.yapp.bol.transaction.MyTransactional
 import com.yapp.bol.user.UserQueryRepository
 import org.springframework.stereotype.Service
 
@@ -14,6 +15,8 @@ class OnboardingServiceImpl(
     private val userQueryRepository: UserQueryRepository,
     private val groupQueryRepository: GroupQueryRepository,
 ) : OnboardingService {
+
+    @MyTransactional
     override fun getRemainOnboarding(userId: UserId): OnboardingGuide {
         val onboardingList = mutableListOf<OnboardingType>()
 

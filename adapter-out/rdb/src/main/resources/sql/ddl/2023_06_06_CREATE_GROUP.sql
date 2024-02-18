@@ -4,6 +4,7 @@ create table group_table
     name              varchar(14) not null,
     description       varchar(72) not null,
     organization      varchar(15),
+    profile_image_id  bigint      not null,
     profile_image_url varchar(255) null,
     access_code       varchar(8)  not null,
     deleted           tinyint(1) default 0 not null,

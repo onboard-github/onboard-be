@@ -4,7 +4,7 @@ import org.springframework.restdocs.payload.JsonFieldType
 import kotlin.reflect.KClass
 
 sealed class DocumentFieldType(
-    val type: JsonFieldType
+    val type: JsonFieldType,
 )
 
 object ARRAY : DocumentFieldType(JsonFieldType.ARRAY)

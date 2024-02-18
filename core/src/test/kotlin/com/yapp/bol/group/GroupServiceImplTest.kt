@@ -4,6 +4,9 @@ import com.yapp.bol.AccessCodeNotMatchException
 import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.UnAuthorizationException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.file.FileQueryRepository
+import com.yapp.bol.file.MockFileInfo
+import com.yapp.bol.game.member.GameMemberQueryRepository
 import com.yapp.bol.group.dto.AddGuestDto
 import com.yapp.bol.group.dto.JoinGroupDto
 import com.yapp.bol.group.member.GuestMember
@@ -23,13 +26,17 @@ class GroupServiceImplTest : FunSpec() {
     private val memberService: MemberService = mockk()
     private val memberQueryRepository: MemberQueryRepository = mockk()
     private val memberCommandRepository: MemberCommandRepository = mockk()
+    private val fileQueryRepository: FileQueryRepository = mockk()
+    private val gameMemberQueryRepository: GameMemberQueryRepository = mockk()
 
     private val sut = GroupServiceImpl(
-        groupQueryRepository,
-        groupCommandRepository,
-        memberService,
-        memberQueryRepository,
-        memberCommandRepository
+        groupQueryRepository = groupQueryRepository,
+        groupCommandRepository = groupCommandRepository,
+        memberService = memberService,
+        memberQueryRepository = memberQueryRepository,
+        memberCommandRepository = memberCommandRepository,
+        fileQueryRepository = fileQueryRepository,
+        gameMemberQueryRepository = gameMemberQueryRepository,
     )
 
     init {
@@ -46,13 +53,18 @@ class GroupServiceImplTest : FunSpec() {
                 name = "name",
                 description = "description",
                 organization = "organization",
-                profileImageUrl = "profileImageUrl",
-                accessCode = request.accessCode
+                profileImage = MockFileInfo(),
+                accessCode = request.accessCode,
             )
 
             test("Success") {
                 every { groupQueryRepository.findById(request.groupId) } returns mockGroup
-                every { memberQueryRepository.findByGroupIdAndUserId(request.groupId, request.userId) } returns null
+                every {
+                    memberQueryRepository.findByGroupIdAndUserId(
+                        request.groupId,
+                        request.userId,
+                    )
+                } returns null
                 every { memberService.createHostMember(any(), any(), any()) } returns HostMember(
                     userId = request.userId,
                     nickname = request.nickname!!,
@@ -84,19 +96,19 @@ class GroupServiceImplTest : FunSpec() {
             val request = AddGuestDto(
                 groupId = GroupId(0),
                 nickname = "name",
-                requestUserId = UserId(0)
+                requestUserId = UserId(0),
             )
 
             val mockMember = HostMember(
                 userId = request.requestUserId,
-                nickname = "other"
+                nickname = "other",
             )
 
             test("Success") {
                 every {
                     memberQueryRepository.findByGroupIdAndUserId(
                         request.groupId,
-                        request.requestUserId
+                        request.requestUserId,
                     )
                 } returns mockMember
                 every { memberService.createGuestMember(any(), any()) } returns GuestMember(
@@ -112,7 +124,7 @@ class GroupServiceImplTest : FunSpec() {
                 every {
                     memberQueryRepository.findByGroupIdAndUserId(
                         request.groupId,
-                        request.requestUserId
+                        request.requestUserId,
                     )
                 } returns null
                 every { memberService.createGuestMember(any(), any()) } returns GuestMember(

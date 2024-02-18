@@ -5,7 +5,7 @@ import com.yapp.bol.auth.getSecurityUserId
 import com.yapp.bol.auth.getSecurityUserIdOrThrow
 import com.yapp.bol.file.dto.FileResponse
 import com.yapp.bol.file.dto.RawFileData
-import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -34,18 +34,18 @@ class FileController(
         val request = RawFileData(
             userId = getSecurityUserIdOrThrow(),
             contentType = file.contentType ?: throw InvalidRequestException(),
-            content = file.inputStream,
+            content = file.inputStream.readAllBytes(),
             purpose = purpose,
         )
         val result = fileService.uploadFile(request)
 
-        return FileResponse(result.name)
+        return FileResponse(result.uuid, result.getUrl())
     }
 
     @GetMapping("/{name}")
     fun downloadFile(@PathVariable("name") fileName: String): ResponseEntity<Resource> {
         val file = fileService.downloadFile(getSecurityUserId(), fileName)
-        val resource = InputStreamResource(file.content)
+        val resource = ByteArrayResource(file.content)
 
         return ResponseEntity.ok()
             .contentType(MediaType.valueOf(file.contentType))

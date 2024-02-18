@@ -27,7 +27,7 @@ class FileControllerTest : ControllerTest() {
             val mockFile = MockMultipartFile("file", "file-name", contentType, inputStream)
             val mockPart = MockPart("purpose", purpose.toString().toByteArray())
 
-            every { fileService.uploadFile(any()) } returns FileInfo("URL", "image/jpeg")
+            every { fileService.uploadFile(any()) } returns MockFileInfo()
 
             multipart("/v1/file", listOf(mockFile), listOf(mockPart)) {
                 authorizationHeader(userId)
@@ -37,7 +37,7 @@ class FileControllerTest : ControllerTest() {
                     DocumentInfo(
                         identifier = "file",
                         description = "https://www.notion.so/yapp-workspace/API-Doc-23c98b2c35964072a8a5920f88f776b0?pvs=4 (multipart 문서 어캐 쓰는지 모르겠네요 ㅜㅜ)",
-                        tag = OpenApiTag.FILE
+                        tag = OpenApiTag.FILE,
                     ),
                     requestHeaders(
                         "Content-Type" type STRING means "multipart/form-data 고정",
@@ -48,8 +48,9 @@ class FileControllerTest : ControllerTest() {
                         partWithName("purpose").description("올리는 파일의 목적").optional(),
                     ),
                     responseFields(
+                        "uuid" type STRING means "서버와 통신할 때 사용하는 파일 고유 Id",
                         "url" type STRING means "다운로드 할 수 있는 URL",
-                    )
+                    ),
                 )
         }
     }

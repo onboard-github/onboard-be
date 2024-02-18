@@ -19,7 +19,7 @@ data class CreateMatchDto(
     val gameId: GameId,
     val groupId: GroupId,
     val matchedDate: LocalDateTime,
-    val createMatchMemberDtos: List<CreateMatchMemberDto>
+    val createMatchMemberDtos: List<CreateMatchMemberDto>,
 )
 
 fun CreateMatchDto.toDomain(season: Season): Match = Match(
@@ -28,12 +28,12 @@ fun CreateMatchDto.toDomain(season: Season): Match = Match(
     matchedDate = this.matchedDate,
     memberCount = this.createMatchMemberDtos.size,
     season = season,
-    matchMembers = this.createMatchMemberDtos.map { it.toDomain() }
+    matchMembers = this.createMatchMemberDtos.map { it.toDomain() },
 )
 
 fun CreateMatchMemberDto.toDomain(): MatchMember = MatchMember(
     id = MatchMemberId(0),
     memberId = this.memberId,
     score = this.score,
-    ranking = this.ranking
+    ranking = this.ranking,
 )

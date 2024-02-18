@@ -3,16 +3,19 @@ package com.yapp.bol.group
 import com.yapp.bol.InvalidGroupDescriptionException
 import com.yapp.bol.InvalidGroupNameException
 import com.yapp.bol.InvalidGroupOrganizationException
+import com.yapp.bol.file.FileInfo
 
 @JvmInline
-value class GroupId(val value: Long)
+value class GroupId(val value: Long) {
+    override fun toString(): String = value.toString()
+}
 
 data class Group(
     override val id: GroupId = GroupId(0),
     override val name: String,
     override val description: String,
     override val organization: String?,
-    override val profileImageUrl: String = DEFAULT_PROFILE_IMAGE_URL,
+    override val profileImage: FileInfo,
     override val accessCode: String = generateAccessCode(),
 ) : GroupBasicInfo {
     init {
@@ -55,6 +58,6 @@ interface GroupBasicInfo {
     val name: String
     val description: String
     val organization: String?
-    val profileImageUrl: String
+    val profileImage: FileInfo
     val accessCode: String
 }

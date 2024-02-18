@@ -24,7 +24,9 @@ internal class GroupQueryRepositoryImpl(
 
     override fun search(name: String?, pageNumber: Int, pageSize: Int): PaginationOffsetResponse<Group> {
         val pageable = PageRequest.of(
-            pageNumber, pageSize, Sort.by("createdDate").descending()
+            pageNumber,
+            pageSize,
+            Sort.by("createdDate").descending(),
         )
 
         if (name.isNullOrEmpty()) {
@@ -34,7 +36,11 @@ internal class GroupQueryRepositoryImpl(
         }
 
         val groups: Slice<GroupEntity> = groupRepository.findByNameOrOrganizationWithPriority(
-            "%$name%", "%$name%", name, name, pageable
+            "%$name%",
+            "%$name%",
+            name,
+            name,
+            pageable,
         )
 
         return toCursor(groups)
@@ -65,7 +71,7 @@ internal class GroupQueryRepositoryImpl(
             member = this.toDomain(),
             score = gameMember?.finalScore,
             matchCount = gameMember?.matchCount,
-            isChangeRecent = gameMember?.updatedDate?.isAfter(recentStandardTime) ?: false
+            isChangeRecent = gameMember?.updatedDate?.isAfter(recentStandardTime) ?: false,
         )
     }
 

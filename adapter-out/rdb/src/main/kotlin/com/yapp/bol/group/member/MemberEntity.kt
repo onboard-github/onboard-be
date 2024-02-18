@@ -15,15 +15,19 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "member")
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE member SET deleted=true, nickname=null WHERE member_id = ?")
 class MemberEntity(
     id: Long = 0,
     userId: Long? = null,
     groupId: Long = 0,
     role: MemberRole,
-    nickname: String
+    nickname: String,
 ) : AuditingEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,10 +59,27 @@ class MemberEntity(
     lateinit var gameMembers: List<GameMemberEntity>
         protected set
 
+    // guest -> host
     fun toHost(userId: Long) {
         if (this.userId != null) throw InvalidGuestIdException
         this.userId = userId
         this.role = MemberRole.HOST
+    }
+
+    fun toHost() {
+        if (this.userId == null) {
+            throw InvalidMemberRoleException
+        }
+
+        this.role = MemberRole.HOST
+    }
+
+    fun toOwner() {
+        if (this.userId == null) {
+            throw InvalidMemberRoleException
+        }
+
+        this.role = MemberRole.OWNER
     }
 }
 
