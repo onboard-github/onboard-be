@@ -7,6 +7,7 @@ import com.yapp.bol.auth.getSecurityUserIdOrThrow
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,7 +23,9 @@ class AdminRoleController(
 
     @PostMapping("/admin/v1/admin/permission")
     @PreAuthorize("isAuthenticated()")
-    fun requestRole(request: NewPermissionRequest) {
+    fun requestRole(
+        @RequestBody request: NewPermissionRequest,
+    ) {
         val userId = getSecurityUserIdOrThrow()
         adminService.requestRole(userId, request.role, request.memo)
     }

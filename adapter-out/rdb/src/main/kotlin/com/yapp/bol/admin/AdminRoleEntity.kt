@@ -56,6 +56,5 @@ class AdminRoleEntity : AuditingEntity() {
             this.memo = memo
             this.allowAssign = allowAssign
         }
-
     }
 }
