@@ -20,7 +20,7 @@ class AdminUserControllerTest : BaseControllerTest() {
         test("어드민의 권한 목록 가져오기") {
             val userId = UserId(1)
 
-            every { adminUserService.getAvailableRoleList(userId) } returns listOf(AdminRole.GROUP_LIST_ALL)
+            every { adminUserService.getAvailableRoleList(userId) } returns setOf(AdminRole.GROUP_LIST_ALL)
 
             get("/admin/v1/admin/permission") {
                 authorizationHeader(userId)
