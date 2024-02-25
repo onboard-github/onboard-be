@@ -3,6 +3,7 @@ log/
 # Custom
 .idea
 **/src/main/resources/static/swagger
+**/src/main/resources/static/redoc/openapi3.yaml
 
 # Created by https://www.toptal.com/developers/gitignore/api/kotlin,java,gradle,intellij+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=kotlin,java,gradle,intellij+all

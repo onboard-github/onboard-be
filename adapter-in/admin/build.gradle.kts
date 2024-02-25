@@ -1,6 +1,4 @@
-import groovy.lang.Closure
-import io.swagger.v3.oas.models.servers.Server
-import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 
@@ -49,40 +47,3 @@ tasks.withType<BootJar> {
     enabled = false
 //    mainClass.set("com.yapp.bol.AdminApplicationKt")
 }
-
-tasks {
-    val generateSwaggerUIPrefix = "Api"
-    openapi3 {
-        setServers(
-            listOf(
-                toServer("http://sandbox-api.onboardgame.co.kr"),
-                toServer("http://api.onboardgame.co.kr"),
-            ),
-        )
-        title = "온보드 API"
-        description = "온보드 클라이언트에게 제공하는 API"
-//    tagDescriptionsPropertiesFile = "src/docs/tag-descriptions.yaml"
-        version = "0.1.0"
-        format = "yaml"
-    }
-
-    swaggerSources {
-        create(generateSwaggerUIPrefix).apply {
-            setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-        }
-    }
-    withType<GenerateSwaggerUI> {
-        dependsOn("openapi3")
-    }
-    register<Copy>("copySwaggerUI") {
-        dependsOn("generateSwaggerUI$generateSwaggerUIPrefix")
-
-        val generateSwaggerUISampleTask =
-            this@tasks.named<GenerateSwaggerUI>("generateSwaggerUI$generateSwaggerUIPrefix").get()
-
-        from("${generateSwaggerUISampleTask.outputDir}")
-        into("src/main/resources/static/swagger")
-    }
-}
-
-fun toServer(url: String): Closure<Server> = closureOf<Server> { this.url = url } as Closure<Server>

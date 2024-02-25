@@ -1,11 +1,11 @@
+import com.epages.restdocs.apispec.gradle.OpenApi3Task
 import groovy.lang.Closure
 import io.swagger.v3.oas.models.servers.Server
-import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+import java.io.FileOutputStream
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("com.epages.restdocs-api-spec") version "0.18.0"
-    id("org.hidetake.swagger.generator") version "2.19.2"
+    id("com.epages.restdocs-api-spec") version "0.19.2"
     id("org.springframework.boot")
     kotlin("plugin.spring")
 }
@@ -25,11 +25,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-aop:$springVersion")
 
+    testImplementation(project(":adapter-in:admin", "testArchive"))
     testImplementation(project(":adapter-in:support:auth", "testArchive"))
     testImplementation(project(":adapter-in:support:oas", "testArchive"))
     testImplementation(project(":domain", "testArchive"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 tasks {
@@ -54,22 +54,14 @@ tasks {
         format = "yaml"
     }
 
-    swaggerSources {
-        create(generateSwaggerUIPrefix).apply {
-            setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-        }
-    }
-    withType<GenerateSwaggerUI> {
+    register<Exec>("generateRedoc") {
         dependsOn("openapi3")
-    }
-    register<Copy>("copySwaggerUI") {
-        dependsOn("generateSwaggerUI$generateSwaggerUIPrefix")
 
-        val generateSwaggerUISampleTask =
-            this@tasks.named<GenerateSwaggerUI>("generateSwaggerUI$generateSwaggerUIPrefix").get()
+        val openApi3Task = this@tasks.named<OpenApi3Task>("openapi3").get()
 
-        from("${generateSwaggerUISampleTask.outputDir}")
-        into("src/main/resources/static/swagger")
+        commandLine("python3", "${project(":adapter-in:support:oas").projectDir}/a.py", "${openApi3Task.outputDirectory}/openapi3.yaml")
+
+        standardOutput = FileOutputStream("${project.projectDir}/src/main/resources/static/redoc/openapi3.yaml")
     }
 }
 

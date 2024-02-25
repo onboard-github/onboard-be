@@ -1,20 +1,25 @@
-FROM node:latest AS NODE_BUILDER
+#FROM node:latest AS NODE_BUILDER
+#
+#RUN mkdir /app_source
+#COPY . /app_source
+#
+#WORKDIR /app_source/adapter-in/admin/frontend
+#
+#RUN npm install
+#RUN npm run build
+
+FROM comforest/bol_build_image:4 AS BUILDER
+
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
 
 RUN mkdir /app_source
 COPY . /app_source
-
-WORKDIR /app_source/adapter-in/admin/frontend
-
-RUN npm install
-RUN npm run build
-
-FROM eclipse-temurin:17-jdk-alpine AS BUILDER
-
-COPY --from=NODE_BUILDER /app_source /app_source
+#COPY --from=NODE_BUILDER /app_source /app_source
 WORKDIR /app_source
 
 RUN chmod +x ./gradlew
-RUN ./gradlew copySwaggerUI --scan
+RUN ./gradlew generateRedoc --scan --stacktrace
 RUN ./gradlew :adapter-in:web:bootJar
 
 FROM eclipse-temurin:17-jdk-alpine AS RUNNER
