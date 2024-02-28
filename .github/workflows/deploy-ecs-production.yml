@@ -58,6 +58,10 @@ jobs:
                 id: login-ecr
                 uses: aws-actions/amazon-ecr-login@v1
 
+            -   name: Create .env File
+                run: |
+                    echo ${{ vars.NODE_ENV }} >> adapter-in/admin/frontend/.env
+
             -   name: Build, tag, and push image to Amazon ECR
                 id: build-image
                 env:
