@@ -1,18 +1,25 @@
-import './Header.css';
 import {usePermissionState} from "../auth/AuthUtils";
+import {Layout, Menu} from 'antd';
+import {Link, useLocation} from 'react-router-dom';
 
 
-export default function Header() {
-    const basePath = "/bgbg"
-    const permission  = usePermissionState()
+export default function () {
+    const permission = usePermissionState()
+    const location = useLocation();
 
     return (
-            <div className="header">
-                {
-                    permission.groupList.map(
-                            it => <a href={`${basePath}${it.url}`}>{it.label}</a>
-                    )
-                }
-            </div>
+            <Layout.Header>
+                <Menu
+                        theme="dark"
+                        mode="horizontal"
+                        defaultSelectedKeys={location.pathname}
+                >
+                    {
+                        permission.groupList.map(
+                                it => <Menu.Item key={it.url}><Link to={it.url}>{it.label}</Link></Menu.Item>
+                        )
+                    }
+                </Menu>
+            </Layout.Header>
     )
 }
