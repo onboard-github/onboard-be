@@ -23,5 +23,6 @@ sealed class DeveloperNotifyType(
 
     data class REQUEST_ADMIN_ROLE(
         val role: List<AdminRole>,
-    ) : DeveloperNotifyType("어드민 권한 요청 $role", "어드민 권한 요청 알림")
+        val memo: String,
+    ) : DeveloperNotifyType("어드민 권한 요청\n$memo\n$role", "어드민 권한 요청 알림")
 }

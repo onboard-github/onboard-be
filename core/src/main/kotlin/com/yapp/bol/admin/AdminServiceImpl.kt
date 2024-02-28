@@ -23,6 +23,6 @@ class AdminServiceImpl(
         if (requestRoles.isEmpty()) return
 
         adminCommandRepository.requestRole(userId, requestRoles, memo)
-        developerNotifyService.notify(DeveloperNotifyType.REQUEST_ADMIN_ROLE(requestRoles))
+        developerNotifyService.notify(DeveloperNotifyType.REQUEST_ADMIN_ROLE(requestRoles, memo))
     }
 }
