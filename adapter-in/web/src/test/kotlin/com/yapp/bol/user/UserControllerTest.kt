@@ -4,7 +4,6 @@ import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
