@@ -5,11 +5,13 @@ pluginManagement {
     val kotlinVersion: String by settings
     plugins {
         id("org.springframework.boot") version springVersion
+        kotlin("jvm") version kotlinVersion
+        kotlin("multiplatform") version kotlinVersion
+        kotlin("kapt") version kotlinVersion
         kotlin("plugin.spring") version kotlinVersion
         kotlin("plugin.jpa") version kotlinVersion
         kotlin("plugin.allopen") version kotlinVersion
         kotlin("plugin.noarg") version kotlinVersion
-        kotlin("kapt") version "1.6.21"
     }
 }
 
@@ -18,6 +20,9 @@ include(
     "core",
     "port-in",
     "port-out",
+    "adapter-in:admin",
+    "adapter-in:support:auth",
+    "adapter-in:support:oas",
     "adapter-in:web",
     "adapter-out:notify:discord",
     "adapter-out:rdb",
@@ -27,5 +32,3 @@ include(
     "support:transaction",
     "support:yaml",
 )
-include("support:transaction")
-findProject(":support:transaction")?.name = "transaction"

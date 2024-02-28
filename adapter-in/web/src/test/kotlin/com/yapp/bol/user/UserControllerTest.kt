@@ -2,12 +2,13 @@ package com.yapp.bol.user
 
 import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
@@ -21,7 +22,7 @@ import com.yapp.bol.user.dto.PutUserInfoRequest
 import io.mockk.every
 import io.mockk.mockk
 
-class UserControllerTest : ControllerTest() {
+class UserControllerTest : WebControllerTest() {
     private val userService: UserService = mockk()
     private val groupService: GroupService = mockk()
     private val onboardingService: OnboardingService = mockk()

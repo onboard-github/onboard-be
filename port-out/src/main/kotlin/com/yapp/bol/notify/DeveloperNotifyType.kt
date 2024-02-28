@@ -1,5 +1,6 @@
 package com.yapp.bol.notify
 
+import com.yapp.bol.admin.AdminRole
 import com.yapp.bol.group.Group
 import com.yapp.bol.match.Match
 
@@ -19,4 +20,9 @@ sealed class DeveloperNotifyType(
         """.trimIndent(),
         "Match 생성 알림",
     )
+
+    data class REQUEST_ADMIN_ROLE(
+        val role: List<AdminRole>,
+        val memo: String,
+    ) : DeveloperNotifyType("어드민 권한 요청\n$memo\n$role", "어드민 권한 요청 알림")
 }
