@@ -23,7 +23,9 @@ class DiscordNotifyService(
     }
 
     fun DeveloperNotifyType.toDiscordWebhookRequest(): DiscordWebhookRequest = when (this) {
-        is DeveloperNotifyType.CREATE_MATCH -> DiscordWebhookRequest(this.message)
+        is DeveloperNotifyType.REQUEST_ADMIN_ROLE,
+        is DeveloperNotifyType.CREATE_MATCH,
+        -> DiscordWebhookRequest(this.message)
     }
 
     private fun callDiscord(request: DiscordWebhookRequest) {

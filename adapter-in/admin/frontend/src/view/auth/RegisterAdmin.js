@@ -27,6 +27,7 @@ export default function RegisterAdmin() {
     }
 
     return <div>
+        <h1>어드민 권한 요청</h1>
         <label>User Id</label> {1}
         <br/>
         <label>이름</label>
