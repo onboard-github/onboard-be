@@ -15,7 +15,7 @@ const emptyPermission = {groupList: []}
 // keyName 이름의 String 을 가져와 JSON 형태로 다시 Parse 진행
 export async function getPermissionList() {
     const permission = JSON.parse(sessionStorage.getItem(keyPermission))
-    if (permission != null) return permission
+    if (permission != null && permission.groupList.length > 0) return permission
 
     try {
         const response = await httpClient.get('/admin/v1/admin/permission');
