@@ -123,7 +123,7 @@ internal class GroupServiceImpl(
             GroupWithMemberCount(group, memberCount)
         }
 
-        return PaginationOffsetResponse(groupWithMemberCount, groups.hasNext)
+        return PaginationOffsetResponse(groupWithMemberCount, totalCount = groups.totalCount, groups.hasNext)
     }
 
     @MyTransactional
