@@ -9,7 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
 
-class AuthControllerTest : BaseControllerTest(emptyList()) {
+open class AuthControllerTest : BaseControllerTest(emptyList()) {
     private val authService: AuthService = mockk()
     override val controller = AuthController(authService)
 

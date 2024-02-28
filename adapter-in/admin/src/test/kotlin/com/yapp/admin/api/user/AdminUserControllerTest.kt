@@ -12,7 +12,7 @@ import com.yapp.bol.base.STRING
 import io.mockk.every
 import io.mockk.mockk
 
-class AdminUserControllerTest : BaseControllerTest() {
+open class AdminUserControllerTest : BaseControllerTest() {
     val adminUserService: AdminService = mockk()
     override val controller = AdminRoleController(adminUserService)
 

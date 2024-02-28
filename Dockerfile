@@ -8,13 +8,13 @@ WORKDIR /app_source/adapter-in/admin/frontend
 RUN npm install
 RUN npm run build
 
-FROM eclipse-temurin:17-jdk-alpine AS BUILDER
+FROM comforest/bol_build_image:4 AS BUILDER
 
 COPY --from=NODE_BUILDER /app_source /app_source
 WORKDIR /app_source
 
 RUN chmod +x ./gradlew
-RUN ./gradlew copySwaggerUI --scan
+RUN ./gradlew generateRedoc
 RUN ./gradlew :adapter-in:web:bootJar
 
 FROM eclipse-temurin:17-jdk-alpine AS RUNNER
