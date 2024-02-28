@@ -8,7 +8,7 @@ import MainRouter from "./router/MainRouter";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-        <BrowserRouter basename="/bgbg">
+        <BrowserRouter basename={process.env.REACT_APP_BASE_PATH}>
             <Header/>
             <MainRouter/>
         </BrowserRouter>
