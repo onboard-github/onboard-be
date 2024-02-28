@@ -1,6 +1,7 @@
 package com.yapp.bol.admin
 
 import com.yapp.bol.AuditingEntity
+import com.yapp.bol.auth.UserId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -36,4 +37,24 @@ class AdminRoleEntity : AuditingEntity() {
     @Column(name = "memo")
     lateinit var memo: String
         protected set
+
+    @Column(name = "allow_assign")
+    var allowAssign: Boolean = false
+        protected set
+
+    companion object {
+        fun of(
+            userId: UserId,
+            role: AdminRole,
+            state: AdminRoleState,
+            memo: String,
+            allowAssign: Boolean,
+        ): AdminRoleEntity = AdminRoleEntity().apply {
+            this.userId = userId.value
+            this.role = role
+            this.state = state
+            this.memo = memo
+            this.allowAssign = allowAssign
+        }
+    }
 }

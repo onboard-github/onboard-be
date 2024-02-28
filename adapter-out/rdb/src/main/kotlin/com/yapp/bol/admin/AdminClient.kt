@@ -6,8 +6,27 @@ import org.springframework.stereotype.Component
 @Component
 internal class AdminClient(
     private val jpaRepository: AdminRoleRepository,
-) : AdminQueryRepository {
-    override fun getRoles(userId: UserId): List<AdminRole> {
-        return jpaRepository.findAllByUserIdAndState(userId.value, AdminRoleState.ALLOW).map { it.role }
+) : AdminQueryRepository, AdminCommandRepository {
+    override fun getAdmin(userId: UserId): Admin {
+        val entity = jpaRepository.findAllByUserId(userId.value)
+
+        return Admin(
+            userId = userId,
+            allowRoles = entity.filter { it.allowAssign }.map { it.role }.toSet(),
+            requestRoles = entity.filter { it.allowAssign.not() }.map { it.role }.toSet(),
+        )
+    }
+
+    override fun requestRole(userId: UserId, roleList: List<AdminRole>, memo: String) {
+        val entityList = roleList.map {
+            AdminRoleEntity.of(
+                userId,
+                it,
+                state = AdminRoleState.REQUEST,
+                memo,
+                true,
+            )
+        }
+        jpaRepository.saveAll(entityList)
     }
 }

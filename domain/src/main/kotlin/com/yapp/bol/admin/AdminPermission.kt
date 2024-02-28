@@ -15,7 +15,7 @@ enum class AdminRole(
 ) {
     ADMIN(
         "어드민을 증명하는 기본 역할",
-        AdminPermission.REQUEST_PERMISSION,
+        *AdminPermission.values(),
     ),
     GROUP_LIST_ALL(
         "그룹 목록 전체 권한",

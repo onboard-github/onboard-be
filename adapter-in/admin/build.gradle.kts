@@ -14,6 +14,8 @@ plugins {
 
 dependencies {
     val springVersion by properties
+    val swaggerUiVersion by properties
+
     implementation(project(":adapter-in:support:auth"))
     implementation(project(":adapter-in:support:oas"))
 
@@ -28,6 +30,7 @@ dependencies {
     testImplementation(project(":adapter-in:support:oas", "testArchive"))
     testImplementation(project(":domain", "testArchive"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 tasks.register<Copy>("copyAdminWeb") {

@@ -2,7 +2,7 @@ package com.yapp.admin.api.user
 
 import com.yapp.bol.admin.AdminRole
 import com.yapp.bol.admin.AdminService
-import com.yapp.bol.admin.api.admin.AdminController
+import com.yapp.bol.admin.api.admin.AdminRoleController
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
@@ -14,13 +14,13 @@ import io.mockk.mockk
 
 class AdminUserControllerTest : BaseControllerTest() {
     val adminUserService: AdminService = mockk()
-    override val controller = AdminController(adminUserService)
+    override val controller = AdminRoleController(adminUserService)
 
     init {
         test("어드민의 권한 목록 가져오기") {
             val userId = UserId(1)
 
-            every { adminUserService.getRoleList(userId) } returns listOf(AdminRole.GROUP_LIST_ALL)
+            every { adminUserService.getAvailableRoleList(userId) } returns setOf(AdminRole.GROUP_LIST_ALL)
 
             get("/admin/v1/admin/permission") {
                 authorizationHeader(userId)
