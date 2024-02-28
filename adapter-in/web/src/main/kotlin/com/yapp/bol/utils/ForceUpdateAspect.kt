@@ -30,6 +30,10 @@ class ForceUpdateAspect {
                 if (Version.of(annotation.androidVersion) > Version.of(version)) {
                     throw NeedForceUpdateException
                 }
+            } else if (appType.lowercase() == "ios") {
+                if (Version.of(annotation.iosVersion) > Version.of(version)) {
+                    throw NeedForceUpdateException
+                }
             }
         } catch (e: Exception) {
             throw NeedForceUpdateException

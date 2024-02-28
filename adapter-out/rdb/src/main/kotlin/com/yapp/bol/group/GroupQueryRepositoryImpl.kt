@@ -22,24 +22,24 @@ internal class GroupQueryRepositoryImpl(
         return groupRepository.findByIdOrNull(id.value)?.toDomain()
     }
 
-    override fun search(name: String?, pageNumber: Int, pageSize: Int): PaginationOffsetResponse<Group> {
+    override fun search(keyword: String?, pageNumber: Int, pageSize: Int): PaginationOffsetResponse<Group> {
         val pageable = PageRequest.of(
             pageNumber,
             pageSize,
             Sort.by("createdDate").descending(),
         )
 
-        if (name.isNullOrEmpty()) {
+        if (keyword.isNullOrEmpty()) {
             val groups: Slice<GroupEntity> = groupRepository.findAll(pageable)
 
             return toCursor(groups)
         }
 
         val groups: Slice<GroupEntity> = groupRepository.findByNameOrOrganizationWithPriority(
-            "%$name%",
-            "%$name%",
-            name,
-            name,
+            "%$keyword%",
+            "%$keyword%",
+            keyword,
+            keyword,
             pageable,
         )
 

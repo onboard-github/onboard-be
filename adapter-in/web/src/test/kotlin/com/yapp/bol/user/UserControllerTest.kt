@@ -2,16 +2,19 @@ package com.yapp.bol.user
 
 import com.yapp.bol.NotDeleteUserByOwnerException
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
-import com.yapp.bol.base.ControllerTest
+import com.yapp.bol.base.ENUM
 import com.yapp.bol.base.NUMBER
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.file.MockFileInfo
 import com.yapp.bol.group.GroupId
 import com.yapp.bol.group.GroupService
 import com.yapp.bol.group.dto.GroupWithMemberDto
 import com.yapp.bol.group.member.MemberId
+import com.yapp.bol.group.member.MemberRole
 import com.yapp.bol.onboarding.OnboardingGuide
 import com.yapp.bol.onboarding.OnboardingService
 import com.yapp.bol.onboarding.OnboardingType
@@ -19,7 +22,7 @@ import com.yapp.bol.user.dto.PutUserInfoRequest
 import io.mockk.every
 import io.mockk.mockk
 
-class UserControllerTest : ControllerTest() {
+class UserControllerTest : WebControllerTest() {
     private val userService: UserService = mockk()
     private val groupService: GroupService = mockk()
     private val onboardingService: OnboardingService = mockk()
@@ -94,6 +97,7 @@ class UserControllerTest : ControllerTest() {
                     nickname = "닉네임",
                     matchCount = 10L,
                     memberId = MemberId(1),
+                    role = MemberRole.OWNER,
                 ),
             )
 
@@ -117,6 +121,7 @@ class UserControllerTest : ControllerTest() {
                         "contents[].memberId" type NUMBER means "멤버 ID",
                         "contents[].nickname" type STRING means "멤버 이름",
                         "contents[].matchCount" type NUMBER means "그룹 내 플레이한 게임 수",
+                        "contents[].role" type ENUM(MemberRole::class) means "그룹 내 권한",
                     ),
                 )
         }

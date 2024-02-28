@@ -1,16 +1,17 @@
 package com.yapp.bol.terms
 
 import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BOOLEAN
-import com.yapp.bol.base.ControllerTest
 import com.yapp.bol.base.OpenApiTag
 import com.yapp.bol.base.STRING
+import com.yapp.bol.base.WebControllerTest
 import com.yapp.bol.terms.dto.AgreeTermsRequest
 import io.mockk.every
 import io.mockk.mockk
 
-class TermsControllerTest : ControllerTest() {
+class TermsControllerTest : WebControllerTest() {
     private val termsService: TermsService = mockk()
     override val controller = TermsController("http://localhost:8080/", termsService)
 

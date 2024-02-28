@@ -202,6 +202,7 @@ internal class GroupServiceImpl(
                 memberId = member.id,
                 nickname = member.nickname,
                 matchCount = matchCount,
+                role = member.role,
             )
         }
 

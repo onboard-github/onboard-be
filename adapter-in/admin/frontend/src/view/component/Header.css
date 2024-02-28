@@ -1,0 +1,19 @@
+.header {
+    height: 50px;
+    background: #61dafb;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.header a {
+    min-width: 100px;
+    height: 100%;
+    background: gray;
+    padding: 0;
+
+    display: flex; /* CSS3 */
+    align-items: center; /* Vertical align */
+    justify-content: center; /* Horizontal align */
+    /*border: 1px solid #000;*/
+}

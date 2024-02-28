@@ -19,9 +19,6 @@ class MemberServiceImplTest : FunSpec() {
             val nickname = "닉네임"
 
             test("Success") {
-                val groupId = GroupId(0)
-                val nickname = "닉네임"
-
                 every { memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) } returns null
 
                 sut.validateMemberNickname(groupId, nickname).isAvailable shouldBe true
@@ -40,21 +37,21 @@ class MemberServiceImplTest : FunSpec() {
             }
 
             test("닉네임 길이 초과") {
-                val nickname = "x".repeat(Member.MAX_NICKNAME_LENGTH + 1)
+                val longNickname = "x".repeat(Member.MAX_NICKNAME_LENGTH + 1)
 
-                every { memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) } returns null
+                every { memberQueryRepository.findByNicknameAndGroupId(longNickname, groupId) } returns null
 
-                sut.validateMemberNickname(groupId, nickname).isAvailable shouldBe false
-                sut.validateMemberNickname(groupId, nickname).reason shouldBe NicknameValidationReason.INVALID_NICKNAME
+                sut.validateMemberNickname(groupId, longNickname).isAvailable shouldBe false
+                sut.validateMemberNickname(groupId, longNickname).reason shouldBe NicknameValidationReason.INVALID_NICKNAME
             }
 
             test("닉네임 길이 부족") {
-                val nickname = "x".repeat(Member.MIN_NICKNAME_LENGTH - 1)
+                val shortNickname = "x".repeat(Member.MIN_NICKNAME_LENGTH - 1)
 
-                every { memberQueryRepository.findByNicknameAndGroupId(nickname, groupId) } returns null
+                every { memberQueryRepository.findByNicknameAndGroupId(shortNickname, groupId) } returns null
 
-                sut.validateMemberNickname(groupId, nickname).isAvailable shouldBe false
-                sut.validateMemberNickname(groupId, nickname).reason shouldBe NicknameValidationReason.INVALID_NICKNAME
+                sut.validateMemberNickname(groupId, shortNickname).isAvailable shouldBe false
+                sut.validateMemberNickname(groupId, shortNickname).reason shouldBe NicknameValidationReason.INVALID_NICKNAME
             }
         }
     }

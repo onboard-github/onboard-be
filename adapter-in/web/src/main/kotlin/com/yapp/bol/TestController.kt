@@ -17,7 +17,7 @@ class TestController(private val environment: Environment) {
         return TestResponse("Good! You're running in the $activeProfiles phase.")
     }
 
-    @ApiMinVersion("2.1.0")
+    @ApiMinVersion("99.0.0", "99.0.0")
     @GetMapping("/force-update")
     fun testForceUpdate(): EmptyResponse {
         return EmptyResponse
