@@ -1,18 +1,19 @@
 import {usePermissionState} from "../auth/AuthUtils";
-import {Layout, Menu} from 'antd';
+import {Menu} from 'antd';
 import {Link, useLocation} from 'react-router-dom';
 
 
 export default function () {
-    const permission = usePermissionState()
+    const [permission] = usePermissionState()
     const location = useLocation();
 
     return (
-            <Layout.Header>
+            <div>
                 <Menu
                         theme="dark"
-                        mode="horizontal"
+                        mode="vertical"
                         defaultSelectedKeys={location.pathname}
+                        inlineCollapsed={false}
                 >
                     {
                         permission.groupList.map(
@@ -20,6 +21,6 @@ export default function () {
                         )
                     }
                 </Menu>
-            </Layout.Header>
+            </div>
     )
 }

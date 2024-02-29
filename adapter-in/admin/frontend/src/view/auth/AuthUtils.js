@@ -46,5 +46,5 @@ export function usePermissionState() {
             , []
     )
 
-    return permission
+    return [permission]
 }

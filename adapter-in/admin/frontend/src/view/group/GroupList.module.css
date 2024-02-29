@@ -13,5 +13,9 @@
 
 .pagination {
     margin: 10px 0;
-    align-self: flex-end;
+    align-self: center;
+}
+
+.actionButton {
+    margin: 2px;
 }

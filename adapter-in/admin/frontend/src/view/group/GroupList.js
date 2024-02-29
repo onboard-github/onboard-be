@@ -1,18 +1,13 @@
-import "./GroupList.css"
+import style from "./GroupList.module.css"
 import {useEffect, useState} from "react";
 import {httpClient} from "../../http/HttpClient";
-import {Input, Pagination, Space, Table} from "antd";
+import {Button, Input, Pagination, Space, Table, Tag} from "antd";
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import * as PropTypes from "prop-types";
+import {usePermissionState} from "../auth/AuthUtils";
 
 const {Search} = Input
 
-const columns = [
-    {key: "id", title: "ID", dataIndex: "id"},
-    {key: "name", title: "그룹명", dataIndex: "name"},
-    {key: "organization", title: "그룹 소속", dataIndex: "organization"},
-    {key: "description", title: "그룹 설명", dataIndex: "description"},
-    {key: "accessCode", title: "참여 코드", dataIndex: "accessCode"},
-]
 
 Search.propTypes = {enterButton: PropTypes.string};
 export default function GroupList() {
@@ -20,7 +15,23 @@ export default function GroupList() {
     const [page, setPage] = useState(0)
     const [keyword, setKeyword] = useState(null)
     const [totalCount, setTotalCount] = useState(0)
+    const [permission] = usePermissionState()
     const pageSize = 15
+
+    const columns = [
+        {key: "id", title: "ID", dataIndex: "id"},
+        {key: "name", title: "그룹명", dataIndex: "name"},
+        {key: "organization", title: "그룹 소속", dataIndex: "organization"},
+        {key: "description", title: "그룹 설명", dataIndex: "description"},
+        {key: "accessCode", title: "참여 코드", dataIndex: "accessCode"},
+        {key: "actions", title: "", render: (_, { id }) => (
+                    <>
+                        <Button className={style.actionButton} type="primary" shape="circle" icon={<EditOutlined />} size="small"/>
+                        <Button className={style.actionButton} type="primary" shape="circle" icon={<DeleteOutlined />} size="small" disabled={!permission.permissionList.includes("DELETE_GROUP")}/>
+                    </>
+            ),
+        },
+    ]
 
     useEffect(() => {
         fetchData(null);
@@ -49,7 +60,7 @@ export default function GroupList() {
     const onPageChange = (value) => fetchData(keyword, value - 1)
 
 
-    return <div className={"container"}>
+    return <div className={style.container}>
         <Space direction="horizontal">
             <label>검색</label>
             <Search
@@ -61,13 +72,13 @@ export default function GroupList() {
             />
         </Space>
         <Table
-                className={"table"}
+                className={style.table}
                 columns={columns}
                 dataSource={groupList}
                 pagination={false}
         />
         <Pagination
-                className={"pagination"}
+                className={style.pagination}
                 defaultCurrent={1}
                 total={totalCount}
                 pageSize={pageSize}

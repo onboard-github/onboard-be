@@ -9,7 +9,7 @@ import {AdminRole} from "./AdminRole";
 
 export default function MainRouter() {
 
-    const permission = usePermissionState()
+    const [permission] = usePermissionState()
 
     if (permission.groupList == null || permission.groupList.length === 0)
         return  (
