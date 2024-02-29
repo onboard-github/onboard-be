@@ -38,9 +38,11 @@ class AdminRoleEntity : AuditingEntity() {
     lateinit var memo: String
         protected set
 
-    @Column(name = "allow_assign")
-    var allowAssign: Boolean = false
+    @Column(name = "is_owner")
+    var isOwner: Boolean = false
         protected set
+
+    fun isAllow(): Boolean = state == AdminRoleState.ALLOW
 
     companion object {
         fun of(
@@ -48,13 +50,13 @@ class AdminRoleEntity : AuditingEntity() {
             role: AdminRole,
             state: AdminRoleState,
             memo: String,
-            allowAssign: Boolean,
+            isOwner: Boolean,
         ): AdminRoleEntity = AdminRoleEntity().apply {
             this.userId = userId.value
             this.role = role
             this.state = state
             this.memo = memo
-            this.allowAssign = allowAssign
+            this.isOwner = isOwner
         }
     }
 }

@@ -12,8 +12,8 @@ internal class AdminClient(
 
         return Admin(
             userId = userId,
-            allowRoles = entity.filter { it.allowAssign }.map { it.role }.toSet(),
-            requestRoles = entity.filter { it.allowAssign.not() }.map { it.role }.toSet(),
+            allowRoles = entity.filter { it.isAllow() }.map { it.role }.toSet(),
+            requestRoles = entity.filter { it.isAllow().not() }.map { it.role }.toSet(),
         )
     }
 

@@ -3,6 +3,7 @@ import {Route, Routes} from 'react-router-dom';
 import User from "../view/user/User";
 import GroupList from "../view/group/GroupList";
 import Auth from "../view/auth/Auth";
+import Main from "./Main"
 import {usePermissionState} from "../view/auth/AuthUtils";
 import {KakaoRedirect} from "../view/auth/KakaoRedirect";
 import {AdminRole} from "./AdminRole";
@@ -21,7 +22,7 @@ export default function MainRouter() {
 
     return (
             <Routes>
-                <Route path='/' element={<h1>Welcome Admin</h1>}/>
+                <Route path='/' element={<Main/>}/>
                 <Route path='/user' element={<User/>}/>
                 <Route path='/group-list' element={<GroupList/>}/>
                 <Route path='/admin' element={<AdminRole/>}/>

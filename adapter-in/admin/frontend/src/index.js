@@ -23,7 +23,7 @@ function App() {
 
     return (
             <BrowserRouter basename={process.env.REACT_APP_BASE_PATH}>
-                <Layout>
+                <Layout style={{minHeight: "100vh"}}>
                     <Sider collapsed={navCollapsed} onCollapse={setNavCollapsed}>
                         <Navigation/>
                     </Sider>
