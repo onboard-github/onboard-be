@@ -60,9 +60,8 @@ jobs:
 
             -   name: Create .env File
                 run: |
-                    touch adapter-in/admin/frontend/.env
-                    echo ${{ vars.NODE_ENV }} >> adapter-in/admin/frontend/.env
-                    cat adapter-in/admin/frontend/.env
+                    echo "${{ vars.NODE_ENV }}" >> adapter-in/admin/frontend/.env
+
             -   name: Build, tag, and push image to Amazon ECR
                 id: build-image
                 env:
