@@ -17,6 +17,7 @@ import com.yapp.bol.group.dto.toCreateGroupResponse
 import com.yapp.bol.group.dto.toDto
 import com.yapp.bol.group.dto.toListResponse
 import com.yapp.bol.group.dto.toResponse
+import com.yapp.bol.group.member.MemberValidator
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController
 class GroupController(
     private val groupService: GroupService,
     private val fileService: FileService,
+    private val memberValidator: MemberValidator,
 ) {
     @GetMapping("/default-image")
     fun getDefaultImage(): FileResponse {
@@ -99,8 +101,8 @@ class GroupController(
     ): EmptyResponse {
         val userId = getSecurityUserIdOrThrow()
 
-        groupService.deleteGroup(userId, groupId)
-
+        memberValidator.requiredGroupOwner(groupId, userId)
+        groupService.deleteGroup(groupId)
         return EmptyResponse
     }
 }
