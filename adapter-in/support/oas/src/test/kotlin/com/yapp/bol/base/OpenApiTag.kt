@@ -14,4 +14,5 @@ enum class OpenApiTag(
     USER("User"),
     MATCH("Match"),
     ADMIN_BASE("Admin 기본 API"),
+    ADMIN_GROUP("Admin Group"),
 }
