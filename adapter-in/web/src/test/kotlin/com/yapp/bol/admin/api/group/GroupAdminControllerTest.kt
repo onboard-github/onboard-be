@@ -1,5 +1,9 @@
 package com.yapp.bol.admin.api.group
 
+import com.yapp.bol.admin.AdminPermission
+import com.yapp.bol.admin.api.admin.AdminRoleValidator
+import com.yapp.bol.auth.UserId
+import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
 import com.yapp.bol.base.BaseControllerTest
 import com.yapp.bol.base.NUMBER
@@ -15,11 +19,16 @@ import io.mockk.every
 import io.mockk.mockk
 
 open class GroupAdminControllerTest : BaseControllerTest() {
+    private val adminRoleValidator: AdminRoleValidator = mockk()
     private val groupService: GroupService = mockk()
-    override val controller = GroupAdminController(groupService)
+    override val controller = GroupAdminController(adminRoleValidator, groupService)
 
     init {
+        val userId = UserId(123)
+        val groupId = GroupId(321)
+
         test("그룹 목록 가져오기 (어드민)") {
+            every { adminRoleValidator.requiredHasRole(userId, AdminPermission.VIEW_GROUP_LIST) } returns Unit
             every {
                 groupService.searchGroup(any(), any(), any())
             } returns PaginationOffsetResponse(
@@ -28,7 +37,9 @@ open class GroupAdminControllerTest : BaseControllerTest() {
                 hasNext = false,
             )
 
-            get("/admin/v1/group-list") {}
+            get("/admin/v1/group-list") {
+                authorizationHeader(userId)
+            }
                 .isStatus(200)
                 .makeDocument(
                     DocumentInfo(
@@ -54,8 +65,27 @@ open class GroupAdminControllerTest : BaseControllerTest() {
                 )
         }
 
-    }
+        test("그룹 삭제하기 (어드민)") {
+            every { adminRoleValidator.requiredHasRole(userId, AdminPermission.DELETE_GROUP) } returns Unit
+            every { groupService.deleteGroup(any()) } returns Unit
 
+            delete("/admin/v1/group") {
+                authorizationHeader(userId)
+                queryParam("groupId", groupId.value.toString())
+            }
+                .isStatus(200)
+                .makeDocument(
+                    DocumentInfo(
+                        identifier = "admin_group/{method-name}",
+                        description = "그룹 목록 검색하기",
+                        tag = OpenApiTag.ADMIN_GROUP,
+                    ),
+                    queryParameters(
+                        "groupId" type NUMBER means "그룹 ID",
+                    ),
+                )
+        }
+    }
 
     companion object {
         val GROUP = Group(
