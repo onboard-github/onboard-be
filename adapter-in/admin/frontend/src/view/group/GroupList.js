@@ -1,7 +1,7 @@
 import style from "./GroupList.module.css"
 import {useEffect, useState} from "react";
 import {httpClient} from "../../http/HttpClient";
-import {Button, Input, Pagination, Space, Table} from "antd";
+import {Button, Input, Pagination, Space, Table, Tooltip} from "antd";
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {usePermissionState} from "../auth/AuthUtils";
 
@@ -15,10 +15,13 @@ export default function GroupList() {
     const [permission] = usePermissionState()
     const pageSize = 15
 
-    function deleteGroup(groupId) {
+    function onClickDeleteButton(groupId) {
         httpClient.delete("/admin/v1/group", {
             params: {groupId}
         }).then(() => setGroupList(groupList.filter(group => group.id !== groupId)))
+    }
+
+    function onClickEditButton(groupId) {
     }
 
     const columns = [
@@ -30,7 +33,6 @@ export default function GroupList() {
         {
             key: "actions", title: "", render: (_, {id}) => (
                     <>
-                        <Button className={style.actionButton} type="primary" shape="circle" icon={<EditOutlined/>} size="small" disabled={false}/>
                         <Button
                                 className={style.actionButton}
                                 type="primary"
@@ -38,8 +40,19 @@ export default function GroupList() {
                                 icon={<DeleteOutlined/>}
                                 size="small"
                                 disabled={!permission.permissionList.includes("DELETE_GROUP")}
-                                onClick={() => deleteGroup(id)}
+                                onClick={() => onClickDeleteButton(id)}
                         />
+                        <Tooltip title="준비중인 기능입니다.">
+                            <Button
+                                    className={style.actionButton}
+                                    type="primary"
+                                    shape="circle"
+                                    icon={<EditOutlined/>}
+                                    size="small"
+                                    disabled={true}
+                                    onClick={() => onClickEditButton(id)}
+                            />
+                        </Tooltip>
                     </>
             ),
         },
