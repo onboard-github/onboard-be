@@ -45,7 +45,6 @@ object InvalidGroupOrganizationException :
 object NotFoundGroupException : GroupException("Group004", "그룹을 찾을 수 없습니다.")
 object AccessCodeNotMatchException : GroupException("Group005", "참여 코드가 올바르지 않습니다.")
 object InvalidGuestIdException : GroupException("Group006", "게스트 ID가 올바르지 않습니다.")
-object NoPermissionDeleteGroupException : GroupException("Group007", "그룹을 삭제 할 수 있는 권한이 없습니다.")
 
 sealed class MemberException(code: String, status: Int, message: String, cause: Throwable? = null) :
     BolRatingException(code = code, status = status, message = message, cause = cause)
@@ -72,3 +71,4 @@ object UnknownException : BolRatingException("BOL000", 500, "알 수 없는 에�
 class InvalidRequestException(msg: String = "유효하지 않은 요청입니다.") : BolRatingException("BOL001", 400, msg)
 class InvalidNicknameException(val nickname: String?) : BolRatingException("BOL002", 400, "$nickname 닉네임이 잘못되었습니다.")
 object InvalidDateTimeException : BolRatingException("BOL003", 400, "날짜 값이 잘못됐습니다.")
+object NoPermissionException : BolRatingException("BOL003", 403, "권한이 없습니다.")
