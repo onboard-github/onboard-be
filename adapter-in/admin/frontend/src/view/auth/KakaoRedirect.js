@@ -1,7 +1,7 @@
 import {useLocation} from "react-router-dom";
 import {httpClient} from "../../http/HttpClient";
 import axios from "axios";
-import {setAccessToken} from "./AuthUtils";
+import {setAccessToken, setAuthToken, setRefreshToken} from "./AuthUtils";
 
 export function KakaoRedirect() {
     const location = useLocation()
@@ -30,7 +30,7 @@ export function KakaoRedirect() {
             "type": "KAKAO_ACCESS_TOKEN"
         })
 
-        setAccessToken(tokenResponse.data.accessToken)
+        setAuthToken(tokenResponse.data)
 
         window.location.href = process.env.REACT_APP_BASE_PATH;
     }
