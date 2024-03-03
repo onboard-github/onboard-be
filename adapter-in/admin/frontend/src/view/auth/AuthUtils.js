@@ -5,8 +5,26 @@ export function getAccessToken() {
     return localStorage.getItem("accessToken")
 }
 
-export function setAccessToken(token) {
+export function getRefreshToken() {
+    return localStorage.getItem("refreshToken")
+}
+
+export function setAuthToken(tokenResponse) {
+    setAccessToken(tokenResponse.accessToken)
+    httpClient.defaults.headers['Authorization'] = `Bearer ${tokenResponse.accessToken}`;
+
+    if (tokenResponse.refreshToken != null) {
+        setRefreshToken(tokenResponse.refreshToken)
+    }
+
+}
+
+function setAccessToken(token) {
     localStorage.setItem("accessToken", token)
+}
+
+function setRefreshToken(token) {
+    localStorage.setItem("refreshToken", token)
 }
 
 const keyPermission = "permission"
