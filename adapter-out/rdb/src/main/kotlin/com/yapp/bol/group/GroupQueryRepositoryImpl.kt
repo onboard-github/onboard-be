@@ -7,6 +7,7 @@ import com.yapp.bol.group.member.MemberRepository
 import com.yapp.bol.group.member.toDomain
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 import java.time.LocalDateTime
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.Sort
@@ -30,26 +31,26 @@ internal class GroupQueryRepositoryImpl(
         )
 
         if (keyword.isNullOrEmpty()) {
-            val groups: Slice<GroupEntity> = groupRepository.findAll(pageable)
+            val groups: Page<GroupEntity> = groupRepository.findAll(pageable)
 
-            return toCursor(groups)
+            return toCursor(groups, groups.totalElements)
         }
 
         val groups: Slice<GroupEntity> = groupRepository.findByNameOrOrganizationWithPriority(
             "%$keyword%",
-            "%$keyword%",
-            keyword,
             keyword,
             pageable,
         )
 
-        return toCursor(groups)
+        val totalCount = groupRepository.countByNameOrOrganization("%$keyword%")
+
+        return toCursor(groups, totalCount)
     }
 
-    private fun toCursor(slice: Slice<GroupEntity>): PaginationOffsetResponse<Group> {
+    private fun toCursor(slice: Slice<GroupEntity>, totalCount: Long): PaginationOffsetResponse<Group> {
         val content: List<Group> = slice.content.map(GroupEntity::toDomain)
 
-        return PaginationOffsetResponse(content, slice.hasNext())
+        return PaginationOffsetResponse(content, totalCount, slice.hasNext())
     }
 
     override fun getLeaderBoardList(groupId: GroupId, gameId: GameId): List<LeaderBoardMember> {

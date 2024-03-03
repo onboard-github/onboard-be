@@ -102,8 +102,9 @@ class GroupControllerTest : WebControllerTest() {
 
             every {
                 groupService.searchGroup(any(), any(), any())
-            } returns PaginationOffsetResponse<GroupWithMemberCount>(
+            } returns PaginationOffsetResponse(
                 content = listOf(GROUP_WITH_MEMBER_COUNT),
+                totalCount = 30,
                 hasNext = false,
             )
 
@@ -132,6 +133,7 @@ class GroupControllerTest : WebControllerTest() {
                         "content[].organization" type STRING means "그룹 소속" isOptional true,
                         "content[].profileImageUrl" type STRING means "그룹 프로필 이미지 URL",
                         "content[].memberCount" type NUMBER means "그룹 멤버 수",
+                        "totalCount" type NUMBER means "전체 그룹 개수",
                         "hasNext" type BOOLEAN means "다음 페이지 존재 여부",
                     ),
                 )

@@ -1,15 +1,16 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import User from "../view/user/User";
-import App from "../App";
 import GroupList from "../view/group/GroupList";
 import Auth from "../view/auth/Auth";
+import Main from "./Main"
 import {usePermissionState} from "../view/auth/AuthUtils";
 import {KakaoRedirect} from "../view/auth/KakaoRedirect";
+import {AdminRole} from "./AdminRole";
 
 export default function MainRouter() {
 
-    const permission = usePermissionState()
+    const [permission] = usePermissionState()
 
     if (permission.groupList == null || permission.groupList.length === 0)
         return  (
@@ -21,9 +22,10 @@ export default function MainRouter() {
 
     return (
             <Routes>
-                <Route path='/' element={<App/>}/>
+                <Route path='/' element={<Main/>}/>
                 <Route path='/user' element={<User/>}/>
                 <Route path='/group-list' element={<GroupList/>}/>
+                <Route path='/admin' element={<AdminRole/>}/>
             </Routes>
     );
 }

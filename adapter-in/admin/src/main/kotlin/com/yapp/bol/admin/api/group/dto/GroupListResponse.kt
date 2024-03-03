@@ -5,6 +5,7 @@ import com.yapp.bol.group.dto.GroupWithMemberCount
 
 data class GroupListResponse(
     val list: List<GroupListItemResponse>,
+    val totalCount: Long,
 )
 
 data class GroupListItemResponse(

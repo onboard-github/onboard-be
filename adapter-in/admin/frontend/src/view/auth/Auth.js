@@ -4,7 +4,7 @@ import RegisterAdmin from "./RegisterAdmin";
 import KakaoLoginButton from "./KakaoLoginButton";
 
 export default function Auth() {
-    const permission = usePermissionState()
+    const [permission] = usePermissionState()
 
     if (!isLogin())
         return <KakaoLoginButton/>
