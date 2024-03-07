@@ -7,9 +7,9 @@ on:
 
 env:
     AWS_REGION: ap-northeast-2
-    ECR_REPOSITORY: sandbox-onboard
-    ECS_SERVICE: sandbox-onboard-api-service
-    ECS_CLUSTER: sandbox-onboard
+    ECR_REPOSITORY: sandbox24-onboard-ecr
+    ECS_SERVICE: sandbox24-onboard-api-service
+    ECS_CLUSTER: sandbox24-onboard-cluster
     ECS_TASK_DEFINITION: sandbox-onboard-api-task-definition
     CONTAINER_NAME: sandbox-onboard-api-container
 
