@@ -17,7 +17,7 @@ spring:
         show-sql: false
         open-in-view: false
         hibernate:
-            ddl-auto: validate
+            ddl-auto: update
 cloud:
     aws:
         region: ap-northeast-2
