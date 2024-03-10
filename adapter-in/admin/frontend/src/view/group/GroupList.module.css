@@ -1,0 +1,21 @@
+.container {
+    padding-top: 3vh;
+    padding-left: 2vw;
+    padding-right: 2vw;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.table {
+    margin-top: 2vh;
+}
+
+.pagination {
+    margin: 10px 0;
+    align-self: center;
+}
+
+.actionButton {
+    margin: 2px;
+}

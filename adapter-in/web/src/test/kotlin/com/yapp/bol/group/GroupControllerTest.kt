@@ -1,6 +1,6 @@
 package com.yapp.bol.group
 
-import com.yapp.bol.NoPermissionDeleteGroupException
+import com.yapp.bol.NoPermissionException
 import com.yapp.bol.auth.UserId
 import com.yapp.bol.auth.authorizationHeader
 import com.yapp.bol.base.ARRAY
@@ -22,15 +22,20 @@ import com.yapp.bol.group.member.HostMember
 import com.yapp.bol.group.member.MemberId
 import com.yapp.bol.group.member.MemberList
 import com.yapp.bol.group.member.MemberRole
+import com.yapp.bol.group.member.MemberValidator
 import com.yapp.bol.group.member.OwnerMember
 import com.yapp.bol.pagination.offset.PaginationOffsetResponse
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
+import org.springframework.boot.test.context.SpringBootTest
 
+@SpringBootTest
 class GroupControllerTest : WebControllerTest() {
     private val groupService: GroupService = mockk()
     private val fileService: FileService = mockk()
-    override val controller = GroupController(groupService, fileService)
+    private val memberValidator: MemberValidator = mockk()
+    override val controller = spyk(GroupController(groupService, fileService, memberValidator))
 
     init {
         test("그룹 기본 이미지 가져오기") {
@@ -102,8 +107,9 @@ class GroupControllerTest : WebControllerTest() {
 
             every {
                 groupService.searchGroup(any(), any(), any())
-            } returns PaginationOffsetResponse<GroupWithMemberCount>(
+            } returns PaginationOffsetResponse(
                 content = listOf(GROUP_WITH_MEMBER_COUNT),
+                totalCount = 30,
                 hasNext = false,
             )
 
@@ -132,6 +138,7 @@ class GroupControllerTest : WebControllerTest() {
                         "content[].organization" type STRING means "그룹 소속" isOptional true,
                         "content[].profileImageUrl" type STRING means "그룹 프로필 이미지 URL",
                         "content[].memberCount" type NUMBER means "그룹 멤버 수",
+                        "totalCount" type NUMBER means "전체 그룹 개수",
                         "hasNext" type BOOLEAN means "다음 페이지 존재 여부",
                     ),
                 )
@@ -267,12 +274,12 @@ class GroupControllerTest : WebControllerTest() {
         }
 
         context("그룹 삭제") {
+            val groupId = GroupId(123L)
+            val userId = UserId(321L)
 
             test("성공") {
-                val groupId = GroupId(123L)
-                val userId = UserId(321L)
-
-                every { groupService.deleteGroup(userId, groupId) } returns Unit
+                every { memberValidator.requiredGroupOwner(groupId, userId) } returns Unit
+                every { groupService.deleteGroup(groupId) } returns Unit
 
                 delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
                     authorizationHeader(userId)
@@ -291,15 +298,12 @@ class GroupControllerTest : WebControllerTest() {
             }
 
             test("오너가 아닌 사람") {
-                val groupId = GroupId(123L)
-                val userId = UserId(321L)
-
-                every { groupService.deleteGroup(userId, groupId) } throws NoPermissionDeleteGroupException
+                every { memberValidator.requiredGroupOwner(groupId, userId) } throws NoPermissionException
 
                 delete("/api/v1/group/{groupId}", arrayOf(groupId.value)) {
                     authorizationHeader(userId)
                 }
-                    .isStatus(400)
+                    .isStatus(403)
                     .makeDocument(
                         DocumentInfo(
                             identifier = "group/{method-name}",

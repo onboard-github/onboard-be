@@ -3,7 +3,6 @@ package com.yapp.bol.group
 import com.yapp.bol.AccessCodeNotMatchException
 import com.yapp.bol.AlreadyExistMemberException
 import com.yapp.bol.InvalidRequestException
-import com.yapp.bol.NoPermissionDeleteGroupException
 import com.yapp.bol.NotFoundFileException
 import com.yapp.bol.NotFoundGroupException
 import com.yapp.bol.NotFoundMemberException
@@ -123,7 +122,7 @@ internal class GroupServiceImpl(
             GroupWithMemberCount(group, memberCount)
         }
 
-        return PaginationOffsetResponse(groupWithMemberCount, groups.hasNext)
+        return PaginationOffsetResponse(groupWithMemberCount, totalCount = groups.totalCount, groups.hasNext)
     }
 
     @MyTransactional
@@ -166,13 +165,7 @@ internal class GroupServiceImpl(
     }
 
     @MyTransactional
-    override fun deleteGroup(userId: UserId, groupId: GroupId) {
-        val member = memberQueryRepository.findByGroupIdAndUserId(groupId, userId) ?: throw NoPermissionDeleteGroupException
-
-        if (member.isOwner().not()) {
-            throw NoPermissionDeleteGroupException
-        }
-
+    override fun deleteGroup(groupId: GroupId) {
         memberCommandRepository.deleteAllMember(groupId)
         groupCommandRepository.deleteGroup(groupId)
     }
