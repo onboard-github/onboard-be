@@ -1,9 +1,9 @@
 name: Deploy-Sandbox
 
-on:
-    push:
-        branches:
-            - 'sandbox'
+#on:
+#    push:
+#        branches:
+#            - 'sandbox'
 
 env:
     AWS_REGION: ap-northeast-2

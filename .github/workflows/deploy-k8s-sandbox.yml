@@ -1,0 +1,75 @@
+name: Deploy-Sandbox
+
+on:
+    push:
+        branches:
+            - 'sandbox'
+
+
+env:
+    REGISTRY_URL: ${{ secrets.K8S_REGISTRY_URL }}
+    IMAGE_NAME: ${{ secrets.K8S_IMAGE_NAME }}
+    IMAGE_TAG: ${{ github.sha }}
+    DEPLOYMENT: ${{ secrets.K8S_DEPLOYMENT }}
+    CONTAINER_NAME: ${{ secrets.K8S_CONTAINER_NAME }}
+
+jobs:
+    test:
+        name: Test
+        runs-on: ubuntu-latest
+        environment: sandbox
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '17'
+                    distribution: 'adopt'
+
+            -   name: Grant execute permission for gradlew
+                run: chmod +x gradlew
+
+            -   name: Check ktlint format
+                run: ./gradlew clean ktlintCheck
+
+            -   name: Test with Gradle
+                run: ./gradlew test
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        environment: sandbox
+        outputs:
+            image: echo ${{ steps.build-image.outputs.image }}
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Build Docker image
+                run: docker build \
+                    --build-arg PHASE=${{ vars.PHASE }} \
+                    -t $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG .
+
+            -   name: Push Docker image
+                run: docker push $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG
+
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        environment: sandbox
+        needs:
+            - test
+            - build
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Deploy k8s
+                uses: actions-hub/kubectl@master
+                env:
+                    KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+                with:
+                    args: set image deployment/$DEPLOYMENT $CONTAINER_NAME=$REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG
+
