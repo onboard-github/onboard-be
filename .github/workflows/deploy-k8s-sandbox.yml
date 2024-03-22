@@ -48,9 +48,16 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v3
 
+            -   name: Docker Setup QEMU
+                uses: docker/setup-qemu-action@v1.2.0
+
+            -   name: Docker Setup Buildx
+                uses: docker/setup-buildx-action@v1.6.0
+
             -   name: Build Docker image
                 run: |
                     docker build \
+                    --platform linux/arm64 \
                     --build-arg PHASE=${{ vars.PHASE }} \
                     -t $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG .
 

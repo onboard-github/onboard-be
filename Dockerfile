@@ -17,7 +17,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew generateRedoc
 RUN ./gradlew :adapter-in:web:bootJar
 
-FROM eclipse-temurin:17-jdk-alpine AS RUNNER
+FROM eclipse-temurin AS RUNNER
 
 RUN mkdir /app
 
